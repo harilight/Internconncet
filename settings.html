@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings - InternConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    display:flex;
+    height:100vh;
+    background:#f3f6fb;
+    overflow: hidden;
+}
+
+/* Sidebar - Locked Layout (Unified Blueprint) */
+.sidebar{
+    width:250px;
+    background:#0d1b5e;
+    color:white;
+    padding:30px 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    flex-shrink: 0;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:600;
+    margin-bottom:40px;
+}
+
+.nav-item{
+    padding:15px;
+    margin-bottom:12px;
+    border-radius:10px;
+    cursor:pointer;
+    color: white;
+    text-decoration: none;
+    display: block;
+    transition: 0.2s;
+}
+
+.nav-item:hover,
+.active{
+    background:#4d8dff;
+}
+
+.chat-btn{
+    margin-top: auto;
+    background:#4d8dff;
+    text-align:center;
+    padding:12px;
+    border-radius:12px;
+    cursor: pointer;
+}
+
+/* Main Workspace */
+.main{
+    flex:1;
+    padding:25px;
+    display:flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Header */
+.top-nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title-section h2 {
+    font-size: 22px;
+    color: #0d1b5e;
+    font-weight: 600;
+}
+
+.save-all-btn {
+    background: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.save-all-btn:hover {
+    background: #4d8dff;
+}
+
+/* Scroll Window Area */
+.workspace-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Settings Forms Grid Layout */
+.settings-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    padding-bottom: 30px;
+}
+
+.panel-block {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    margin-bottom: 20px;
+    transition: transform 0.25s ease;
+}
+
+.panel-block:hover {
+    transform: translateY(-2px);
+}
+
+.panel-block h3 {
+    font-size: 16px;
+    color: #0d1b5e;
+    margin-bottom: 20px;
+    font-weight: 600;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+
+/* Collapsible Profile Header Area */
+.profile-summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-pic-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.avatar-preview {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: #1e3a8a;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(13,27,94,0.15);
+}
+
+.profile-summary-info h4 {
+    color: #0d1b5e;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.profile-summary-info p {
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* Dynamic Expandable Form Container */
+.expandable-profile-form {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, margin-top 0.4s ease;
+}
+
+.expandable-profile-form.open {
+    max-height: 1200px;
+    margin-top: 25px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+/* Input Styling inputs */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    color: #475569;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    transition: border-color 0.2s;
+    background: white;
+}
+
+.form-control:focus {
+    border-color: #4d8dff;
+}
+
+.row-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* Modern Toggle Switches Component */
+.toggle-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.toggle-group:last-child {
+    border: none;
+    padding-bottom: 0;
+}
+
+.toggle-info h4 {
+    font-size: 14px;
+    color: #334155;
+    font-weight: 500;
+}
+
+.toggle-info p {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 1px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #cbd5e1;
+    transition: .3s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #4d8dff;
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* Inline action buttons */
+.utility-btn {
+    background: none;
+    border: 1px solid #cbd5e1;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #475569;
+    font-weight: 500;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.utility-btn:hover {
+    background: #f1f5f9;
+    border-color: #4d8dff;
+}
+
+.edit-trigger-btn {
+    background: #f0f4ff;
+    color: #1e3a8a;
+    border: none;
+    font-weight: 600;
+}
+
+.edit-trigger-btn:hover {
+    background: #4d8dff;
+    color: white;
+    border-color: #4d8dff;
+}
+
+/* Resume Box Styles */
+.resume-uploader {
+    border: 2px dashed #cbd5e1;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.resume-uploader:hover {
+    background: #f8fafc;
+    border-color: #4d8dff;
+}
+
+/* Login Activity List Layout */
+.activity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13px;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.device-info {
+    font-weight: 500;
+    color: #334155;
+}
+
+.device-meta {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+/* Danger Zone Component Styles */
+.danger-panel {
+    border-top: 4px solid #dc2626;
+}
+
+.danger-action-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.danger-btn {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #fee2e2;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+    display: block;
+}
+
+.danger-btn.logout {
+    background: #f8fafc;
+    color: #475569;
+    border-color: #cbd5e1;
+}
+
+.danger-btn.logout:hover {
+    background: #cbd5e1;
+    color: #0d1b5e;
+}
+
+.danger-btn.delete {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.danger-btn.delete:hover {
+    background: #dc2626;
+    color: white;
+}
+
+/* Toast Message Node styling */
+.toast-alert {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #15803d;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: none;
+    z-index: 1000;
+}
+
+/* Premium Dialog Overlay UI Box Architecture */
+.custom-modal-backdrop {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(13, 27, 94, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+}
+
+.custom-modal-backdrop.show {
+    opacity: 1; pointer-events: auto;
+}
+
+.modal-card {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    width: 420px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.custom-modal-backdrop.show .modal-card {
+    transform: scale(1);
+}
+
+.modal-card h4 {
+    color: #0d1b5e;
+    font-size: 18px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.modal-card p {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.modal-actions-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modal-btn.confirm-yes {
+    background: #dc2626;
+    color: white;
+}
+
+.modal-btn.confirm-yes.theme-blue {
+    background: #1e3a8a;
+}
+
+.modal-btn.confirm-yes:hover {
+    opacity: 0.9;
+}
+
+.modal-btn.confirm-no {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.modal-btn.confirm-no:hover {
+    background: #cbd5e1;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div class="logo">InternConnect</div>
+    <a href="dashboard.html" class="nav-item">Dashboard</a>
+    <a href="myapplications.html" class="nav-item">My Applications</a>
+    <a href="explore.html" class="nav-item">Explore Internships</a>
+    <a href="resources.html" class="nav-item">Resources</a>
+    <a href="analytics.html" class="nav-item">Analytics</a>
+    <a href="notifications.html" class="nav-item">🔔 Notifications</a>
+    <a href="settings.html" class="nav-item active">Settings</a>
+    <a href="chat.html" class="nav-item">messages</a>
+</div>
+
+<div class="main">
+
+    <div class="top-nav-bar">
+        <div class="title-section">
+            <h2>Portal Settings</h2>
+        </div>
+        <button class="save-all-btn" id="saveAllBtn">Save Settings</button>
+    </div>
+
+    <div class="workspace-scroll">
+        <div class="settings-grid">
+            
+            <div class="left-settings-column">
+                
+                <div class="panel-block">
+                    <div class="profile-summary-header">
+                        <div class="profile-pic-container">
+                            <div class="avatar-preview" id="avatarDisplay" onclick="window.location.href='student_profile.html'" style="cursor:pointer;" title="View Student Profile">H</div>
+                            <div class="profile-summary-info">
+                                <h4 id="summaryName">Harihara</h4>
+                                <p id="summaryStudy">Computer Science & Engineering • IIT</p>
+                            </div>
+                        </div>
+                        <button type="button" class="utility-btn edit-trigger-btn" id="toggleProfileEditBtn">Edit Profile</button>
+                    </div>
+
+                    <div class="expandable-profile-form" id="profileFieldsForm">
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label>Change Avatar Picture</label>
+                            <button type="button" class="utility-btn" id="avatarUploadTrigger">Upload New Photo</button>
+                        </div>
+
+                        <div class="row-inputs form-group">
+                            <div>
+                                <label>Full Name</label>
+                                <input type="text" class="form-control" id="inputName" value="Harihara">
+                            </div>
+                            <div>
+                                <label>Primary Email Address</label>
+                                <input type="email" class="form-control" value="hari@example.com">
+                            </div>
+                        </div>
+
+                        <div class="row-inputs form-group">
+                            <div>
+                                <label>Alternative Contact Email</label>
+                                <input type="email" class="form-control" value="hari.backup@example.com">
+                            </div>
+                            <div>
+                                <label>Phone Number</label>
+                                <input type="text" class="form-control" value="+91 98765 43210">
+                            </div>
+                        </div>
+
+                        <div class="row-inputs form-group">
+                            <div>
+                                <label>Date of Birth</label>
+                                <input type="date" class="form-control" value="2004-05-14">
+                            </div>
+                            <div>
+                                <label>Gender</label>
+                                <select class="form-control">
+                                    <option selected>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>College Name</label>
+                            <input type="text" class="form-control" id="inputCollege" value="Indian Institute of Technology">
+                        </div>
+
+                        <div class="row-inputs form-group">
+                            <div>
+                                <label>Field of Study / Branch</label>
+                                <input type="text" class="form-control" id="inputStudy" value="Computer Science & Engineering">
+                            </div>
+                            <div>
+                                <label>Current CGPA / Percentage</label>
+                                <input type="text" class="form-control" value="9.25 CGPA">
+                            </div>
+                        </div>
+
+                        <div class="row-inputs form-group">
+                            <div>
+                                <label>Year of Passing</label>
+                                <input type="text" class="form-control" value="2027">
+                            </div>
+                            <div>
+                                <label>State / Region</label>
+                                <input type="text" class="form-control" value="Tamil Nadu">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-block">
+                    <h3>Placement & Matching Preferences</h3>
+                    
+                    <div class="row-inputs form-group">
+                        <div>
+                            <label>Preferred Functional Domain</label>
+                            <select class="form-control">
+                                <option selected>AI/ML Architecture</option>
+                                <option>Backend Development</option>
+                                <option>Data Science & Analytics</option>
+                                <option>Full Stack Engineering</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Preferred Target Location</label>
+                            <select class="form-control">
+                                <option selected>Bangalore, KA</option>
+                                <option>Chennai, TN</option>
+                                <option>Hyderabad, TS</option>
+                                <option>Mumbai, MH</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row-inputs form-group">
+                        <div>
+                            <label>Work Structure Setup</label>
+                            <select class="form-control">
+                                <option>Remote Office</option>
+                                <option selected>Hybrid Schedule</option>
+                                <option>Onsite Corporate Base</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Expected Monthly Stipend (INR)</label>
+                            <input type="text" class="form-control" value="₹30,000 - ₹50,000">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-block">
+                    <h3>Notification Settings</h3>
+                    
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <h4>New Internship Openings Alerts</h4>
+                            <p>Send matching push logs instantly when newly posted parameters trace your profile tags.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <h4>Application Lifecycle Updates</h4>
+                            <p>Receive notifications regarding shortlist updates, rejections, or accepted verification steps.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <h4>Interview Scheduling Reminders</h4>
+                            <p>Turn on dynamic visual reminders 24 hours prior to any logged interview milestone slot.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <h4>Recruiter Messaging Dispatch</h4>
+                            <p>Allow active hiring representatives to ping your dashboard mailbox directly.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="panel-block">
+                    <h3>Security & Authentication</h3>
+                    
+                    <div class="form-group">
+                        <label>Change Account Password</label>
+                        <div class="row-inputs">
+                            <input type="password" class="form-control" placeholder="Current Password">
+                            <input type="password" class="form-control" placeholder="New Secure Password">
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px; display: flex; gap: 10px;">
+                        <button type="button" class="utility-btn" id="passUpdateBtn">Update Password</button>
+                        <button type="button" class="utility-btn" id="emailResetTrigger">Reset Password Via Email</button>
+                    </div>
+
+                    <div class="toggle-group" style="border-top: 1px dashed #e2e8f0; padding-top: 15px;">
+                        <div class="toggle-info">
+                            <h4>Two-Factor Authentication (2FA)</h4>
+                            <p>Enforce secondary device authentication checkpoints during user identity logs verification hooks.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="twoFactorSwitch">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div style="margin-top: 20px;">
+                        <h4 style="font-size: 13px; color: #1e3a8a; font-weight: 600; margin-bottom: 10px;">Recent Login Sessions Footprint</h4>
+                        <div class="activity-item">
+                            <div>
+                                <div class="device-info">Chrome Browser — Windows OS (Current Session)</div>
+                                <div class="device-meta">Chennai, India • IP: 192.168.1.45</div>
+                            </div>
+                            <span style="font-size: 11px; color: #10b981; font-weight: 600;">Active Now</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="right-settings-column">
+                
+                <div class="panel-block">
+                    <h3>Document & Portfolio Links</h3>
+                    
+                    <div class="form-group">
+                        <label>Active Evaluator CV</label>
+                        <div class="resume-uploader" id="resumeUploadBox">
+                            <span style="font-size:22px;">📄</span>
+                            <p style="font-size:12px; font-weight:500; margin-top:4px; color:#1e3a8a;">Hari_CV_2026.pdf</p>
+                            <p style="font-size:10px; color:gray;">Click to Replace File</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Portfolio URL</label>
+                        <input type="url" class="form-control" value="https://harihara.dev">
+                    </div>
+                    <div class="form-group">
+                        <label>GitHub Account</label>
+                        <input type="url" class="form-control" value="https://github.com/harihara">
+                    </div>
+                    <div class="form-group">
+                        <label>LinkedIn Identity</label>
+                        <input type="url" class="form-control" value="https://linkedin.com/in/harihara">
+                    </div>
+                </div>
+
+                <div class="panel-block">
+                    <h3>Data Privacy Permissions</h3>
+                    
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <h4>Recruiter Profile Visibility</h4>
+                            <p>Allow matching corporations to audit details.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <h4>Disclose Contacts Data</h4>
+                            <p>Expose phone/email lines to recruiters.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="panel-block danger-panel">
+                    <h3 style="color:#dc2626;">Danger Zone</h3>
+                    <p style="font-size:12px; color:gray;">Irreversible operational checkpoints concerning account teardowns.</p>
+                    
+                    <div class="danger-action-box">
+                        <button type="button" class="danger-btn logout" id="logoutActionBtn">Logout from Portal</button>
+                        <button type="button" class="danger-btn delete" id="deleteAccountActionBtn">Permanently Erase Account</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="toast-alert" id="successToast">✓ Settings Matrix Saved Successfully!</div>
+
+<div class="custom-modal-backdrop" id="customModal">
+    <div class="modal-card">
+        <h4 id="modalTitle">Confirm Action</h4>
+        <p id="modalDescription">Are you absolutely sure you want to perform this operation checkpoint?</p>
+        <div class="modal-actions-row">
+            <button class="modal-btn confirm-yes" id="modalConfirmYes">Yes, Proceed</button>
+            <button class="modal-btn confirm-no" id="modalConfirmNo">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Expandable Accordion Logic for Profile Settings
+const toggleProfileEditBtn = document.getElementById('toggleProfileEditBtn');
+const profileFieldsForm = document.getElementById('profileFieldsForm');
+
+toggleProfileEditBtn.addEventListener('click', () => {
+    profileFieldsForm.classList.toggle('open');
+    toggleProfileEditBtn.textContent = profileFieldsForm.classList.contains('open') ? 'Close Panel' : 'Edit Profile';
+});
+
+// UI Elements Variables
+const saveAllBtn = document.getElementById('saveAllBtn');
+const passUpdateBtn = document.getElementById('passUpdateBtn');
+const successToast = document.getElementById('successToast');
+const twoFactorSwitch = document.getElementById('twoFactorSwitch');
+
+const inputName = document.getElementById('inputName');
+const inputStudy = document.getElementById('inputStudy');
+const inputCollege = document.getElementById('inputCollege');
+
+const summaryName = document.getElementById('summaryName');
+const summaryStudy = document.getElementById('summaryStudy');
+const avatarDisplay = document.getElementById('avatarDisplay');
+
+// Custom Modal Target Variables
+const customModal = document.getElementById('customModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalDescription = document.getElementById('modalDescription');
+const modalConfirmYes = document.getElementById('modalConfirmYes');
+const modalConfirmNo = document.getElementById('modalConfirmNo');
+
+let activeConfirmCallback = null;
+
+function showConfirmationBox(title, message, isDanger, confirmCallback) {
+    modalTitle.textContent = title;
+    modalDescription.textContent = message;
+    
+    // Set custom visual alert styling based on target impact depth
+    if(isDanger) {
+        modalConfirmYes.classList.remove('theme-blue');
+        modalConfirmYes.classList.add('confirm-yes');
+    } else {
+        modalConfirmYes.classList.remove('confirm-yes');
+        modalConfirmYes.classList.add('theme-blue');
+    }
+    
+    activeConfirmCallback = confirmCallback;
+    customModal.classList.add('show');
+}
+
+function hideConfirmationBox() {
+    customModal.classList.remove('show');
+    activeConfirmCallback = null;
+}
+
+// Modal Action listeners
+modalConfirmNo.addEventListener('click', hideConfirmationBox);
+modalConfirmYes.addEventListener('click', () => {
+    if(activeConfirmCallback) activeConfirmCallback();
+    hideConfirmationBox();
+});
+
+function triggerToastNotification(msg) {
+    successToast.textContent = msg;
+    successToast.style.display = 'block';
+    setTimeout(() => { successToast.style.display = 'none'; }, 3000);
+}
+
+// Save Profile Matrix Trigger
+saveAllBtn.addEventListener('click', async () => {
+    let userId = 1;
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.id) userId = user.id;
+    } catch(e) {}
+
+    const updatedName = inputName.value.trim() || "Harihara";
+    if(inputName.value.trim() !== "") summaryName.textContent = updatedName;
+    summaryStudy.textContent = `${inputStudy.value} • ${inputCollege.value}`;
+    if(inputName.value.trim() !== "") avatarDisplay.textContent = updatedName.charAt(0).toUpperCase();
+
+    try {
+        await fetch(`http://localhost:5000/api/auth/profile/${userId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: updatedName,
+                role: 'student',
+                college_name: inputCollege.value,
+                department: inputStudy.value
+            })
+        });
+        const currentUser = JSON.parse(localStorage.getItem('currentUser')) || { id: userId, role: 'student' };
+        currentUser.name = updatedName;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    } catch(err) {
+        console.warn('API error during profile update', err);
+    }
+
+    profileFieldsForm.classList.remove('open');
+    toggleProfileEditBtn.textContent = 'Edit Profile';
+    triggerToastNotification('✓ Settings Matrix Synced & Cached Successfully!');
+});
+
+passUpdateBtn.addEventListener('click', () => {
+    triggerToastNotification('🔑 Password Security Matrix Restructured!');
+});
+
+// Interactive dialog boxes wireframing
+document.getElementById('avatarUploadTrigger').addEventListener('click', () => {
+    showConfirmationBox('Upload Photo', 'Would you like to open your local file system array to swap avatars?', false, () => {
+        triggerToastNotification('🖼️ Image picker environment active');
+    });
+});
+
+document.getElementById('resumeUploadBox').addEventListener('click', () => {
+    showConfirmationBox('Replace Resume', 'Do you want to upload a new active PDF file to update recommendation engine indices?', false, () => {
+        triggerToastNotification('📄 File selection pipeline active');
+    });
+});
+
+document.getElementById('emailResetTrigger').addEventListener('click', () => {
+    showConfirmationBox('Email Reset Link', 'Send a password reset verification loop message to your primary inbox address?', false, () => {
+        triggerToastNotification('✉️ Verification dispatch routed to email!');
+    });
+});
+
+twoFactorSwitch.addEventListener('change', function() {
+    if(this.checked) {
+        showConfirmationBox('Enable 2FA Checkpoint', 'Confirm setting up dynamic 2FA encryption matrix checks for your device profiling?', false, () => {
+            triggerToastNotification('🔒 2FA Setup matrix initiated');
+        });
+    }
+});
+
+// Danger Zone Interactions (Logout targets index.html)
+document.getElementById('logoutActionBtn').addEventListener('click', () => {
+    showConfirmationBox('Confirm Logout', 'Are you sure you want to sign out? You will be returned to the primary landing entry page.', true, () => {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'index.html';
+    });
+});
+
+document.getElementById('deleteAccountActionBtn').addEventListener('click', () => {
+    showConfirmationBox('CRITICAL: Delete Account', 'Warning! This operation will permanently wipe all system trace arrays, resumes, and active application states. Proceed?', true, () => {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'index.html';
+    });
+});
+
+// Load live user settings on load (leveraging backend in-memory cache)
+document.addEventListener('DOMContentLoaded', async () => {
+    let userId = 1;
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.id) userId = user.id;
+    } catch(e) {}
+
+    try {
+        const res = await fetch(`http://localhost:5000/api/auth/profile/${userId}`);
+        const data = await res.json();
+        if (data.success && data.profile) {
+            const p = data.profile;
+            const summaryNameEl = document.getElementById('summaryName');
+            const inputNameEl = document.getElementById('inputName');
+            const avatarEl = document.getElementById('avatarDisplay');
+            const summaryStudyEl = document.getElementById('summaryStudy');
+            const inputCollegeEl = document.getElementById('inputCollege');
+            const inputStudyEl = document.getElementById('inputStudy');
+
+            if (summaryNameEl) summaryNameEl.textContent = p.name;
+            if (inputNameEl) inputNameEl.value = p.name;
+            if (avatarEl) avatarEl.textContent = p.name.charAt(0).toUpperCase();
+
+            if (p.details) {
+                if (inputCollegeEl && p.details.college_name) inputCollegeEl.value = p.details.college_name;
+                if (inputStudyEl && p.details.department) inputStudyEl.value = p.details.department;
+                if (summaryStudyEl) summaryStudyEl.textContent = `${p.details.department || 'Computer Science'} • ${p.details.college_name || 'IIT'}`;
+            }
+        }
+    } catch(e) {
+        console.warn('Fallback settings loaded.', e);
+    }
+});
+</script>
+</body>
+</html>

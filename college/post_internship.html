@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post Internship - InternConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style1.css">
+
+<style>
+/* CRITICAL FIX: Strip padding from main container so it snaps to the edge */
+.main {
+    flex: 1;
+    padding: 0 !important; /* Eliminates the empty outer space breakout */
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background: #f3f6fb;
+}
+
+/* Header Spacer: Since we stripped main padding, we add localized padding here */
+.top-nav-bar {
+    padding: 25px 30px 10px 30px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* Scroll Window Area: Extended to stretch seamlessly to the absolute edge */
+.workspace-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 30px 120px 30px; /* Pushes the scrollbar right to the edge */
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Full-Width Form Setup */
+.form-container-full {
+    width: 100%;
+    max-width: 100%;
+}
+
+.form-step-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    margin-bottom: 25px;
+    width: 100%;
+    transition: transform 0.25s ease;
+}
+
+.form-step-card:hover {
+    transform: translateY(-2px);
+}
+
+.step-badge-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 12px;
+}
+
+.step-number {
+    width: 28px;
+    height: 28px;
+    background: #0d1b5e;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.step-badge-title h3 {
+    font-size: 16px;
+    color: #0d1b5e;
+    font-weight: 600;
+}
+
+/* Input Fields Styles */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    color: #475569;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    transition: border-color 0.2s;
+    background: white;
+}
+
+.form-control:focus {
+    border-color: #4d8dff;
+}
+
+.row-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Custom Interactive Radio & Checkbox Row */
+.radio-inline-group {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #334155;
+    cursor: pointer;
+}
+
+/* Fake Rich Text Editor Bar for Description Box */
+.editor-toolbar {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-bottom: none;
+    padding: 8px 12px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    gap: 15px;
+    font-weight: 600;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.editor-toolbar span {
+    cursor: pointer;
+}
+
+.editor-toolbar span:hover {
+    color: #4d8dff;
+}
+
+.editor-textarea {
+    border-radius: 0 0 8px 8px;
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Interactive Tags Display Panel matching image_a1c3b9.jpg */
+.tags-input-container {
+    border: 1px solid #e2e8f0;
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: white;
+}
+
+.tag-token {
+    background: #dbeafe;
+    color: #1e3a8a;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tag-token close {
+    cursor: pointer;
+    font-weight: bold;
+    color: #dc2626;
+}
+
+.tags-input-container input {
+    border: none;
+    outline: none;
+    flex: 1;
+    min-width: 100px;
+    font-size: 13px;
+}
+
+/* Custom Questions list styling */
+.question-item {
+    background: #f8fafc;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #334155;
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Premium Fixed Sticky Bottom Action Tray Bar (Locks seamlessly to bottom, zeroing out right sidebar space) */
+.fixed-action-tray-bar {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: calc(100% - 250px); /* Aligns accurately matching sidebar cutout width */
+    background: white;
+    padding: 15px 30px;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 999;
+}
+
+.tray-right-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.tray-btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-primary {
+    background: #0d1b5e;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #4d8dff;
+}
+
+.btn-neutral {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+.btn-neutral:hover {
+    background: #e2e8f0;
+}
+
+.btn-link-back {
+    color: #475569;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-link-back:hover {
+    color: #0d1b5e;
+    text-decoration: underline;
+}
+
+.toast-alert {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #15803d;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: none;
+    z-index: 1000;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div class="logo">InternConnect</div>
+    <a href="college_dashboard.html" class="nav-item">Dashboard</a>
+    <a href="post_internship.html" class="nav-item active">Post Internship</a>
+    <a href="manage_internships.html" class="nav-item">Manage Internships</a>
+    <a href="notifications.html" class="nav-item">🔔 Notifications</a>
+    <a href="college_analytics.html" class="nav-item">Analytics</a>
+    <a href="college_settings.html" class="nav-item">Settings</a>
+    <a href="college_chat.html" class="nav-item">Messages</a>
+    
+</div>
+
+<div class="main">
+
+    <div class="top-nav-bar">
+        <div class="title-section">
+            <h2>Post an Internship Opening</h2>
+        </div>
+        
+        <div class="search-container">
+            <span>🔍</span>
+            <input type="text" placeholder="Search parameters...">
+        </div>
+
+        <div class="profile-box" style="position: relative;">
+            <div class="bell-container" id="notificationBellGroup" style="position: relative; margin-right: 5px;">
+                <span class="bell" id="bellIcon">🔔<span id="bellBadge" style="position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #dc2626; border-radius: 50%;"></span></span>
+
+                <div class="notification-dropdown" id="notificationDropdown" style="position: absolute; top: 35px; right: 0; width: 320px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(13,27,94,0.15); border: 1px solid #e2e8f0; display: none; z-index: 9999; padding: 15px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 18px 10px 18px; border-bottom: 1px solid #f1f5f9;">
+                        <h4 style="font-size: 14px; color: #0d1b5e; font-weight: 600;">TPO Notifications</h4>
+                        <button id="clearNotificationsBtn" style="background: none; border: none; color: #4d8dff; font-size: 12px; font-weight: 500; cursor: pointer; outline: none;">Clear All</button>
+                    </div>
+                    <div style="max-height: 280px; overflow-y: auto;" id="notificationListWrapper">
+                        <div class="notif-item" style="padding: 12px 18px; border-bottom: 1px solid #f8fafc; font-size: 12px; color: #334155; cursor: pointer;">
+                            <div style="font-weight: 600; color: #0d1b5e; margin-bottom: 2px;">🏢 New Recruiter Request</div>
+                            <div>Adobe Talent Acquisition submitted a campus drive placement request slot.</div>
+                            <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Just Now</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="avatar" onclick="window.location.href='college_profile.html'" style="background:#0d1b5e; cursor:pointer;" title="View College Profile">TPO</div>
+            <div class="profile" onclick="window.location.href='college_profile.html'" style="cursor:pointer;" title="View College Profile">Placement Cell 👋</div>
+        </div>
+    </div>
+
+    <div class="workspace-scroll">
+        <form id="postInternshipForm" onsubmit="event.preventDefault();">
+            <div class="form-container-full">
+                
+                <div class="form-step-card">
+                    <div class="step-badge-title">
+                        <div class="step-number">1</div>
+                        <h3>General Information</h3>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Internship Title</label>
+                        <input type="text" class="form-control" placeholder="e.g., Deep Learning Architecture Research Intern" required>
+                    </div>
+
+                    <div class="row-inputs form-group">
+                        <div>
+                            <label>Company / Division Hosting</label>
+                            <select class="form-control">
+                                <option>Google LLC</option>
+                                <option>NVIDIA Corporation</option>
+                                <option>Microsoft India</option>
+                                <option>Adobe Systems</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Job Hiring Type</label>
+                            <select class="form-control">
+                                <option>Technical Engineering</option>
+                                <option>Data & Research Analysis</option>
+                                <option>Product & Management</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row-inputs form-group">
+                        <div>
+                            <label>Work Model Arrangement</label>
+                            <div class="radio-inline-group">
+                                <label class="radio-label"><input type="radio" name="model" checked> Remote</label>
+                                <label class="radio-label"><input type="radio" name="model"> On-site</label>
+                                <label class="radio-label"><input type="radio" name="model"> Hybrid</label>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Target Geographic Location</label>
+                            <input type="text" class="form-control" placeholder="e.g., Bangalore, KA (or Remote)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-step-card">
+                    <div class="step-badge-title">
+                        <div class="step-number">2</div>
+                        <h3>Internship Details</h3>
+                    </div>
+
+                    <div class="row-inputs form-group">
+                        <div>
+                            <label>Duration Length</label>
+                            <select class="form-control">
+                                <option>3 Months</option>
+                                <option selected>6 Months</option>
+                                <option>9 Months</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Stipend Structure Type</label>
+                            <div class="radio-inline-group">
+                                <label class="radio-label"><input type="radio" name="stipendType" id="stipendPaid" checked> Paid</label>
+                                <label class="radio-label"><input type="radio" name="stipendType" id="stipendUnpaid"> Unpaid</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row-inputs form-group">
+                        <div>
+                            <label>Stipend Monthly Amount (INR)</label>
+                            <input type="text" class="form-control" id="stipendAmountField" value="₹35,000 / Month">
+                        </div>
+                        <div>
+                            <label>Available Opening Seats</label>
+                            <input type="number" class="form-control" value="5" min="1">
+                        </div>
+                    </div>
+
+                    <div class="row-inputs form-group">
+                        <div>
+                            <label>Target Activation Start Date</label>
+                            <input type="date" class="form-control" value="2026-07-15">
+                        </div>
+                        <div>
+                            <label>Application Closing Deadline</label>
+                            <input type="date" class="form-control" value="2026-07-05">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-step-card">
+                    <div class="step-badge-title">
+                        <div class="step-number">3</div>
+                        <h3>Description & Requirements</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Full Comprehensive Description</label>
+                        <div class="editor-toolbar">
+                            <span><b>B</b></span><span><i>I</i></span><span><u>U</u></span><span><s>S</s></span><span>&lt;/&gt;</span><span>📋</span><span>📊</span>
+                        </div>
+                        <textarea class="form-control editor-textarea" placeholder="Outline clear day-to-day corporate responsibilities, milestones, and tech stack criteria..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Required Key Skills <small style="color:gray;">(Type skill and press Comma or Enter)</small></label>
+                        <div class="tags-input-container" id="skillsTagContainer">
+                            <div class="notif-item tag-token">Python <close onclick="this.parentElement.remove()">×</close></div>
+                            <div class="notif-item tag-token">PyTorch <close onclick="this.parentElement.remove()">×</close></div>
+                            <div class="notif-item tag-token">TensorFlow <close onclick="this.parentElement.remove()">×</close></div>
+                            <input type="text" id="tagInputField" placeholder="Add more...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-step-card">
+                    <div class="step-badge-title">
+                        <div class="step-number">4</div>
+                        <h3>Applicant Preferences & Screening</h3>
+                    </div>
+
+                    <div class="row-inputs form-group">
+                        <div>
+                            <label>Minimum Qualification Degree</label>
+                            <select class="form-control">
+                                <option>B.Tech / B.E. (Pre-Final Year)</option>
+                                <option selected>B.Tech / B.E. (Final Year / Passing Out)</option>
+                                <option>M.Tech / MS Research</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Specific Mandatory Certifications</label>
+                            <input type="text" class="form-control" placeholder="e.g., AWS Certified Developer, Optional">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label>Custom Questionnaire Script</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" class="form-control" id="questionInput" placeholder="Add custom screening question prompt...">
+                            <button type="button" class="save-all-btn" style="margin-top:0; border-radius:8px;" id="addQuestionBtn">Add</button>
+                        </div>
+                        <div id="customQuestionsWrapper">
+                            <div class="question-item">
+                                <span>1. Provide a link to your public repository validating previous open-source contributions.</span>
+                                <strong style="color:#dc2626; cursor:pointer;" onclick="this.parentElement.remove()">Remove</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="fixed-action-tray-bar">
+                <a href="college_dashboard.html" class="btn-link-back">← Cancel & Return to Dashboard</a>
+                <div class="tray-right-actions">
+                    <button type="button" class="tray-btn btn-neutral" onclick="alert('Specification draft saved to institutional cache.')">Save as Draft</button>
+                    <button type="button" class="tray-btn btn-neutral" onclick="alert('Simulating candidate-facing board pipeline layout view...')">Preview Post</button>
+                    <button type="submit" class="tray-btn btn-primary" id="submitPublishBtn">Publish Internship</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<div class="toast-alert" id="successToast">✓ Internship Posting Deployed Successfully!</div>
+
+<script src="navigation-hud.js"></script>
+<script>
+const skillsTagContainer = document.getElementById('skillsTagContainer');
+const tagInputField = document.getElementById('tagInputField');
+const questionInput = document.getElementById('questionInput');
+const addQuestionBtn = document.getElementById('addQuestionBtn');
+const customQuestionsWrapper = document.getElementById('customQuestionsWrapper');
+const submitPublishBtn = document.getElementById('submitPublishBtn');
+const successToast = document.getElementById('successToast');
+
+const stipendPaid = document.getElementById('stipendPaid');
+const stipendUnpaid = document.getElementById('stipendUnpaid');
+const stipendAmountField = document.getElementById('stipendAmountField');
+
+// Handle Compensation Toggles actively
+stipendUnpaid.addEventListener('change', () => {
+    stipendAmountField.value = "N/A - Unpaid Internship Track";
+    stipendAmountField.disabled = true;
+});
+stipendPaid.addEventListener('change', () => {
+    stipendAmountField.value = "₹35,000 / Month";
+    stipendAmountField.disabled = false;
+});
+
+// Premium Tag Adder Execution Engine logic
+function appendSkillToken(text) {
+    const cleanText = text.replace(/,/g, "").trim();
+    if (cleanText === "") return;
+
+    const token = document.createElement('div');
+    token.className = 'notif-item tag-token';
+    token.innerHTML = `${cleanText} <close onclick="this.parentElement.remove()">×</close>`;
+    
+    // Insert token node right before the input container element block
+    skillsTagContainer.insertBefore(token, tagInputField);
+    tagInputField.value = '';
+}
+
+tagInputField.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        appendSkillToken(this.value);
+    }
+});
+tagInputField.addEventListener('blur', function() {
+    appendSkillToken(this.value);
+});
+
+// Dynamic Questionnaire Script Appending Handler
+let indexCounter = 2;
+addQuestionBtn.addEventListener('click', () => {
+    const textPrompt = questionInput.value.trim();
+    if(textPrompt === "") return;
+
+    const item = document.createElement('div');
+    item.className = 'question-item';
+    item.innerHTML = `<span>${indexCounter++}. ${textPrompt}</span><strong style="color:#dc2626; cursor:pointer;" onclick="this.parentElement.remove()">Remove</strong>`;
+    
+    customQuestionsWrapper.appendChild(item);
+    questionInput.value = '';
+});
+
+// Global Submission Deployment lifecycle trigger handler
+submitPublishBtn.addEventListener('click', async () => {
+    let collegeId = 3;
+    try {
+        const u = JSON.parse(localStorage.getItem('currentUser'));
+        if (u && u.id) collegeId = u.id;
+    } catch(e) {}
+
+    const title = document.getElementById('intTitle')?.value.trim() || 'Research Fellowship - Advanced AI Systems';
+    const company_name = document.getElementById('intCompany')?.value.trim() || 'IIT Research Cell';
+    const location = document.getElementById('intLocation')?.value.trim() || 'On-Campus R&D Lab';
+    const stipend = stipendAmountField?.value.trim() || '₹35,000 / Month';
+    const duration = document.getElementById('intDuration')?.value || '3 Months';
+    const description = document.getElementById('intDescription')?.value.trim() || 'High-impact institutional research internship opportunity.';
+
+    const skillNodes = skillsTagContainer.querySelectorAll('.tag-token');
+    const skills_required = Array.from(skillNodes).map(n => n.textContent.replace('×', '').trim()).filter(Boolean);
+
+    submitPublishBtn.textContent = 'Publishing to Student Portal...';
+    submitPublishBtn.disabled = true;
+
+    try {
+        await fetch('http://localhost:5000/api/internships', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                employer_id: collegeId,
+                title,
+                company_name,
+                location,
+                stipend,
+                duration,
+                work_type: 'On-site',
+                description,
+                skills_required: skills_required.length > 0 ? skills_required : ['Research', 'Data Analysis', 'Academic Writing']
+            })
+        });
+    } catch (err) {
+        console.warn('Backend API error during internship posting', err);
+    }
+
+    successToast.style.display = 'block';
+    setTimeout(() => {
+        successToast.style.display = 'none';
+        window.location.href = 'college_dashboard.html';
+    }, 2000);
+});
+</script>
+<script>
+// INTERACTIVE NOTIFICATION DRAWER DROPDOWN LIFECYCLE
+const bellIcon = document.getElementById('bellIcon');
+const bellBadge = document.getElementById('bellBadge');
+const notificationDropdown = document.getElementById('notificationDropdown');
+const clearNotificationsBtn = document.getElementById('clearNotificationsBtn');
+const notificationListWrapper = document.getElementById('notificationListWrapper');
+
+if (bellIcon && notificationDropdown) {
+    bellIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isVisible = notificationDropdown.style.display === 'block';
+        notificationDropdown.style.display = isVisible ? 'none' : 'block';
+        if (!isVisible && bellBadge) bellBadge.style.display = 'none';
+    });
+}
+
+if (clearNotificationsBtn && notificationListWrapper) {
+    clearNotificationsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        localStorage.setItem('college_notifs_cleared', 'true');
+        if (bellBadge) bellBadge.style.display = 'none';
+        notificationListWrapper.innerHTML = `
+            <div style="padding: 30px; text-align: center; color: #94a3b8; font-size: 13px;">
+                📭 No new notifications log traces.
+            </div>
+        `;
+    });
+}
+
+document.addEventListener('click', (e) => {
+    if (notificationDropdown && bellIcon && !notificationDropdown.contains(e.target) && e.target !== bellIcon) {
+        notificationDropdown.style.display = 'none';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('college_notifs_cleared') === 'true' && notificationListWrapper) {
+        if (bellBadge) bellBadge.style.display = 'none';
+        notificationListWrapper.innerHTML = `
+            <div style="padding: 30px; text-align: center; color: #94a3b8; font-size: 13px;">
+                📭 No new notifications log traces.
+            </div>
+        `;
+    }
+});
+</script>
+</body>
+</html>

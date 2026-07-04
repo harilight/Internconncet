@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recruiter Settings - InternConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Code Reusability: Pulling layout frames from style2.css -->
+<link rel="stylesheet" href="style2.css">
+
+<style>
+/* CRITICAL FIX: Preventing outer container spacing breakouts completely */
+.main {
+    flex: 1;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background: #f3f6fb;
+}
+
+.top-nav-bar {
+    padding: 25px 30px 10px 30px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.workspace-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 30px 40px 30px;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Settings Form Grid Blueprint */
+.settings-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    padding-bottom: 30px;
+}
+
+.panel-block {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    margin-bottom: 20px;
+    transition: transform 0.25s ease;
+}
+
+.panel-block:hover {
+    transform: translateY(-2px);
+}
+
+.panel-block h3 {
+    font-size: 16px;
+    color: #0d1b5e;
+    margin-bottom: 20px;
+    font-weight: 600;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+
+/* Collapsible Profile Setup */
+.profile-summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-pic-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.avatar-preview {
+    width: 65px;
+    height: 65px;
+    border-radius: 12px;
+    background: #0d1b5e;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(13,27,94,0.15);
+}
+
+.profile-summary-info h4 {
+    color: #0d1b5e;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.profile-summary-info p {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.expandable-profile-form {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, margin-top 0.4s ease;
+}
+
+.expandable-profile-form.open {
+    max-height: 1000px;
+    margin-top: 25px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+/* Form Styling Input Rules */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    color: #475569;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    transition: border-color 0.2s;
+    background: white;
+}
+
+.form-control:focus {
+    border-color: #4d8dff;
+}
+
+.row-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* Reusable Interactive Toggle Switches Layout */
+.toggle-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.toggle-group:last-child {
+    border: none;
+    padding-bottom: 0;
+}
+
+.toggle-info h4 {
+    font-size: 14px;
+    color: #334155;
+    font-weight: 500;
+}
+
+.toggle-info p {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.switch input { 
+    opacity: 0; width: 0; height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #cbd5e1;
+    transition: .3s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px; width: 16px;
+    left: 4px; bottom: 4px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #4d8dff;
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+.utility-btn {
+    background: none;
+    border: 1px solid #cbd5e1;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #475569;
+    font-weight: 500;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.utility-btn:hover {
+    background: #f1f5f9;
+    border-color: #4d8dff;
+}
+
+.edit-trigger-btn {
+    background: #f0f4ff;
+    color: #1e3a8a;
+    border: none;
+    font-weight: 600;
+}
+
+.edit-trigger-btn:hover {
+    background: #4d8dff;
+    color: white;
+}
+
+/* Danger Zone */
+.danger-panel {
+    border-top: 4px solid #dc2626;
+}
+
+.danger-action-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.danger-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    transition: background 0.2s, color 0.2s;
+    display: block;
+}
+
+.danger-btn.logout {
+    background: #f8fafc;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+.danger-btn.logout:hover {
+    background: #cbd5e1;
+    color: #0d1b5e;
+}
+
+.danger-btn.freeze {
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fee2e2;
+}
+
+.danger-btn.freeze:hover {
+    background: #dc2626;
+    color: white;
+}
+
+/* Feedback Toast Alert Box */
+.toast-alert {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #15803d;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: none;
+    z-index: 1000;
+}
+
+/* Custom Interactive Confirmation Modal Overlays */
+.custom-modal-backdrop {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(13, 27, 94, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+}
+
+.custom-modal-backdrop.show {
+    opacity: 1; pointer-events: auto;
+}
+
+.modal-card {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    width: 420px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.custom-modal-backdrop.show .modal-card {
+    transform: scale(1);
+}
+
+.modal-card h4 {
+    color: #0d1b5e;
+    font-size: 18px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.modal-card p {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.modal-actions-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modal-btn.confirm-yes {
+    background: #dc2626;
+    color: white;
+}
+
+.modal-btn.confirm-yes.theme-blue {
+    background: #1e3a8a;
+}
+
+.modal-btn.confirm-yes:hover { opacity: 0.9; }
+
+.modal-btn.confirm-no {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.modal-btn.confirm-no:hover { background: #cbd5e1; }
+</style>
+</head>
+
+<body>
+
+<!-- Code Reusability: Left Corporate Sidebar Navigation Panel -->
+<div class="sidebar">
+    <div class="logo">InternConnect</div>
+    <a href="industry_dashboard.html" class="nav-item">Dashboard</a>
+    <a href="post_internship.html" class="nav-item">Post Internship</a>
+    <a href="manage_internships.html" class="nav-item">Manage Internships</a>
+    <a href="notifications.html" class="nav-item">🔔 Notifications</a>
+    <a href="industry_analytics.html" class="nav-item">Analytics</a>
+    <a href="industry_settings.html" class="nav-item active">Settings</a>
+    <a href="industry_chat.html" class="nav-item">Messages</a>
+    
+</div>
+
+<div class="main">
+
+    <!-- Reusable Top Navigation Corporate Header -->
+    <div class="top-nav-bar">
+        <div class="title-section">
+            <h2>Corporate Profile & System Rules</h2>
+        </div>
+        <button class="save-all-btn" id="saveAllConfigsBtn">Save Profile Modifications</button>
+    </div>
+
+    <!-- Scroll Content Workspace -->
+    <div class="workspace-scroll">
+        <div class="settings-grid">
+            
+            <!-- Left Side Configuration Forms Column -->
+            <div class="left-settings-column">
+                
+                <!-- Section 1: Collapsible Corporate Identity Profile Card -->
+                <div class="panel-block">
+                    <div class="profile-summary-header">
+                        <div class="profile-pic-container">
+                            <div class="avatar-preview" id="companyLogoBadge">HR</div>
+                            <div class="profile-summary-info">
+                                <h4 id="summaryRecruiterName">Google Talent Cell</h4>
+                                <p id="summaryCompanyName">Google LLC • Core AI Group</p>
+                            </div>
+                        </div>
+                        <button type="button" class="utility-btn edit-trigger-btn" id="toggleEditFormBtn">Edit Profile</button>
+                    </div>
+
+                    <!-- Accordion Profile Panel Fields Container -->
+                    <div class="expandable-profile-form" id="collapsibleFormElement">
+                        <div class="row-inputs form-group">
+                            <div>
+                                <label>Recruiter / HR Lead Full Name</label>
+                                <input type="text" class="form-control" id="inputRecruiterName" value="Google Talent Cell">
+                            </div>
+                            <div>
+                                <label>Corporate Hiring Desk Email</label>
+                                <input type="email" class="form-control" value="recruiting-cloud@google.com">
+                            </div>
+                        </div>
+
+                        <div class="row-inputs form-group">
+                            <div>
+                                <label>Primary Company Name Entity</label>
+                                <input type="text" class="form-control" id="inputCompanyName" value="Google LLC">
+                            </div>
+                            <div>
+                                <label>Business Unit / Division</label>
+                                <input type="text" class="form-control" value="Core AI Architecture Group">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Corporate Talent Acquisition URL Website</label>
+                            <input type="text" class="form-control" value="https://careers.google.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Recruitment Rules & Notification Digests -->
+                <div class="panel-block">
+                    <h3>Recruitment Workflow Preferences</h3>
+                    
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <h4>Automated Skill-Match Scouting Digests</h4>
+                            <p>Receive real-time system alerts when a candidate matches your published job criteria with 90%+ confidence values.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <h4>Auto-Archive Expired Internship Campaigns</h4>
+                            <p>Automatically move postings to the archive logs once the deadline expires.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Section 3: Recruiter Access Security (Password & 2FA Setup) -->
+                <div class="panel-block">
+                    <h3>Security Keys & Access Protection</h3>
+                    
+                    <div class="form-group">
+                        <label>Update Account Password</label>
+                        <div class="row-inputs">
+                            <input type="password" class="form-control" placeholder="Current Password">
+                            <input type="password" class="form-control" placeholder="New Password">
+                        </div>
+                    </div>
+                    <button type="button" class="utility-btn" style="margin-bottom: 20px;" onclick="triggerToastDisplay('🔑 Cryptographic Account Password Cleared and Updated!')">Change Password</button>
+
+                    <!-- Mandatory 2FA Toggle switch element -->
+                    <div class="toggle-group" style="border-top: 1px dashed #e2e8f0; padding-top: 15px;">
+                        <div class="toggle-info">
+                            <h4>Enforce Mandatory Recruiter 2FA Access</h4>
+                            <p>Require security access code tokens generated via authenticator app arrays during portal entries.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="twoFactorSwitchToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column Sidebar Configurations & Danger Actions Zone -->
+            <div class="right-settings-column">
+                
+                <!-- Section 4: Talent Assessment Verification Rules -->
+                <div class="panel-block">
+                    <h3>Candidate Screening Privacy</h3>
+                    
+                    <div class="toggle-group">
+                        <div class="toggle-info">
+                            <h4>Mask Candidate Contacts Prior to Shortlists</h4>
+                            <p>Hide student mobile data streams until they advance past initial screening filters.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Section 5: Secure Corporate Session Termination Zone -->
+                <div class="panel-block danger-panel">
+                    <h3 style="color:#dc2626;">Danger Zone</h3>
+                    <p style="font-size:12px; color:gray; margin-bottom:15px;">High-stakes configurations regarding secure profile exits or campaign pauses.</p>
+                    
+                    <div class="danger-action-box">
+                        <!-- Redirects securely back to parent framework index.html entry line -->
+                        <button type="button" class="danger-btn logout" id="logoutTriggerBtn">Logout Recruiter Session</button>
+                        <button type="button" class="danger-btn freeze" id="freezeCampaignsBtn">Freeze Recruitment Tracks</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Real-Time Feedback Toast Node -->
+<div class="toast-alert" id="statusToastAlert">✓ Settings Saved Successfully!</div>
+
+<!-- Interactive Custom Form Confirmation Dialog Modal Wrapper -->
+<div class="custom-modal-backdrop" id="customModalWindow">
+    <div class="modal-card">
+        <h4 id="modalHeading">Confirm System Operations</h4>
+        <p id="modalDescriptionPrompt">Are you certain you want to deploy this administrative change layout parameter?</p>
+        <div class="modal-actions-row">
+            <button class="modal-btn confirm-yes" id="actionYesBtn">Yes, Execute</button>
+            <button class="modal-btn confirm-no" id="actionNoBtn">Cancel Operation</button>
+        </div>
+    </div>
+</div>
+
+<!-- Code Reusability: Link to common corporate notification hud js script asset -->
+<script src="industry-hud.js"></script>
+<script>
+// Accordion Form Toggle Interactivity Loops
+const toggleEditFormBtn = document.getElementById('toggleEditFormBtn');
+const collapsibleFormElement = document.getElementById('collapsibleFormElement');
+
+toggleEditFormBtn.addEventListener('click', () => {
+    collapsibleFormElement.classList.toggle('open');
+    toggleEditFormBtn.textContent = collapsibleFormElement.classList.contains('open') ? 'Close Profile Panel' : 'Edit Profile';
+});
+
+// Primary Input Field Node assignments
+const saveAllConfigsBtn = document.getElementById('saveAllConfigsBtn');
+const statusToastAlert = document.getElementById('statusToastAlert');
+const twoFactorSwitchToggle = document.getElementById('twoFactorSwitchToggle');
+
+const inputRecruiterName = document.getElementById('inputRecruiterName');
+const inputCompanyName = document.getElementById('inputCompanyName');
+const summaryRecruiterName = document.getElementById('summaryRecruiterName');
+const summaryCompanyName = document.getElementById('summaryCompanyName');
+
+// Modal Elements List pointers
+const customModalWindow = document.getElementById('customModalWindow');
+const modalHeading = document.getElementById('modalHeading');
+const modalDescriptionPrompt = document.getElementById('modalDescriptionPrompt');
+const actionYesBtn = document.getElementById('actionYesBtn');
+const actionNoBtn = document.getElementById('actionNoBtn');
+
+let activeExecutionCallback = null;
+
+function displayConfirmationBox(title, text, isCriticalDanger, confirmAction) {
+    modalHeading.textContent = title;
+    modalDescriptionPrompt.textContent = text;
+    
+    if (isCriticalDanger) {
+        actionYesBtn.classList.remove('theme-blue');
+        actionYesBtn.classList.add('confirm-yes');
+    } else {
+        actionYesBtn.classList.remove('confirm-yes');
+        actionYesBtn.classList.add('theme-blue');
+    }
+    
+    activeExecutionCallback = confirmAction;
+    customModalWindow.classList.add('show');
+}
+
+actionNoBtn.addEventListener('click', () => { customModalWindow.classList.remove('show'); });
+actionYesBtn.addEventListener('click', () => {
+    if (activeExecutionCallback) activeExecutionCallback();
+    customModalWindow.classList.remove('show');
+});
+
+function triggerToastDisplay(textMessage) {
+    statusToastAlert.textContent = textMessage;
+    statusToastAlert.style.display = 'block';
+    setTimeout(() => { statusToastAlert.style.display = 'none'; }, 2500);
+}
+
+// Global Core Sync Profile Updates Actions
+saveAllConfigsBtn.addEventListener('click', async () => {
+    let userId = 4;
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.id) userId = user.id;
+    } catch(e) {}
+
+    const updatedName = inputRecruiterName.value.trim() || "Google Talent Cell";
+    const updatedCompany = inputCompanyName.value.trim() || "Google LLC";
+    if (inputRecruiterName.value.trim() !== "") summaryRecruiterName.textContent = updatedName;
+    if (inputCompanyName.value.trim() !== "") summaryCompanyName.textContent = updatedCompany + " • Core AI Group";
+    
+    try {
+        await fetch(`http://localhost:5000/api/auth/profile/${userId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: updatedName,
+                role: 'industry',
+                company_name: updatedCompany
+            })
+        });
+        const currentUser = JSON.parse(localStorage.getItem('currentUser')) || { id: userId, role: 'industry' };
+        currentUser.name = updatedName;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    } catch(err) {
+        console.warn('API error during industry profile update', err);
+    }
+
+    collapsibleFormElement.classList.remove('open');
+    toggleEditFormBtn.textContent = 'Edit Profile';
+    triggerToastDisplay('✓ Corporate Identity Metrics Synced & Cached!');
+});
+
+// Interactive Multi-Gate Alert Configurations
+twoFactorSwitchToggle.addEventListener('change', function() {
+    if (this.checked) {
+        displayConfirmationBox('Enforce Corporate 2FA Security', 'Confirm locking down talent cell recruitment profiles behind mandatory authenticator app challenges?', false, () => {
+            triggerToastDisplay('🛡️ Mandatory Recruiter 2FA Challenge Policy Operational!');
+        });
+    }
+});
+
+// Session Termination Logging (Routes back out to landing frame context index.html)
+document.getElementById('logoutTriggerBtn').addEventListener('click', () => {
+    displayConfirmationBox('Terminate Corporate Session', 'Are you sure you want to exit your active Google Talent Cell portal dashboard session and return to the primary landing interface?', true, () => {
+        localStorage.removeItem('currentUser');
+        window.location.href = '../index.html'; // Route securely back to landing page index.html
+    });
+});
+
+document.getElementById('freezeCampaignsBtn').addEventListener('click', () => {
+    displayConfirmationBox('CRITICAL: Freeze Hiring Pipelines', 'WARNING: Pausing channels blocks candidates from taking technical assignments or filing project submissions across your active open posts.', true, () => {
+        triggerToastDisplay('❄️ All Recruiter Sourcing Channels Temporarily Frozen.');
+    });
+});
+
+// Load live recruiter settings on load
+document.addEventListener('DOMContentLoaded', async () => {
+    let userId = 4;
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.id) userId = user.id;
+    } catch(e) {}
+
+    try {
+        const res = await fetch(`http://localhost:5000/api/auth/profile/${userId}`);
+        const data = await res.json();
+        if (data.success && data.profile) {
+            const p = data.profile;
+            if (summaryRecruiterName) summaryRecruiterName.textContent = p.name;
+            if (inputRecruiterName) inputRecruiterName.value = p.name;
+            if (document.getElementById('companyLogoBadge')) document.getElementById('companyLogoBadge').textContent = p.name.substring(0, 2).toUpperCase();
+
+            if (p.details && p.details.company_name) {
+                if (inputCompanyName) inputCompanyName.value = p.details.company_name;
+                if (summaryCompanyName) summaryCompanyName.textContent = p.details.company_name + " • Core AI Group";
+            }
+        }
+    } catch(e) {
+        console.warn('Fallback industry settings loaded.', e);
+    }
+});
+</script>
+</body>
+</html>

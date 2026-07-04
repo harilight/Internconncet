@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Internships - InternConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Code Reusability: Pulling global structures from your layout asset style2.css -->
+<link rel="stylesheet" href="style2.css">
+
+<style>
+/* CRITICAL DESIGN FIX: Snapping the content workspace right to the edge */
+.main {
+    flex: 1;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background: #f3f6fb;
+}
+
+.top-nav-bar {
+    padding: 25px 30px 10px 30px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.workspace-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 30px 40px 30px;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* 3-Column Enterprise Workspace Layout Hub from image_a336b9.jpg */
+.workspace-top-split {
+    display: grid;
+    grid-template-columns: 310px 1fr 320px;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.workspace-card {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.workspace-card h3 {
+    font-size: 15px;
+    color: #0d1b5e;
+    font-weight: 600;
+}
+
+/* Action Utility Buttons inside the Header */
+.header-action-btn {
+    padding: 6px 12px;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #475569;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.header-action-btn:hover {
+    background: #0d1b5e;
+    color: white;
+    border-color: #0d1b5e;
+}
+
+/* Column 1: Intern Roster List with Detailed Project Meta */
+.roster-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 440px;
+    overflow-y: auto;
+}
+
+.roster-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.roster-item:hover, .roster-item.selected-candidate {
+    background: #f0f4ff;
+    border-color: #4d8dff;
+}
+
+.roster-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.roster-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #0d1b5e;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.roster-info h4 {
+    font-size: 13px;
+    color: #334155;
+    font-weight: 600;
+}
+
+.roster-info p {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 1px;
+    line-height: 1.3;
+}
+
+.badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 8px;
+}
+
+.badge-active { background: #dcfce7; color: #15803d; }
+.badge-pending { background: #fef3c7; color: #b45309; }
+.badge-onboarding { background: #e0f2fe; color: #0369a1; }
+.badge-completed { background: #e2e8f0; color: #475569; }
+
+/* Column 2: Heavy Duty 4-Column Kanban Board Grid */
+.kanban-grid-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.kanban-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.kanban-col {
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 340px;
+}
+
+.kanban-col h4 {
+    font-size: 11px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 4px;
+}
+
+.kanban-task {
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+}
+
+.kanban-task h5 {
+    font-size: 12px;
+    color: #0d1b5e;
+    font-weight: 600;
+}
+
+.kanban-task p {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 2px;
+    line-height: 1.3;
+}
+
+.task-due-date {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-top: 6px;
+    font-weight: 500;
+    border-top: 1px dashed #f1f5f9;
+    padding-top: 4px;
+}
+
+/* Interactive Team Communication Bar Asset */
+.comms-input-bar {
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.comms-input-bar input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13px;
+    color: #334155;
+}
+
+.comms-util-icon {
+    font-size: 16px;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.comms-util-icon:hover {
+    color: #4d8dff;
+}
+
+.comms-send-btn {
+    background: #0d1b5e;
+    border: none;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.comms-send-btn:hover {
+    background: #4d8dff;
+}
+
+/* Column 3: Mentorship and Overview Analytics */
+.mentors-list-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.mentor-row-node {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #334155;
+    font-weight: 500;
+}
+
+.mentor-avatar-mini {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* Circular Loader Representation widget */
+.circular-metric-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    position: relative;
+}
+
+.ratio-text-center {
+    position: absolute;
+    font-weight: 600;
+    color: #0d1b5e;
+    font-size: 14px;
+}
+
+.activity-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 140px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+.feed-node {
+    font-size: 11px;
+    color: #64748b;
+    padding-left: 10px;
+    border-left: 2px solid #4d8dff;
+    line-height: 1.4;
+}
+
+/* KPIs Panel List */
+.kpi-row-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #475569;
+    padding: 6px 0;
+    border-bottom: 1px dashed #f1f5f9;
+}
+
+.kpi-row-item:last-child {
+    border: none;
+}
+
+.kpi-row-item strong {
+    color: #0d1b5e;
+}
+
+/* Bottom Panel: Snapshot Datatable layout */
+.snapshot-panel {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+}
+
+.snapshot-panel h3 {
+    font-size: 16px;
+    color: #0d1b5e;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13px;
+}
+
+th {
+    font-weight: 600;
+    color: #64748b;
+    background: #f8fafc;
+}
+
+.stakeholders-avatars-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Code Reusability: Left Corporate Sidebar Navigation Panel -->
+<div class="sidebar">
+    <div class="logo">InternConnect</div>
+    <a href="industry_dashboard.html" class="nav-item">Dashboard</a>
+    <a href="post_internship.html" class="nav-item">Post Internship</a>
+    <a href="manage_internships.html" class="nav-item active">Manage Internships</a>
+    <a href="notifications.html" class="nav-item">🔔 Notifications</a>
+    <a href="industry_analytics.html" class="nav-item">Analytics</a>
+    <a href="industry_settings.html" class="nav-item">Settings</a>
+    <a href="industry_chat.html" class="nav-item">Messages</a>
+    
+</div>
+
+<div class="main">
+
+    <!-- Reusable Top Header Module Block -->
+    <div class="top-nav-bar">
+        <div class="title-section">
+            <h2>Industry Internship Management</h2>
+        </div>
+        
+        <div class="search-container">
+            <span>🔍</span>
+            <input type="text" placeholder="Search anything...">
+        </div>
+
+        <div class="profile-box" style="position: relative;">
+            <div class="bell-container" id="notificationBellGroup" style="position: relative; margin-right: 5px;">
+                <span class="bell" id="bellIcon">🔔<span id="bellBadge" style="position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #dc2626; border-radius: 50%;"></span></span>
+
+                <!-- Expandable Notification Drawer Drop -->
+                <div class="notification-dropdown" id="notificationDropdown" style="position: absolute; top: 35px; right: 0; width: 320px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(13,27,94,0.15); border: 1px solid #e2e8f0; display: none; z-index: 9999; padding: 15px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 18px 10px 18px; border-bottom: 1px solid #f1f5f9;">
+                        <h4 style="font-size: 14px; color: #0d1b5e; font-weight: 600;">Recruiter Alerts</h4>
+                        <button id="clearNotificationsBtn" style="background: none; border: none; color: #4d8dff; font-size: 12px; font-weight: 500; cursor: pointer; outline: none;">Clear All</button>
+                    </div>
+                    <div style="max-height: 280px; overflow-y: auto;" id="notificationListWrapper">
+                        <div class="notif-item" style="padding: 12px 18px; border-bottom: 1px solid #f8fafc; font-size: 12px; color: #334155; cursor: pointer;">
+                            <div style="font-weight: 600; color: #0d1b5e; margin-bottom: 2px;">📄 New Application Received</div>
+                            <div>Amy Rodriguez submitted credentials for Project Sphere UX.</div>
+                            <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Just Now</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="avatar" onclick="window.location.href='industry_profile.html'" style="background:#0d1b5e; cursor:pointer;" title="View Corporate Profile">HR</div>
+            <div class="profile" onclick="window.location.href='industry_profile.html'" style="cursor:pointer;" title="View Corporate Profile">Google Talent Cell 👋</div>
+        </div>
+    </div>
+
+    <!-- Scroll Workspace Window Layout -->
+    <div class="workspace-scroll">
+        
+        <!-- TOP ROW GRID: 3-Column Interface mapped from image_a336b9.jpg -->
+        <div class="workspace-top-split">
+            
+            <!-- Column 1: Intern Roster List with Core Subtext Meta -->
+            <div class="workspace-card">
+                <div class="card-header-flex">
+                    <h3>Intern Roster</h3>
+                    <button class="header-action-btn" onclick="alert('Compiling live weekly operational report tracking links...')">View Weekly Report</button>
+                </div>
+                <div class="roster-list" id="internRosterContainer">
+                    <div class="roster-item selected-candidate" data-intern="marcus">
+                        <div class="roster-profile">
+                            <div class="roster-avatar" style="background: #4d8dff;">ML</div>
+                            <div class="roster-info">
+                                <h4>Marcus Lee</h4>
+                                <p>Project: Sphere UX/UI<br>Mentor: Sarah Chen</p>
+                            </div>
+                        </div>
+                        <span class="badge badge-active">Active</span>
+                    </div>
+
+                    <div class="roster-item" data-intern="elena">
+                        <div class="roster-profile">
+                            <div class="roster-avatar" style="background: #ec4899;">ER</div>
+                            <div class="roster-info">
+                                <h4>Elena Rossi</h4>
+                                <p>Project: Sphere UX/UI<br>Mentor: Sarah Chen</p>
+                            </div>
+                        </div>
+                        <span class="badge badge-pending">Pending Review</span>
+                    </div>
+
+                    <div class="roster-item" data-intern="david">
+                        <div class="roster-profile">
+                            <div class="roster-avatar" style="background: #10b981;">DC</div>
+                            <div class="roster-info">
+                                <h4>David Chen</h4>
+                                <p>Project: Sphere UX/UI<br>Mentor: Sarah Chen</p>
+                            </div>
+                        </div>
+                        <span class="badge badge-onboarding">Onboarding</span>
+                    </div>
+
+                    <div class="roster-item" data-intern="yaon">
+                        <div class="roster-profile">
+                            <div class="roster-avatar" style="background: #f59e0b;">IY</div>
+                            <div class="roster-info">
+                                <h4>Intern Yaon</h4>
+                                <p>Project: Sphere UX/UI<br>Mentor: Sarah Chen</p>
+                            </div>
+                        </div>
+                        <span class="badge badge-pending">Pending Review</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 2: Refactored 4-Column Project Board Hub -->
+            <div class="workspace-card" style="padding: 15px;">
+                <div class="kanban-grid-wrapper">
+                    <div class="kanban-board" id="kanbanBoardWrapper">
+                        <!-- Column 1: Project Proposals -->
+                        <div class="kanban-col">
+                            <h4>Project Proposals</h4>
+                            <div class="kanban-task" data-belongs="marcus">
+                                <h5>Project Sphere UX</h5>
+                                <p>Marcus Lee<br>Mentor: Sarah Chen</p>
+                                <div class="task-due-date">Due Date: Jun 20</div>
+                            </div>
+                            <div class="kanban-task" data-belongs="marcus">
+                                <h5>Project Sphere UXII</h5>
+                                <p>Marcus Lee<br>Mentor: Sarah Chen</p>
+                                <div class="task-due-date">Due Date: 19 Sep 26</div>
+                            </div>
+                        </div>
+
+                        <!-- Column 2: In Onboarding -->
+                        <div class="kanban-col">
+                            <h4>In Onboarding</h4>
+                            <div class="kanban-task" data-belongs="marcus">
+                                <h5>Data Pipeline Dev</h5>
+                                <p>Marcus Lee<br>Mentor: David Chen</p>
+                                <div class="task-due-date">Due Date: Jan 29</div>
+                            </div>
+                            <div class="kanban-task" data-belongs="marcus">
+                                <h5>Data Pipeline Dev</h5>
+                                <p>Marcus Lee<br>Mentor: Elena Rossi</p>
+                                <div class="task-due-date">Due Date: 17 Apr 26</div>
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Active Projects -->
+                        <div class="kanban-col">
+                            <h4>Active Projects</h4>
+                            <div class="kanban-task" data-belongs="marcus">
+                                <h5>Marketing Campaign</h5>
+                                <p>Marcus Chen<br>Mentor: Sarah Chen</p>
+                                <div class="task-due-date">Due Date: 13 Jan 26</div>
+                            </div>
+                            <div class="kanban-task" data-belongs="marcus">
+                                <h5>Marketing Campaign</h5>
+                                <p>Marcus Chen<br>Mentor: Michael Wu</p>
+                                <div class="task-due-date">Due Date: 13 Apr 26</div>
+                            </div>
+                        </div>
+
+                        <!-- Column 4: Review & Completion -->
+                        <div class="kanban-col">
+                            <h4>Review & Completion</h4>
+                            <div class="kanban-task" data-belongs="marcus">
+                                <h5>Marketing Campaign</h5>
+                                <p>Marcus Chen<br>Mentor: Michael Wu</p>
+                                <div class="task-due-date">Due Date: 23 Apr 26</div>
+                            </div>
+                            <button class="action-view-btn" style="padding:6px; font-size:11px; margin-top:2px;" onclick="alert('Offer sheet generation dispatched safely.')">Approve Offer</button>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Channel Chat commentary input asset row -->
+                    <div class="comms-input-bar">
+                        <span class="comms-util-icon">🎤</span>
+                        <input type="text" id="commsChatField" placeholder="Type your message to the project board execution channel...">
+                        <span class="comms-util-icon">📷</span>
+                        <button class="comms-send-btn" onclick="const input = document.getElementById('commsChatField'); if(input.value.trim() !== '') { alert('Broadcast sent: ' + input.value); input.value=''; }">➔</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 3: Mentorship & Status Summary Analytics Panel -->
+            <div class="workspace-card">
+                <h3>Mentorship & Status Overview</h3>
+                
+                <h4 style="font-size:12px; color:#64748b; margin-top:5px; margin-bottom:8px;">Company Mentors</h4>
+                <div class="mentors-list-box">
+                    <div class="mentor-row-node"><div class="mentor-avatar-mini" style="background:#dbeafe; color:#1e3a8a;">SC</div> Sarah Chen</div>
+                    <div class="mentor-row-node"><div class="mentor-avatar-mini" style="background:#e0f2fe; color:#0369a1;">MW</div> Michael Wu</div>
+                    <div class="mentor-row-node"><div class="mentor-avatar-mini" style="background:#fef3c7; color:#b45309;">TN</div> Term Nath</div>
+                </div>
+
+                <!-- Radial Indicator representation box layout -->
+                <div class="circular-metric-box">
+                    <svg width="60" height="60" viewBox="0 0 36 36" style="transform: rotate(-90deg);">
+                        <path stroke="#e2e8f0" stroke-width="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path stroke="#4d8dff" stroke-width="3" stroke-dasharray="33, 100" stroke-linecap="round" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    </svg>
+                    <div class="ratio-text-center">1:3</div>
+                </div>
+
+                <h4 style="font-size:12px; color:#64748b; margin-bottom:8px;">Mentor Activity Feed</h4>
+                <div class="activity-feed">
+                    <div class="feed-node"><strong>Sarah Chen</strong> reviewed Marcus Lee's week 2 deliverables status.</div>
+                    <div class="feed-node"><strong>Sarah Chen</strong> reviewed Manus Lee's week 2 deliverables updates.</div>
+                    <div class="feed-node" style="border-left-color: #f59e0b;"><strong>David Winn</strong> reviewed Elena Lee's milestone scripts.</div>
+                </div>
+
+                <h4 style="font-size:12px; color:#64748b; margin-bottom:6px; border-top:1px solid #f1f5f9; padding-top:10px;">KPIs Summary</h4>
+                <div class="kpis-list-box">
+                    <div class="kpi-row-item"><span>Active Interns:</span><strong>15</strong></div>
+                    <div class="kpi-row-item"><span>Mentor-to-Intern Ratio:</span><strong>1:3</strong></div>
+                    <div class="kpi-row-item"><span>Projects in Critical Path:</span><strong style="color:#dc2626;">2</strong></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- BOTTOM PANEL: Multi-Stakeholder Project Snapshot Table -->
+        <div class="snapshot-panel">
+            <h3>Current Project Snapshot</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Project Name</th>
+                        <th>Assigned Interns & Stakeholders</th>
+                        <th>Due Date Target</th>
+                        <th>Status Badge</th>
+                    </tr>
+                </thead>
+                <tbody id="snapshotTableBody">
+                    <tr data-intern="marcus">
+                        <td><b>Project Sphere UX</b></td>
+                        <td>
+                            <div class="stakeholders-avatars-row">
+                                <div class="roster-avatar" style="width:24px; height:24px; font-size:10px; background:#4d8dff;">ML</div> Marcus Lee,
+                                <div class="roster-avatar" style="width:24px; height:24px; font-size:10px; background:#ec4899;">SC</div> Sarah Chen
+                            </div>
+                        </td>
+                        <td>19 Jan 26</td>
+                        <td><span class="badge badge-active">Active</span></td>
+                    </tr>
+                    <tr data-intern="marcus">
+                        <td><b>Data Pipeline Dev</b></td>
+                        <td>
+                            <div class="stakeholders-avatars-row">
+                                <div class="roster-avatar" style="width:24px; height:24px; font-size:10px; background:#4d8dff;">ML</div> Marcus Lee,
+                                <div class="roster-avatar" style="width:24px; height:24px; font-size:10px; background:#ec4899;">ER</div> Elena Rossi
+                            </div>
+                        </td>
+                        <td>17 Apr 26</td>
+                        <td><span class="badge badge-active">Active</span></td>
+                    </tr>
+                    <tr data-intern="sarah">
+                        <td><b>Marketing Campaign</b></td>
+                        <td>
+                            <div class="stakeholders-avatars-row">
+                                <div class="roster-avatar" style="width:24px; height:24px; font-size:10px; background:#ec4899;">SC</div> Sarah Chen,
+                                <div class="roster-avatar" style="width:24px; height:24px; font-size:10px; background:#e2e8f0; color:#334155;">MW</div> Michael Wu
+                            </div>
+                        </td>
+                        <td>17 Apr 26</td>
+                        <td><span class="badge badge-pending">Pending</span></td>
+                    </tr>
+                    <tr data-intern="term">
+                        <td><b>Project Sphere UXI</b></td>
+                        <td>
+                            <div class="stakeholders-avatars-row">
+                                <div class="roster-avatar" style="width:24px; height:24px; font-size:10px; background:#f59e0b;">TN</div> Term Nath
+                            </div>
+                        </td>
+                        <td>19 Sep 26</td>
+                        <td><span class="badge badge-pending">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- SLEEK CANDIDATE PROFILE MODAL (Added without changing existing layout/style) -->
+<div id="candidateProfileModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(13,27,94,0.45); backdrop-filter:blur(4px); z-index:10000; display:none; align-items:center; justify-content:center;">
+    <div style="background:white; width:520px; max-height:85vh; border-radius:16px; box-shadow:0 20px 40px rgba(0,0,0,0.15); overflow:hidden; display:flex; flex-direction:column; animation:fadeIn 0.25s ease;">
+        <div style="background:#0d1b5e; padding:20px 25px; color:white; display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; align-items:center; gap:15px;">
+                <div id="modalCandAvatar" style="width:48px; height:48px; border-radius:12px; background:#4d8dff; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:600;">RS</div>
+                <div>
+                    <h3 id="modalCandName" style="font-size:18px; margin:0; color:white;">Rahul Sharma</h3>
+                    <p id="modalCandEmail" style="font-size:12px; color:#cbd5e1; margin:2px 0 0 0;">rahul@student.edu</p>
+                </div>
+            </div>
+            <button onclick="document.getElementById('candidateProfileModal').style.display='none'" style="background:none; border:none; color:white; font-size:22px; cursor:pointer;">&times;</button>
+        </div>
+        <div style="padding:24px; overflow-y:auto; flex:1;">
+            <div style="margin-bottom:18px;">
+                <h4 style="font-size:12px; color:#64748b; text-transform:uppercase; margin-bottom:6px;">Academic Profile</h4>
+                <p id="modalCandAcademic" style="font-size:14px; color:#0f172a; font-weight:600; margin:0;">Computer Science • IIT Bombay (Class of 2026)</p>
+            </div>
+            <div style="margin-bottom:18px;">
+                <h4 style="font-size:12px; color:#64748b; text-transform:uppercase; margin-bottom:6px;">Candidate Bio</h4>
+                <p id="modalCandBio" style="font-size:13px; color:#334155; line-height:1.5; background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #e2e8f0;">Passionate full-stack developer with experience in Node.js, MySQL, and cloud architecture.</p>
+            </div>
+            <div style="margin-bottom:18px;">
+                <h4 style="font-size:12px; color:#64748b; text-transform:uppercase; margin-bottom:8px;">Verified Skills Matrix</h4>
+                <div id="modalCandSkills" style="display:flex; flex-wrap:wrap; gap:6px;">
+                    <span style="background:#e0f2fe; color:#0369a1; padding:4px 10px; border-radius:12px; font-size:11px; font-weight:500;">JavaScript</span>
+                    <span style="background:#e0f2fe; color:#0369a1; padding:4px 10px; border-radius:12px; font-size:11px; font-weight:500;">Node.js</span>
+                </div>
+            </div>
+            <div style="margin-bottom:20px;">
+                <h4 style="font-size:12px; color:#64748b; text-transform:uppercase; margin-bottom:6px;">Cover Letter & Application</h4>
+                <p id="modalCandCover" style="font-size:13px; color:#475569; font-style:italic;">Excited to contribute to high-scale backend services.</p>
+            </div>
+            <div style="border-top:1px solid #e2e8f0; padding-top:18px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <span style="font-size:12px; color:#64748b;">Current Status: </span>
+                    <span id="modalCandStatusBadge" style="background:#fef3c7; color:#b45309; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:600;">Shortlisted</span>
+                    <br>
+                    <a href="../student_profile.html" target="_blank" style="display:inline-block; margin-top:10px; font-size:12px; color:#2563eb; font-weight:600; text-decoration:none;">🔗 View Verified Profile & Download Resume →</a>
+                </div>
+                <div id="modalActionButtons" style="display:flex; gap:8px;">
+                    <button id="btnShortlist" class="header-action-btn" style="background:#0d1b5e; color:white;">Shortlist</button>
+                    <button id="btnInterview" class="header-action-btn" style="background:#0369a1; color:white;">Schedule Interview</button>
+                    <button id="btnOffer" class="header-action-btn" style="background:#15803d; color:white;">Extend Offer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Code Reusability: Link to shared corporate notification hud script asset -->
+<script src="industry-hud.js"></script>
+<script>
+const internRosterContainer = document.getElementById('internRosterContainer');
+const kanbanBoardWrapper = document.getElementById('kanbanBoardWrapper');
+const snapshotTableBody = document.getElementById('snapshotTableBody');
+
+let currentApplications = [];
+let activeAppIdForModal = null;
+
+// INTERACTIVE FILTER SELECTION
+internRosterContainer.addEventListener('click', function(e) {
+    const item = e.target.closest('.roster-item');
+    if (!item) return;
+
+    internRosterContainer.querySelector('.roster-item.selected-candidate')?.classList.remove('selected-candidate');
+    item.classList.add('selected-candidate');
+
+    const internKey = item.getAttribute('data-intern');
+
+    const tasks = kanbanBoardWrapper.querySelectorAll('.kanban-task');
+    tasks.forEach(task => {
+        if (task.getAttribute('data-belongs') === internKey) {
+            task.style.border = '2px solid #4d8dff';
+            task.style.background = '#f0f4ff';
+        } else {
+            task.style.border = '1px solid #e2e8f0';
+            task.style.background = 'white';
+        }
+    });
+
+    const tableRows = snapshotTableBody.querySelectorAll('tr');
+    tableRows.forEach(row => {
+        if (row.getAttribute('data-intern') === internKey) {
+            row.style.background = '#f8fafc';
+            row.style.fontWeight = '600';
+        } else {
+            row.style.background = 'transparent';
+            row.style.fontWeight = 'normal';
+        }
+    });
+});
+
+async function openCandidateModal(appId, studentId, studentName, coverLetter, status) {
+    activeAppIdForModal = appId;
+    document.getElementById('modalCandName').textContent = studentName;
+    document.getElementById('modalCandAvatar').textContent = studentName.substring(0, 2).toUpperCase();
+    document.getElementById('modalCandCover').textContent = coverLetter || "Applied via InternConnect portal.";
+    document.getElementById('modalCandStatusBadge').textContent = status.toUpperCase();
+
+    // Fetch live student profile
+    try {
+        const res = await fetch(`http://localhost:5000/api/auth/profile/${studentId}`);
+        const data = await res.json();
+        if (data.success && data.profile) {
+            const p = data.profile;
+            document.getElementById('modalCandEmail').textContent = p.email || `${studentName.toLowerCase().replace(/\s+/g,'')}@student.edu`;
+            const d = p.details || {};
+            document.getElementById('modalCandAcademic').textContent = `${d.department || 'Computer Science'} • ${d.college_name || 'IIT Campus'} (Class of ${d.graduation_year || 2026})`;
+            document.getElementById('modalCandBio').textContent = d.bio || "Passionate engineering student looking for impactful industry internship opportunities.";
+            
+            let skillsArr = ["JavaScript", "Python", "MySQL", "System Design"];
+            if (d.skills) {
+                try { skillsArr = typeof d.skills === 'string' ? JSON.parse(d.skills) : d.skills; } catch(err){}
+            }
+            document.getElementById('modalCandSkills').innerHTML = skillsArr.map(s => `<span style="background:#e0f2fe; color:#0369a1; padding:4px 10px; border-radius:12px; font-size:11px; font-weight:500;">${s}</span>`).join('');
+        }
+    } catch(e) {}
+
+    document.getElementById('candidateProfileModal').style.display = 'flex';
+}
+
+async function updateApplicationStatus(newStatus) {
+    if (!activeAppIdForModal) return;
+    try {
+        await fetch(`http://localhost:5000/api/applications/${activeAppIdForModal}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: newStatus })
+        });
+        document.getElementById('modalCandStatusBadge').textContent = newStatus.toUpperCase();
+        alert(`Candidate status successfully updated to: ${newStatus.toUpperCase()}`);
+        document.getElementById('candidateProfileModal').style.display = 'none';
+        loadLiveApplications();
+    } catch(e) {
+        alert('Status update simulated locally for demo!');
+        document.getElementById('candidateProfileModal').style.display = 'none';
+    }
+}
+
+document.getElementById('btnShortlist').addEventListener('click', () => updateApplicationStatus('shortlisted'));
+document.getElementById('btnInterview').addEventListener('click', () => updateApplicationStatus('interview'));
+document.getElementById('btnOffer').addEventListener('click', () => updateApplicationStatus('offered'));
+
+async function loadLiveApplications() {
+    let employerId = 4;
+    try {
+        const u = JSON.parse(localStorage.getItem('currentUser'));
+        if (u && u.id) employerId = u.id;
+    } catch(e) {}
+
+    try {
+        const res = await fetch(`http://localhost:5000/api/applications/employer/${employerId}`);
+        const data = await res.json();
+        if (data.success && data.applications && data.applications.length > 0) {
+            currentApplications = data.applications;
+            
+            // Populate Kanban Columns dynamically based on live status
+            const cols = kanbanBoardWrapper.querySelectorAll('.kanban-col');
+            if (cols.length >= 4) {
+                const applied = currentApplications.filter(a => a.status === 'applied');
+                const shortlisted = currentApplications.filter(a => a.status === 'shortlisted' || a.status === 'under_review');
+                const interview = currentApplications.filter(a => a.status === 'interview');
+                const offered = currentApplications.filter(a => a.status === 'offered');
+
+                const renderCards = (apps, borderCol) => apps.map(a => `
+                    <div class="kanban-task" style="border-left:3px solid ${borderCol}; cursor:pointer;" onclick="openCandidateModal(${a.id}, ${a.student_id}, '${a.student_name}', '${(a.cover_letter||'').replace(/'/g,'')}', '${a.status}')">
+                        <h5>${a.student_name}</h5>
+                        <p>${a.internship_title}<br><small style="color:#64748b;">${a.college_name || 'IIT Student'}</small></p>
+                        <div class="task-due-date" style="color:${borderCol};">Status: ${a.status.toUpperCase()}</div>
+                    </div>
+                `).join('');
+
+                if (applied.length > 0) cols[0].innerHTML = `<h4>Project Proposals (${applied.length})</h4>` + renderCards(applied, '#4d8dff');
+                if (shortlisted.length > 0) cols[1].innerHTML = `<h4>Shortlisted (${shortlisted.length})</h4>` + renderCards(shortlisted, '#f59e0b');
+                if (interview.length > 0) cols[2].innerHTML = `<h4>Interviewing (${interview.length})</h4>` + renderCards(interview, '#0369a1');
+                if (offered.length > 0) cols[3].innerHTML = `<h4>Offered / Placed (${offered.length})</h4>` + renderCards(offered, '#10b981');
+            }
+        }
+    } catch (e) {
+        console.warn('Fallback to wireframe kanban items if API unreached.', e);
+    }
+    if (typeof io !== 'undefined') {
+        setupIndustrySocket(employerId);
+    } else if (!window.industrySocketLoading) {
+        window.industrySocketLoading = true;
+        const script = document.createElement('script');
+        script.src = 'https://cdn.socket.io/4.7.2/socket.io.min.js';
+        script.onload = () => setupIndustrySocket(employerId);
+        document.head.appendChild(script);
+    }
+}
+
+function setupIndustrySocket(uid) {
+    if (window.industrySocketConnected) return;
+    try {
+        const socket = io('http://localhost:5000');
+        window.industrySocketConnected = true;
+        socket.on('connect', () => socket.emit('join_user', uid));
+        socket.on('new_notification', (notif) => {
+            if (notif.type === 'application') {
+                loadLiveApplications();
+            }
+        });
+    } catch(e) {}
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadLiveApplications();
+});
+</script>
+<script>
+// INTERACTIVE NOTIFICATION DRAWER DROPDOWN LIFECYCLE
+const bellIcon = document.getElementById('bellIcon');
+const bellBadge = document.getElementById('bellBadge');
+const notificationDropdown = document.getElementById('notificationDropdown');
+const clearNotificationsBtn = document.getElementById('clearNotificationsBtn');
+const notificationListWrapper = document.getElementById('notificationListWrapper');
+
+if (bellIcon && notificationDropdown) {
+    bellIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isVisible = notificationDropdown.style.display === 'block';
+        notificationDropdown.style.display = isVisible ? 'none' : 'block';
+        if (!isVisible && bellBadge) bellBadge.style.display = 'none';
+    });
+}
+
+if (clearNotificationsBtn && notificationListWrapper) {
+    clearNotificationsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        localStorage.setItem('industry_notifs_cleared', 'true');
+        if (bellBadge) bellBadge.style.display = 'none';
+        notificationListWrapper.innerHTML = `
+            <div style="padding: 30px; text-align: center; color: #94a3b8; font-size: 13px;">
+                📭 No new notifications log traces.
+            </div>
+        `;
+    });
+}
+
+document.addEventListener('click', (e) => {
+    if (notificationDropdown && bellIcon && !notificationDropdown.contains(e.target) && e.target !== bellIcon) {
+        notificationDropdown.style.display = 'none';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('industry_notifs_cleared') === 'true' && notificationListWrapper) {
+        if (bellBadge) bellBadge.style.display = 'none';
+        notificationListWrapper.innerHTML = `
+            <div style="padding: 30px; text-align: center; color: #94a3b8; font-size: 13px;">
+                📭 No new notifications log traces.
+            </div>
+        `;
+    }
+});
+</script>
+</body>
+</html>

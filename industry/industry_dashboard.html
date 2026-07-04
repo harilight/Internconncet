@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Industry Recruiter Dashboard - InternConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style2.css">
+
+<style>
+/* Page-Specific Structural Cards mapped from image_a2c6b9.jpg */
+.welcome-banner-strip {
+    background: white;
+    padding: 20px 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    margin-bottom: 25px;
+}
+
+.welcome-banner-strip h2 {
+    font-size: 20px;
+    color: #0d1b5e;
+    font-weight: 600;
+}
+
+.recruitment-layout-split {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+}
+
+.dashboard-card h3 {
+    font-size: 15px;
+    color: #0d1b5e;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* Left Panel: Top Talent Matches Row Cards */
+.talent-match-item {
+    padding: 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.talent-match-item:hover {
+    transform: translateY(-2px);
+    border-color: #4d8dff;
+}
+
+.talent-meta-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.talent-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #f0f4ff;
+    color: #1e3a8a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.talent-details h4 {
+    font-size: 13px;
+    color: #334155;
+    font-weight: 600;
+}
+
+.talent-details p {
+    font-size: 11px;
+    color: #64748b;
+}
+
+.skill-pills-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.skill-tag {
+    font-size: 10px;
+    padding: 2px 6px;
+    background: #f1f5f9;
+    color: #475569;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.btn-action-profile {
+    width: 100%;
+    background: #0d1b5e;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-action-profile:hover {
+    background: #4d8dff;
+}
+
+/* Right Panel: Recruitment Pipeline Chevron Wizard & Graphs Mapping */
+.pipeline-chevron-wizard {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    background: #f8fafc;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.wizard-step-node {
+    text-align: center;
+    padding: 12px 6px;
+    border-right: 1px solid #e2e8f0;
+}
+
+.wizard-step-node:last-child { border-right: none; }
+
+.wizard-step-node label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.wizard-step-node strong {
+    font-size: 18px;
+    color: #0d1b5e;
+    display: block;
+    margin-top: 2px;
+}
+
+.graphs-inner-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Bottom Row: Interview Scheduler Calendar Matrix & Training Links */
+.bottom-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 20px;
+    padding-bottom: 20px;
+}
+
+.scheduler-matrix {
+    display: grid;
+    grid-template-columns: 60px repeat(5, 1fr);
+    gap: 6px;
+    text-align: center;
+    font-size: 11px;
+}
+
+.matrix-header-cell {
+    font-weight: 600;
+    color: #64748b;
+    padding: 4px 0;
+}
+
+.matrix-time-label {
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+
+.scheduler-meeting-slot {
+    padding: 8px 4px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 46px;
+}
+
+.slot-clear { background: #f8fafc; border: 1px dashed #e2e8f0; }
+.slot-interview-active { background: #fee2e2; color: #dc2626; border-left: 3px solid #dc2626; }
+.slot-review-active { background: #e0f2fe; color: #0369a1; border-left: 3px solid #0369a1; }
+
+/* Internal Training Links Block */
+.training-links-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.training-link-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.training-link-card:hover {
+    background: #f0f4ff;
+    border-color: #4d8dff;
+}
+
+.training-link-card h5 {
+    font-size: 12px;
+    color: #0d1b5e;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.training-link-card p {
+    font-size: 10px;
+    color: #64748b;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div class="logo">InternConnect</div>
+    <a href="industry_dashboard.html" class="nav-item active">Dashboard</a>
+    <a href="post_internship.html" class="nav-item">Post Internship</a>
+    <a href="manage_internships.html" class="nav-item">Manage Internships</a>
+    <a href="notifications.html" class="nav-item">🔔 Notifications</a>
+    <a href="industry_analytics.html" class="nav-item">Analytics</a>
+    <a href="industry_settings.html" class="nav-item">Settings</a>
+    <a href="industry_chat.html" class="nav-item">Messages</a>
+    
+</div>
+
+<div class="main">
+
+    <div class="top-nav-bar">
+        <div class="title-section">
+            <h2>Recruiter Command Station</h2>
+        </div>
+        
+        <div class="search-container">
+            <span>🔍</span>
+            <input type="text" placeholder="Search applicant profiles, skills, or interview loops...">
+        </div>
+
+        <div class="profile-box" style="position: relative;">
+            <div class="bell-container" id="notificationBellGroup" style="position: relative; margin-right: 5px;">
+                <span class="bell" id="bellIcon">🔔<span id="bellBadge" style="position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #dc2626; border-radius: 50%; display: none;"></span></span>
+
+                <div class="notification-dropdown" id="notificationDropdown" style="position: absolute; top: 35px; right: 0; width: 320px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(13,27,94,0.15); border: 1px solid #e2e8f0; display: none; z-index: 9999; padding: 15px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 18px 10px 18px; border-bottom: 1px solid #f1f5f9;">
+                        <h4 style="font-size: 14px; color: #0d1b5e; font-weight: 600;">Recruiter Alerts</h4>
+                        <button id="clearNotificationsBtn" style="background: none; border: none; color: #4d8dff; font-size: 12px; font-weight: 500; cursor: pointer; outline: none;">Clear All</button>
+                    </div>
+                    <div style="max-height: 280px; overflow-y: auto;" id="notificationListWrapper">
+                        <div class="notif-item" style="padding: 12px 18px; border-bottom: 1px solid #f8fafc; font-size: 12px; color: #334155; cursor: pointer;">
+                            <div style="font-weight: 600; color: #0d1b5e; margin-bottom: 2px;">📄 New Application Received</div>
+                            <div>Amy Rodriguez applied for your Deep Learning Research opening.</div>
+                            <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Just Now</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="avatar" onclick="window.location.href='industry_profile.html'" style="background:#0d1b5e; cursor:pointer;" title="View Corporate Profile">HR</div>
+            <div class="profile" onclick="window.location.href='industry_profile.html'" style="cursor:pointer;" title="View Corporate Profile">Google Talent Cell 👋</div>
+        </div>
+    </div>
+
+    <div class="workspace-scroll">
+        
+        <div class="welcome-banner-strip">
+            <h2>Welcome Back, Google Recruitment Team!</h2>
+            <p style="font-size: 12px; color:#64748b; margin-top:2px;">Wired metrics log sync active for the 2026 pre-placement campus cycles.</p>
+        </div>
+
+        <div class="recruitment-layout-split">
+            
+            <div class="dashboard-card">
+                <h3>Top Algorithmic Matches</h3>
+                
+                <div class="talent-match-item">
+                    <div class="talent-meta-box">
+                        <div class="talent-avatar" style="background: #e0f2fe; color: #0369a1;">AR</div>
+                        <div class="talent-details">
+                            <h4>Amy Rodriguez</h4>
+                            <p>Computer Science • 9.8 CGPA</p>
+                        </div>
+                    </div>
+                    <div class="skill-pills-row">
+                        <span class="skill-tag">Python</span><span class="skill-tag">PyTorch</span><span class="skill-tag">Deep Learning</span>
+                    </div>
+                    <button class="btn-action-profile" onclick="alert('Opening complete background file archive for Amy...')">View Candidate Profile</button>
+                </div>
+
+                <div class="talent-match-item">
+                    <div class="talent-meta-box">
+                        <div class="talent-avatar" style="background: #fef3c7; color: #b45309;">CT</div>
+                        <div class="talent-details">
+                            <h4>Chris Thompson</h4>
+                            <p>Data Science • 9.6 CGPA</p>
+                        </div>
+                    </div>
+                    <div class="skill-pills-row">
+                        <span class="skill-tag">SQL</span><span class="skill-tag">Tableau</span><span class="skill-tag">NLP Systems</span>
+                    </div>
+                    <button class="btn-action-profile" onclick="alert('Opening complete background file archive for Chris...')">View Candidate Profile</button>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Recruitment Pipeline Overview</h3>
+                
+                <div class="pipeline-chevron-wizard">
+                    <div class="wizard-step-node"><label>Sourcing</label><strong>354</strong></div>
+                    <div class="wizard-step-node"><label>Assessment</label><strong>254</strong></div>
+                    <div class="wizard-step-node"><label>Technical</label><strong>33</strong></div>
+                    <div class="wizard-step-node"><label>Final Loop</label><strong>12</strong></div>
+                    <div class="wizard-step-node"><label>Offer State</label><strong style="color: #15803d;">18</strong></div>
+                </div>
+
+                <div class="graphs-inner-grid">
+                    <svg viewBox="0 0 240 130" style="width: 100%; height: auto; overflow:visible;">
+                        <line x1="20" y1="10" x2="20" y2="110" stroke="#cbd5e1" stroke-width="1"/>
+                        <line x1="20" y1="110" x2="230" y2="110" stroke="#cbd5e1" stroke-width="1"/>
+                        
+                        <rect x="35" y="20" width="18" height="90" fill="#0d1b5e" rx="2"/>
+                        <text x="44" y="122" font-size="7" fill="#64748b" text-anchor="middle">Source</text>
+                        <text x="44" y="15" font-size="7" font-weight="600" fill="#0d1b5e" text-anchor="middle">354</text>
+                        
+                        <rect x="75" y="45" width="18" height="65" fill="#4d8dff" rx="2"/>
+                        <text x="84" y="122" font-size="7" fill="#64748b" text-anchor="middle">Assess</text>
+                        
+                        <rect x="115" y="85" width="18" height="25" fill="#1e3a8a" rx="2"/>
+                        <text x="124" y="122" font-size="7" fill="#64748b" text-anchor="middle">Tech</text>
+                        
+                        <rect x="155" y="98" width="18" height="12" fill="#94a3b8" rx="2"/>
+                        <text x="164" y="122" font-size="7" fill="#64748b" text-anchor="middle">Final</text>
+                        
+                        <rect x="195" y="92" width="18" height="18" fill="#10b981" rx="2"/>
+                        <text x="204" y="122" font-size="7" fill="#64748b" text-anchor="middle">Offer</text>
+                    </svg>
+
+                    <svg viewBox="0 0 140 130" style="width: 100%; height: auto; overflow:visible;">
+                        <text x="70" y="10" font-size="8" font-weight="600" fill="#0d1b5e" text-anchor="middle">Applicant Diversity Share</text>
+                        <rect x="25" y="30" width="14" height="40" fill="#0d1b5e" rx="1"/>
+                        <rect x="25" y="70" width="14" height="35" fill="#4d8dff" rx="1"/>
+                        <text x="32" y="118" font-size="7" fill="#64748b" text-anchor="middle">Male</text>
+                        
+                        <rect x="60" y="25" width="14" height="45" fill="#0d1b5e" rx="1"/>
+                        <rect x="60" y="70" width="14" height="40" fill="#4d8dff" rx="1"/>
+                        <text x="67" y="118" font-size="7" fill="#64748b" text-anchor="middle">Female</text>
+
+                        <rect x="95" y="40" width="14" height="30" fill="#0d1b5e" rx="1"/>
+                        <rect x="95" y="70" width="14" height="42" fill="#4d8dff" rx="1"/>
+                        <text x="102" y="118" font-size="7" fill="#64748b" text-anchor="middle">Other</text>
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bottom-dashboard-grid">
+            
+            <div class="dashboard-card">
+                <h3>Interview Scheduler Calendar</h3>
+                
+                <div class="scheduler-matrix">
+                    <div class="matrix-header-cell">Timeline</div>
+                    <div class="matrix-header-cell">Mon 22</div>
+                    <div class="matrix-header-cell">Tue 23</div>
+                    <div class="matrix-header-cell">Wed 24</div>
+                    <div class="matrix-header-cell">Thu 25</div>
+                    <div class="matrix-header-cell">Fri 26</div>
+
+                    <div class="matrix-time-label">10:00 AM</div>
+                    <div class="scheduler-meeting-slot slot-interview-active"><strong>Amy R.</strong><br>Tech Loop</div>
+                    <div class="scheduler-meeting-slot slot-clear"></div>
+                    <div class="scheduler-meeting-slot slot-clear"></div>
+                    <div class="scheduler-meeting-slot slot-review-active"><strong>Review Session</strong></div>
+                    <div class="scheduler-meeting-slot slot-clear"></div>
+
+                    <div class="matrix-time-label">11:30 AM</div>
+                    <div class="scheduler-meeting-slot slot-clear"></div>
+                    <div class="scheduler-meeting-slot slot-interview-active"><strong>Chris T.</strong><br>System Round</div>
+                    <div class="scheduler-meeting-slot slot-clear"></div>
+                    <div class="scheduler-meeting-slot slot-clear"></div>
+                    <div class="scheduler-meeting-slot slot-interview-active"><strong>Nikhil M.</strong><br>Final Loop</div>
+
+                    <div class="matrix-time-label">02:00 PM</div>
+                    <div class="scheduler-meeting-slot slot-clear"></div>
+                    <div class="scheduler-meeting-slot slot-clear"></div>
+                    <div class="scheduler-meeting-slot slot-review-active"><strong>Hiring Committee</strong></div>
+                    <div class="scheduler-meeting-slot slot-clear"></div>
+                    <div class="scheduler-meeting-slot slot-clear"></div>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Corporate Integration Links</h3>
+                
+                <div class="training-links-grid">
+                    <div class="training-link-card" onclick="alert('Redirecting to corporate training repositories database hooks...')">
+                        <h5>Available Training</h5>
+                        <p>Browse campus outreach materials guidelines blueprint.</p>
+                    </div>
+                    <div class="training-link-card" onclick="alert('Accessing technical sandbox assessment configurations matrices...')">
+                        <h5>Hackathon Setup</h5>
+                        <p>Configure screening algorithms scripts.</p>
+                    </div>
+                    <div class="training-link-card" onclick="alert('Opening analytical corporate compensation insights ledgers...')">
+                        <h5>Stipend Metrics</h5>
+                        <p>Compare institutional market standard lines.</p>
+                    </div>
+                    <div class="training-link-card" onclick="alert('Routing process down to global support helpdesk ticket chains...')">
+                        <h5>Support Desk</h5>
+                        <p>Open corporate assistance validation paths.</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 15px; display: flex; gap: 10px;">
+                    <button class="btn-action-profile" style="background: #1e3a8a;" onclick="window.location.href='post_internship.html'">Create New Internship Posting</button>
+                    <button class="btn-action-profile" style="background: #e2e8f0; color: #475569;" onclick="localStorage.removeItem('currentUser'); window.location.href='../index.html'">Secure Sign-Out</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="industry-hud.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    let employerId = 4;
+    let empName = 'Google Talent Cell';
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user) {
+            if (user.id) employerId = user.id;
+            if (user.name) empName = user.name;
+        }
+    } catch(e) {}
+
+    const avatarEl = document.querySelector('.profile-box .avatar');
+    const profileEl = document.querySelector('.profile-box .profile');
+    if (avatarEl) avatarEl.textContent = empName.charAt(0).toUpperCase();
+    if (profileEl) profileEl.textContent = `${empName.split(' ')[0]} 👋`;
+
+    try {
+        const res = await fetch(`http://localhost:5000/api/applications/employer/${employerId}`);
+        const data = await res.json();
+        if (data.success && data.applications && data.applications.length > 0) {
+            const container = document.querySelector('.recruitment-layout-split .dashboard-card');
+            if (container) {
+                const liveAppsHtml = data.applications.slice(0, 3).map(app => `
+                    <div class="talent-match-item">
+                        <div class="talent-meta-box">
+                            <div class="talent-avatar" style="background: #e0f2fe; color: #0369a1;">${(app.student_name || 'Student').charAt(0).toUpperCase()}</div>
+                            <div class="talent-details">
+                                <h4>${app.student_name || 'Candidate'}</h4>
+                                <p>Applied for: ${app.title}</p>
+                            </div>
+                        </div>
+                        <div class="skill-pills-row">
+                            <span class="skill-tag">${app.status || 'Applied'}</span>
+                        </div>
+                        <button class="btn-action-profile" onclick="alert('Viewing application cover letter: ' + '${(app.cover_letter || 'No cover letter provided').replace(/'/g, "\\'")}')">Review Application</button>
+                    </div>
+                `).join('');
+                container.innerHTML = '<h3>Live Candidate Applications</h3>' + liveAppsHtml;
+            }
+        }
+    } catch(e) {}
+});
+</script>
+<script>
+// INTERACTIVE NOTIFICATION DRAWER DROPDOWN LIFECYCLE
+const bellIcon = document.getElementById('bellIcon');
+const bellBadge = document.getElementById('bellBadge');
+const notificationDropdown = document.getElementById('notificationDropdown');
+const clearNotificationsBtn = document.getElementById('clearNotificationsBtn');
+const notificationListWrapper = document.getElementById('notificationListWrapper');
+
+if (bellIcon && notificationDropdown) {
+    bellIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isVisible = notificationDropdown.style.display === 'block';
+        notificationDropdown.style.display = isVisible ? 'none' : 'block';
+        if (!isVisible && bellBadge) bellBadge.style.display = 'none';
+    });
+}
+
+if (clearNotificationsBtn && notificationListWrapper) {
+    clearNotificationsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        localStorage.setItem('industry_notifs_cleared', 'true');
+        if (bellBadge) bellBadge.style.display = 'none';
+        notificationListWrapper.innerHTML = `
+            <div style="padding: 30px; text-align: center; color: #94a3b8; font-size: 13px;">
+                📭 No new notifications log traces.
+            </div>
+        `;
+    });
+}
+
+document.addEventListener('click', (e) => {
+    if (notificationDropdown && bellIcon && !notificationDropdown.contains(e.target) && e.target !== bellIcon) {
+        notificationDropdown.style.display = 'none';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('industry_notifs_cleared') === 'true' && notificationListWrapper) {
+        if (bellBadge) bellBadge.style.display = 'none';
+        notificationListWrapper.innerHTML = `
+            <div style="padding: 30px; text-align: center; color: #94a3b8; font-size: 13px;">
+                📭 No new notifications log traces.
+            </div>
+        `;
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Messages - Placement Cell Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    display:flex;
+    height:100vh;
+    background:#f3f6fb;
+    overflow: hidden;
+}
+
+/* Sidebar - Locked Layout (Unified Blueprint) */
+.sidebar{
+    width:250px;
+    background:#0d1b5e;
+    color:white;
+    padding:30px 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    flex-shrink: 0;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:600;
+    margin-bottom:40px;
+}
+
+.nav-item{
+    padding:15px;
+    margin-bottom:12px;
+    border-radius:10px;
+    cursor:pointer;
+    color: white;
+    text-decoration: none;
+    display: block;
+    transition: 0.2s;
+}
+
+.nav-item:hover,
+.active{
+    background:#4d8dff;
+}
+
+.chat-btn{
+    margin-top: auto;
+    background:#4d8dff;
+    text-align:center;
+    padding:12px;
+    border-radius:12px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(77,141,255,0.3);
+}
+
+/* Main Workspace Framework Split */
+.main{
+    flex:1;
+    display:flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* COLUMN 1: Conversation List Panel */
+.left-chat-panel {
+    width: 320px;
+    background: white;
+    border-right: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.panel-header-search {
+    padding: 20px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.panel-header-search h3 {
+    font-size: 18px;
+    color: #0d1b5e;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.search-box-control {
+    width: 100%;
+    padding: 10px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    font-size: 13px;
+    transition: border-color 0.2s;
+}
+
+.search-box-control:focus {
+    border-color: #4d8dff;
+    background: white;
+}
+
+.convo-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.convo-row {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f8fafc;
+    cursor: pointer;
+    gap: 12px;
+    transition: background 0.2s;
+}
+
+.convo-row:hover {
+    background: #f1f5f9;
+}
+
+.convo-row.active-convo {
+    background: #f0f4ff;
+    border-left: 4px solid #4d8dff;
+}
+
+.avatar-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #1e3a8a;
+    color: white;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.convo-meta {
+    flex: 1;
+    min-width: 0;
+}
+
+.meta-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3px;
+}
+
+.recruiter-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0d1b5e;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.msg-time {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.msg-preview {
+    font-size: 12px;
+    color: #64748b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.unread-badge {
+    background: #4d8dff;
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+/* COLUMN 2: Active Conversation Window */
+.center-chat-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #f8fafc;
+}
+
+.active-chat-header {
+    background: white;
+    padding: 15px 25px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.active-chat-header h4 {
+    font-size: 15px;
+    color: #0d1b5e;
+    font-weight: 600;
+}
+
+.active-chat-header p {
+    font-size: 11px;
+    color: #10b981;
+    font-weight: 500;
+}
+
+.chat-bubble-stream {
+    flex: 1;
+    overflow-y: auto;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.chat-row {
+    display: flex;
+    width: 100%;
+}
+
+.chat-row.recruiter-row, .chat-row.incoming-row { justify-content: flex-start; }
+.chat-row.student-row, .chat-row.outgoing-row { justify-content: flex-end; }
+
+.chat-bubble {
+    max-width: 60%;
+    padding: 12px 16px;
+    font-size: 13px;
+    line-height: 1.5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.recruiter-row .chat-bubble, .incoming-row .chat-bubble {
+    background: white;
+    color: #334155;
+    border-radius: 4px 16px 16px 16px;
+    border: 1px solid #e2e8f0;
+}
+
+.student-row .chat-bubble, .outgoing-row .chat-bubble {
+    background: #0d1b5e;
+    color: white;
+    border-radius: 16px 16px 4px 16px;
+}
+
+.input-tray-container {
+    padding: 20px 25px;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.attachment-trigger-btn {
+    font-size: 20px;
+    cursor: pointer;
+    color: #94a3b8;
+    transition: color 0.2s;
+}
+
+.attachment-trigger-btn:hover { color: #4d8dff; }
+
+.input-form-control {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    font-size: 13px;
+    background: #f8fafc;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.input-form-control:focus {
+    border-color: #4d8dff;
+    background: white;
+}
+
+.send-btn {
+    background: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.send-btn:hover { background: #4d8dff; }
+
+/* COLUMN 3: Right Context Panel */
+.right-context-panel {
+    width: 280px;
+    background: white;
+    border-left: 1px solid #e2e8f0;
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    overflow-y: auto;
+}
+
+.context-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #f0f4ff;
+    color: #1e3a8a;
+    font-size: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(30,58,138,0.05);
+}
+
+.context-title {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.context-title h4 {
+    font-size: 16px;
+    color: #0d1b5e;
+    font-weight: 600;
+}
+
+.context-title p {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.meta-details-box {
+    width: 100%;
+    border-top: 1px dashed #e2e8f0;
+    padding-top: 20px;
+    margin-bottom: 25px;
+}
+
+.detail-node {
+    margin-bottom: 16px;
+}
+
+.detail-node label {
+    display: block;
+    font-size: 11px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+}
+
+.detail-node span {
+    font-size: 13px;
+    color: #334155;
+    font-weight: 500;
+}
+
+.status-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.status-tag.shortlisted { background: #dbeafe; color: #1d4ed8; }
+.status-tag.pending { background: #fef3c7; color: #b45309; }
+.status-tag.reviewed { background: #e2e8f0; color: #475569; }
+.status-tag.peer-tag { background: #dcfce7; color: #15803d; }
+
+.action-buttons-stack {
+    width: 100%;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.context-action-btn {
+    width: 100%;
+    padding: 11px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.2s, color 0.2s;
+}
+
+.context-action-btn.primary-action {
+    background: #1e3a8a;
+    color: white;
+    border: none;
+}
+
+.context-action-btn.primary-action:hover { background: #4d8dff; }
+
+.context-action-btn.secondary-action {
+    background: #f8fafc;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+.context-action-btn.secondary-action:hover { background: #cbd5e1; color: #0d1b5e; }
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div class="logo">InternConnect</div>
+    <a href="college_dashboard.html" class="nav-item">Dashboard</a>
+    <a href="post_internship.html" class="nav-item">Post Internship</a>
+    <a href="manage_internships.html" class="nav-item">Manage Internships</a>
+    <a href="notifications.html" class="nav-item">🔔 Notifications</a>
+    <a href="college_analytics.html" class="nav-item">Analytics</a>
+    <a href="college_settings.html" class="nav-item">Settings</a>
+    <div class="nav-item active">Messages</div>
+</div>
+
+<div class="main">
+    <div class="left-chat-panel">
+        <div class="panel-header-search">
+            <h3>Messages</h3>
+            <input type="text" class="search-box-control" id="searchBox" placeholder="Search contacts or logs...">
+        </div>
+        
+        <div class="convo-list" id="convoListContainer">
+            <div class="convo-row active-convo" data-id="google">
+                <div class="avatar-circle" style="background:#ea4335;">G</div>
+                <div class="convo-meta">
+                    <div class="meta-top">
+                        <span class="recruiter-name">Google HR Team</span>
+                        <span class="msg-time">INDUSTRY</span>
+                    </div>
+                    <div class="msg-preview">Industry Partner</div>
+                </div>
+            </div>
+
+            <div class="convo-row" data-id="rahul">
+                <div class="avatar-circle" style="background:#4d8dff;">R</div>
+                <div class="convo-meta">
+                    <div class="meta-top">
+                        <span class="recruiter-name">Rahul Sharma</span>
+                        <span class="msg-time">STUDENT</span>
+                    </div>
+                    <div class="msg-preview">Student • IIT Bombay</div>
+                </div>
+            </div>
+
+            <div class="convo-row" data-id="ananya">
+                <div class="avatar-circle" style="background:#4d8dff;">A</div>
+                <div class="convo-meta">
+                    <div class="meta-top">
+                        <span class="recruiter-name">Ananya Iyer</span>
+                        <span class="msg-time">STUDENT</span>
+                    </div>
+                    <div class="msg-preview">Student • BITS Pilani</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="center-chat-panel">
+        <div class="active-chat-header">
+            <div class="avatar-circle" id="activeChatAvatar" style="background:#ea4335; width:36px; height:36px; font-size:13px;">G</div>
+            <div>
+                <h4 id="activeChatTitle">Google HR Team</h4>
+                <p id="activeChatSub">Online Hub Sync Active</p>
+            </div>
+        </div>
+
+        <div class="chat-bubble-stream" id="chatStreamWindow">
+            </div>
+
+        <div class="input-tray-container">
+            <span class="attachment-trigger-btn" onclick="alert('Launching media pipeline vault selection loop...')">📎</span>
+            <input type="text" class="input-form-control" id="chatInputField" placeholder="Write a message...">
+            <button type="button" class="send-btn" id="sendMsgBtn">Send Message</button>
+        </div>
+    </div>
+
+    <div class="right-context-panel">
+        <div class="context-avatar" id="contextAvatarDisplay">G</div>
+        <div class="context-title">
+            <h4 id="contextRecruiterName">Google HR Team</h4>
+            <p id="contextCompanyName">Google LLC</p>
+        </div>
+
+        <div class="meta-details-box">
+            <div class="detail-node">
+                <label id="contextLabel1">Target Internship Role</label>
+                <span id="contextField1">AI/ML Intern</span>
+            </div>
+            <div class="detail-node">
+                <label id="contextLabel2">Application Status</label>
+                <span id="contextStatus" class="status-tag shortlisted">Shortlisted</span>
+            </div>
+            <div class="detail-node">
+                <label id="contextLabel3">Interview Milestone Schedule</label>
+                <span id="contextSchedule">July 2, 2026 • 2:00 PM</span>
+            </div>
+        </div>
+
+        <div class="action-buttons-stack">
+            <button class="context-action-btn primary-action" id="ctxBtnPrimary" onclick="alert('Routing process...')">View Application</button>
+            <button class="context-action-btn secondary-action" id="ctxBtnSecondary" onclick="alert('Opening dashboard profiles...')">View Company</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// Unified Database Array tracking corporate partners as well as classmates
+const chatDataset = {
+    "google": {
+        recruiter: "Google LLC HR", company: "Industry Partner", avatarLetter: "G", avatarBg: "#ea4335",
+        label1: "Entity Type", field1: "Industry Partner", statusClass: "status-tag shortlisted", statusText: "Active Partner",
+        label2: "Organization", label3: "Drive Date", schedule: "July 15, 2026",
+        btn1: "View Portal", btn2: "Schedule Sync",
+        messages: [
+            { isRecruiter: true, text: "Good morning! We would like to confirm the schedule for Google's campus drive next week." },
+            { isRecruiter: false, text: "Good morning! Yes, we are set for July 15th at 9:00 AM." }
+        ]
+    },
+    "rahul": {
+        recruiter: "Rahul Sharma", company: "Student • IIT Bombay", avatarLetter: "R", avatarBg: "#4d8dff",
+        label1: "Entity Type", field1: "Student Member", statusClass: "status-tag shortlisted", statusText: "Active Student",
+        label2: "Department", label3: "Status", schedule: "Placement Ready",
+        btn1: "View Profile", btn2: "Send Notice",
+        messages: [
+            { isRecruiter: true, text: "Hello Placement Cell, I have completed my resume verification." },
+            { isRecruiter: false, text: "Noted Rahul. Your profile is verified for upcoming drives." }
+        ]
+    },
+    "nvidia": {
+        recruiter: "NVIDIA Recruiter", company: "Industry Partner", avatarLetter: "N", avatarBg: "#76b900",
+        label1: "Entity Type", field1: "Industry Partner", statusClass: "status-tag shortlisted", statusText: "Active Partner",
+        label2: "Organization", label3: "Drive Date", schedule: "August 2, 2026",
+        btn1: "View Portal", btn2: "Schedule Sync",
+        messages: [
+            { isRecruiter: true, text: "We are interested in conducting a GPU Systems workshop for your students." }
+        ]
+    },
+    "microsoft": {
+        recruiter: "Microsoft India HR", company: "Industry Partner", avatarLetter: "M", avatarBg: "#00a4ef",
+        label1: "Entity Type", field1: "Industry Partner", statusClass: "status-tag shortlisted", statusText: "Active Partner",
+        label2: "Organization", label3: "Drive Date", schedule: "July 28, 2026",
+        btn1: "View Portal", btn2: "Schedule Sync",
+        messages: [
+            { isRecruiter: true, text: "Hi team, sharing the job descriptions for our summer internship program." }
+        ]
+    },
+    "amazon": {
+        recruiter: "Amazon India HR", company: "Industry Partner", avatarLetter: "A", avatarBg: "#ff9900",
+        label1: "Entity Type", field1: "Industry Partner", statusClass: "status-tag shortlisted", statusText: "Active Partner",
+        label2: "Organization", label3: "Drive Date", schedule: "August 10, 2026",
+        btn1: "View Portal", btn2: "Schedule Sync",
+        messages: [
+            { isRecruiter: true, text: "Hello! Please let us know when the placement portal opens for registrations." }
+        ]
+    }
+};
+
+let selectedChatId = "google";
+let currentContactDbId = 4; // Default Google Recruiter ID in DB
+
+// DOM Targets
+const convoListContainer = document.getElementById('convoListContainer');
+const chatStreamWindow = document.getElementById('chatStreamWindow');
+const chatInputField = document.getElementById('chatInputField');
+const sendMsgBtn = document.getElementById('sendMsgBtn');
+const searchBox = document.getElementById('searchBox');
+
+const activeChatAvatar = document.getElementById('activeChatAvatar');
+const activeChatTitle = document.getElementById('activeChatTitle');
+const activeChatSub = document.getElementById('activeChatSub');
+
+const contextAvatarDisplay = document.getElementById('contextAvatarDisplay');
+const contextRecruiterName = document.getElementById('contextRecruiterName');
+const contextCompanyName = document.getElementById('contextCompanyName');
+const contextLabel1 = document.getElementById('contextLabel1');
+const contextField1 = document.getElementById('contextField1');
+const contextLabel2 = document.getElementById('contextLabel2');
+const contextStatus = document.getElementById('contextStatus');
+const contextLabel3 = document.getElementById('contextLabel3');
+const contextSchedule = document.getElementById('contextSchedule');
+const ctxBtnPrimary = document.getElementById('ctxBtnPrimary');
+const ctxBtnSecondary = document.getElementById('ctxBtnSecondary');
+
+let liveContactList = [];
+
+// Master Screen Render Engine
+async function renderChatScreen(id) {
+    let numericId = parseInt(id);
+    let keyString = id;
+
+    if (id === 'google' || numericId === 4) { currentContactDbId = 4; keyString = 'google'; }
+    else if (id === 'rahul' || numericId === 1) { currentContactDbId = 1; keyString = 'rahul'; }
+    else if (id === 'ananya' || numericId === 2) { currentContactDbId = 2; keyString = 'ananya'; }
+    else if (id === 'nvidia' || numericId === 7) { currentContactDbId = 7; keyString = 'nvidia'; }
+    else if (id === 'microsoft' || numericId === 6) { currentContactDbId = 6; keyString = 'microsoft'; }
+    else if (id === 'amazon' || numericId === 5) { currentContactDbId = 5; keyString = 'amazon'; }
+    else if (!isNaN(numericId)) { currentContactDbId = numericId; }
+
+    let activeData = chatDataset[keyString];
+    if (!activeData && !isNaN(numericId)) {
+        const contactObj = liveContactList.find(c => String(c.id) === String(numericId) || c.id === numericId) || {
+            name: 'Partner Contact', company: 'Partner Org', badge_color: '#4d8dff', role: 'industry'
+        };
+        activeData = {
+            recruiter: contactObj.name,
+            company: contactObj.company || 'Partner Org',
+            avatarLetter: contactObj.name ? contactObj.name.charAt(0).toUpperCase() : 'C',
+            avatarBg: contactObj.badge_color || '#4d8dff',
+            label1: "Entity Type",
+            field1: contactObj.role === 'student' ? "Student Member" : "Industry Partner",
+            statusClass: "status-tag shortlisted",
+            statusText: "Active Partner",
+            label2: "Organization / College",
+            label3: "Recent Interaction",
+            schedule: "Live Hub Connection",
+            btn1: "View Details",
+            btn2: "Schedule Sync",
+            messages: []
+        };
+    }
+    if (!activeData) return;
+
+    // Header updates
+    activeChatAvatar.textContent = activeData.avatarLetter;
+    activeChatAvatar.style.background = activeData.avatarBg;
+    activeChatTitle.textContent = activeData.recruiter;
+    activeChatSub.textContent = 'Active Status Synced';
+
+    // Right Context Panel Adaptations
+    contextAvatarDisplay.textContent = activeData.avatarLetter;
+    contextAvatarDisplay.style.background = activeData.avatarBg;
+    contextRecruiterName.textContent = activeData.recruiter;
+    contextCompanyName.textContent = activeData.company;
+    
+    contextLabel1.textContent = activeData.label1;
+    contextField1.textContent = activeData.field1;
+    contextLabel2.textContent = activeData.label2;
+    
+    contextStatus.className = activeData.statusClass;
+    contextStatus.textContent = activeData.statusText;
+    
+    contextLabel3.textContent = activeData.label3;
+    contextSchedule.textContent = activeData.schedule;
+    
+    ctxBtnPrimary.textContent = activeData.btn1;
+    ctxBtnSecondary.textContent = activeData.btn2;
+
+    // Try fetching live messages from database
+    let userId = 3;
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.id) userId = user.id;
+    } catch(e) {}
+
+    let liveMessages = [];
+    try {
+        const res = await fetch(`http://localhost:5000/api/chat/${userId}/${currentContactDbId}`);
+        const data = await res.json();
+        if (data.success && data.messages && data.messages.length > 0) {
+            liveMessages = data.messages.map(m => ({
+                isRecruiter: m.sender_id !== userId,
+                text: m.message_text
+            }));
+        }
+    } catch(e) {
+        console.warn('Backend chat API offline or empty, falling back to local dataset.');
+    }
+
+    const messagesToRender = liveMessages.length > 0 ? liveMessages : (activeData.messages || []);
+
+    // Stream window structural loops
+    chatStreamWindow.innerHTML = '';
+    if (messagesToRender.length === 0) {
+        const emptyRow = document.createElement('div');
+        emptyRow.style.padding = '20px';
+        emptyRow.style.textAlign = 'center';
+        emptyRow.style.color = '#64748b';
+        emptyRow.style.fontSize = '13px';
+        emptyRow.textContent = 'No previous messages. Type below to start the conversation!';
+        chatStreamWindow.appendChild(emptyRow);
+    } else {
+        messagesToRender.forEach(msg => {
+            const rowDiv = document.createElement('div');
+            const isIncoming = (msg.isRecruiter !== undefined) ? msg.isRecruiter : (msg.sender_id !== userId);
+            rowDiv.className = isIncoming ? 'chat-row incoming-row recruiter-row' : 'chat-row outgoing-row student-row';
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'bubble chat-bubble';
+            bubbleDiv.textContent = msg.text;
+            
+            rowDiv.appendChild(bubbleDiv);
+            chatStreamWindow.appendChild(rowDiv);
+        });
+    }
+
+    chatStreamWindow.scrollTop = chatStreamWindow.scrollHeight;
+}
+
+async function processOutgoingMessage() {
+    const rawTextText = chatInputField.value.trim();
+    if (rawTextText === "") return;
+
+    let userId = 3;
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.id) userId = user.id;
+    } catch(e) {}
+
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'chat-row outgoing-row student-row';
+    const bubbleDiv = document.createElement('div');
+    bubbleDiv.className = 'bubble chat-bubble';
+    bubbleDiv.textContent = rawTextText;
+    
+    // Remove empty state message if present
+    if (chatStreamWindow.children.length === 1 && chatStreamWindow.children[0].textContent.includes('No previous messages')) {
+        chatStreamWindow.innerHTML = '';
+    }
+
+    rowDiv.appendChild(bubbleDiv);
+    chatStreamWindow.appendChild(rowDiv);
+    
+    chatInputField.value = '';
+    chatStreamWindow.scrollTop = chatStreamWindow.scrollHeight;
+
+    if (chatDataset[selectedChatId]) {
+        chatDataset[selectedChatId].messages.push({ isRecruiter: false, text: rawTextText });
+    }
+
+    try {
+        await fetch('http://localhost:5000/api/chat/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sender_id: userId, receiver_id: currentContactDbId, message_text: rawTextText })
+        });
+    } catch(err) {
+        console.warn('Backend server offline. Message stored locally.', err);
+    }
+}
+
+convoListContainer.addEventListener('click', function(e) {
+    const targetRow = e.target.closest('.convo-row');
+    if (!targetRow) return;
+
+    const activeEl = convoListContainer.querySelector('.convo-row.active-convo');
+    if (activeEl) activeEl.classList.remove('active-convo');
+    targetRow.classList.add('active-convo');
+    
+    const unread = targetRow.querySelector('.unread-badge');
+    if(unread) unread.remove();
+
+    selectedChatId = targetRow.getAttribute('data-id');
+    localStorage.setItem('chat_read_badge_' + selectedChatId, 'true');
+    renderChatScreen(selectedChatId);
+});
+
+searchBox.addEventListener('input', function(e) {
+    const userQuery = e.target.value.toLowerCase().trim();
+    const rows = convoListContainer.querySelectorAll('.convo-row');
+    
+    rows.forEach(row => {
+        const nameEl = row.querySelector('.recruiter-name');
+        const msgEl = row.querySelector('.msg-preview');
+        const name = nameEl ? nameEl.textContent.toLowerCase() : '';
+        const msg = msgEl ? msgEl.textContent.toLowerCase() : '';
+        row.style.display = (name.includes(userQuery) || msg.includes(userQuery)) ? 'flex' : 'none';
+    });
+});
+
+sendMsgBtn.addEventListener('click', processOutgoingMessage);
+chatInputField.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') processOutgoingMessage();
+});
+
+async function loadLiveContacts() {
+    let userId = 3;
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.id) userId = user.id;
+    } catch(e) {}
+
+    try {
+        const res = await fetch(`http://localhost:5000/api/chat/contacts/${userId}`);
+        const data = await res.json();
+        if (data.success && data.contacts && data.contacts.length > 0) {
+            liveContactList = data.contacts;
+            convoListContainer.innerHTML = liveContactList.map((c, idx) => {
+                const letter = c.name ? c.name.charAt(0).toUpperCase() : 'C';
+                const color = c.badge_color || '#2563eb';
+                return `
+                <div class="convo-row ${idx === 0 ? 'active-convo' : ''}" data-id="${c.id}">
+                    <div class="avatar-circle" style="background:${color};">${letter}</div>
+                    <div class="convo-meta">
+                        <div class="meta-top">
+                            <span class="recruiter-name">${c.name}</span>
+                            <span class="msg-time">${c.role.toUpperCase()}</span>
+                        </div>
+                        <div class="msg-preview">${c.company || 'Partner Contact'}</div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            if (liveContactList.length > 0) {
+                selectedChatId = String(liveContactList[0].id);
+                document.querySelectorAll('.convo-row').forEach(r => {
+                    const dId = r.getAttribute('data-id');
+                    if (localStorage.getItem('chat_read_badge_' + dId) === 'true') {
+                        const b = r.querySelector('.unread-badge');
+                        if (b) b.remove();
+                    }
+                });
+                renderChatScreen(selectedChatId);
+                return;
+            }
+        }
+    } catch(err) {
+        console.warn('Fallback to local static contacts.', err);
+    }
+    document.querySelectorAll('.convo-row').forEach(r => {
+        const dId = r.getAttribute('data-id');
+        if (localStorage.getItem('chat_read_badge_' + dId) === 'true') {
+            const b = r.querySelector('.unread-badge');
+            if (b) b.remove();
+        }
+    });
+    renderChatScreen('google');
+}
+
+function setupChatSocket(uid) {
+    if (window.chatSocketConnected) return;
+    try {
+        const socket = io('http://localhost:5000');
+        window.chatSocketConnected = true;
+        socket.on('connect', () => socket.emit('join_user', uid));
+        socket.on('new_message', (msg) => {
+            if (String(msg.sender_id) === String(currentContactDbId)) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'chat-row recruiter-row';
+                const bubbleDiv = document.createElement('div');
+                bubbleDiv.className = 'bubble chat-bubble';
+                bubbleDiv.textContent = msg.message_text;
+                rowDiv.appendChild(bubbleDiv);
+                chatStreamWindow.appendChild(rowDiv);
+                chatStreamWindow.scrollTop = chatStreamWindow.scrollHeight;
+            } else {
+                const targetRow = convoListContainer.querySelector(`.convo-row[data-id="${msg.sender_id}"]`);
+                if (targetRow) {
+                    let badge = targetRow.querySelector('.unread-badge');
+                    if (!badge) {
+                        badge = document.createElement('span');
+                        badge.className = 'unread-badge';
+                        targetRow.appendChild(badge);
+                    }
+                    badge.textContent = 'New';
+                }
+            }
+        });
+    } catch(e) {}
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    let userId = 3;
+    try {
+        let userName = 'IIT Bombay Placement Cell';
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user) {
+            if (user.name) userName = user.name;
+            if (user.id) userId = user.id;
+        }
+        const avatarEl = document.querySelector('.profile-box .avatar');
+        const profileEl = document.querySelector('.profile-box .profile');
+        if (avatarEl) avatarEl.textContent = userName.charAt(0).toUpperCase();
+        if (profileEl) profileEl.textContent = `${userName.split(' ')[0]} 👋`;
+    } catch(e) {}
+    loadLiveContacts();
+    if (typeof io !== 'undefined') {
+        setupChatSocket(userId);
+    } else {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.socket.io/4.7.2/socket.io.min.js';
+        script.onload = () => setupChatSocket(userId);
+        document.head.appendChild(script);
+    }
+});
+</script>
+</body>
+</html>

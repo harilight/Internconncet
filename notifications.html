@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notifications Hub — InternConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    display:flex;
+    height:100vh;
+    background:#f3f6fb;
+}
+
+/* Sidebar */
+.sidebar{
+    width:250px;
+    background:#0d1b5e;
+    color:white;
+    padding:30px 20px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:600;
+    margin-bottom:40px;
+}
+
+.nav-item{
+    display:block;
+    padding:15px;
+    margin-bottom:12px;
+    border-radius:10px;
+    color:white;
+    text-decoration:none;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.nav-item:hover,
+.nav-item.active{
+    background:#4d8dff;
+}
+
+/* Main Content */
+.main{
+    flex:1;
+    padding:30px 40px;
+    overflow-y:auto;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.header-title h1 {
+    font-size:24px;
+    color:#0d1b5e;
+    font-weight:600;
+}
+
+.header-title p {
+    font-size:13px;
+    color:#64748b;
+    margin-top:4px;
+}
+
+.header-actions {
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.mark-all-btn {
+    background:#1e3a8a;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:500;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.mark-all-btn:hover {
+    background:#4d8dff;
+}
+
+/* Profile Box */
+.profile-box{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#1e3a8a;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:600;
+    font-size:16px;
+}
+
+/* Filters */
+.filters-container {
+    display:flex;
+    gap:10px;
+    margin-bottom:25px;
+}
+
+.filter-tab {
+    padding:8px 16px;
+    border-radius:20px;
+    background:#e2e8f0;
+    color:#475569;
+    font-size:13px;
+    font-weight:500;
+    border:none;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.filter-tab.active, .filter-tab:hover {
+    background:#1e3a8a;
+    color:white;
+}
+
+/* Notifications List */
+.notif-list {
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.notif-card {
+    background:white;
+    border-radius:14px;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    box-shadow:0 4px 12px rgba(0,0,0,0.05);
+    border-left:4px solid transparent;
+    transition:transform 0.2s, box-shadow 0.2s;
+}
+
+.notif-card:hover {
+    transform:translateY(-2px);
+    box-shadow:0 6px 16px rgba(0,0,0,0.08);
+}
+
+.notif-card.unread {
+    border-left-color:#2563eb;
+    background:#f8fafc;
+}
+
+.notif-left {
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+}
+
+.notif-icon {
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    flex-shrink:0;
+}
+
+.icon-application { background:#eff6ff; color:#2563eb; }
+.icon-interview { background:#f0fdf4; color:#16a34a; }
+.icon-message { background:#fdf4ff; color:#c026d3; }
+.icon-system { background:#fef3c7; color:#d97706; }
+
+.notif-content h4 {
+    font-size:15px;
+    font-weight:600;
+    color:#0d1b5e;
+    margin-bottom:4px;
+}
+
+.notif-content p {
+    font-size:13px;
+    color:#475569;
+    line-height:1.5;
+    max-width:680px;
+}
+
+.notif-meta {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:10px;
+    font-size:12px;
+    color:#94a3b8;
+}
+
+.notif-actions {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.action-link {
+    background:#eff6ff;
+    color:#1e3a8a;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:500;
+    padding:7px 14px;
+    border-radius:8px;
+    transition:0.2s;
+}
+
+.action-link:hover {
+    background:#1e3a8a;
+    color:white;
+}
+
+.read-btn {
+    background:none;
+    border:1px solid #cbd5e1;
+    color:#64748b;
+    font-size:12px;
+    font-weight:500;
+    padding:6px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.read-btn:hover {
+    background:#f1f5f9;
+    color:#0d1b5e;
+}
+
+.empty-state {
+    background:white;
+    border-radius:14px;
+    padding:50px;
+    text-align:center;
+    color:#64748b;
+    box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">InternConnect</div>
+
+    <a href="dashboard.html" class="nav-item">Dashboard</a>
+    <a href="myapplications.html" class="nav-item">My Applications</a>
+    <a href="explore.html" class="nav-item">Explore Internships</a>
+    <a href="resources.html" class="nav-item">Resources</a>
+    <a href="analytics.html" class="nav-item">Analytics</a>
+    <a href="notifications.html" class="nav-item active">🔔 Notifications</a>
+    <a href="settings.html" class="nav-item">Settings</a>
+    <a href="chat.html" class="nav-item">messages</a>
+</div>
+
+<div class="main">
+    <div class="header">
+        <div class="header-title">
+            <h1>Notification Center</h1>
+            <p>Stay updated on your internship applications, interview invites, and direct recruiter chats.</p>
+        </div>
+        <div class="header-actions">
+            <button class="mark-all-btn" id="markAllBtn">✓ Mark All as Read</button>
+            <button class="mark-all-btn" id="clearAllBtn" style="background:#fee2e2; color:#b91c1c; border-color:#fca5a5; margin-left:8px;">🗑️ Clear All</button>
+            <div class="profile-box" onclick="window.location.href='student_profile.html'" style="cursor:pointer;" title="View Student Profile">
+                <div class="avatar" id="userAvatar">RS</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="filters-container">
+        <button class="filter-tab active" data-filter="all">All</button>
+        <button class="filter-tab" data-filter="unread">Unread</button>
+        <button class="filter-tab" data-filter="application">Applications</button>
+        <button class="filter-tab" data-filter="interview">Interviews</button>
+        <button class="filter-tab" data-filter="message">Messages</button>
+    </div>
+
+    <div class="notif-list" id="notifListContainer">
+        <div style="text-align:center; padding: 40px; color: #64748b;">Loading notifications...</div>
+    </div>
+</div>
+
+<script>
+let allNotifications = [];
+let currentFilter = 'all';
+
+async function loadNotifications() {
+    let userId = 1;
+    let userName = 'Rahul Sharma';
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user) {
+            if (user.id) userId = user.id;
+            if (user.name) userName = user.name;
+        }
+    } catch(e) {}
+
+    const avatarEl = document.getElementById('userAvatar');
+    if (avatarEl) {
+        const initials = userName.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+        avatarEl.textContent = initials;
+    }
+
+    
+
+    const isAllReadLocal = false;
+
+    try {
+        const res = await fetch(`http://localhost:5000/api/notifications/${userId}`);
+        const data = await res.json();
+        if (data.success && data.notifications && data.notifications.length > 0) {
+            allNotifications = data.notifications.map(n => ({
+                ...n,
+                is_read: isAllReadLocal ? 1 : n.is_read
+            }));
+            renderNotifications();
+        } else {
+            document.getElementById('notifListContainer').innerHTML = '<div class="empty-state">📭 No notifications available right now.</div>';
+        }
+    } catch(err) {
+        console.warn('Backend offline or unreachable. Using fallback notifications.', err);
+        allNotifications = [
+            { id: 1, type: 'interview', title: '🎯 Interview Scheduled with Google', description: 'Google LLC HR scheduled your technical interview for Oct 1 at 2 PM.', is_read: isAllReadLocal ? 1 : 0, link: 'myapplications.html', created_at: new Date() },
+            { id: 2, type: 'application', title: '🎉 Application Shortlisted!', description: 'Microsoft India shortlisted your profile for AI & Systems Engineering Intern.', is_read: isAllReadLocal ? 1 : 0, link: 'myapplications.html', created_at: new Date() }
+        ];
+        renderNotifications();
+    }
+}
+
+function renderNotifications() {
+    const container = document.getElementById('notifListContainer');
+    const filtered = allNotifications.filter(item => {
+        if (currentFilter === 'all') return true;
+        if (currentFilter === 'unread') return !item.is_read;
+        return item.type === currentFilter;
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = `<div class="empty-state">📭 No notifications matching "${currentFilter.toUpperCase()}".</div>`;
+        return;
+    }
+
+    container.innerHTML = filtered.map(item => {
+        let icon = '🔔';
+        let iconClass = 'icon-system';
+        if (item.type === 'application') { icon = '📄'; iconClass = 'icon-application'; }
+        else if (item.type === 'interview') { icon = '🎯'; iconClass = 'icon-interview'; }
+        else if (item.type === 'message') { icon = '💬'; iconClass = 'icon-message'; }
+
+        const dateStr = item.created_at ? new Date(item.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Just now';
+
+        return `
+            <div class="notif-card ${item.is_read ? '' : 'unread'}">
+                <div class="notif-left">
+                    <div class="notif-icon ${iconClass}">${icon}</div>
+                    <div class="notif-content">
+                        <h4>${item.title}</h4>
+                        <p>${item.description}</p>
+                        <div class="notif-meta">
+                            <span>🕒 ${dateStr}</span>
+                            ${!item.is_read ? '<span style="color:#2563eb; font-weight:600;">• Unread</span>' : ''}
+                        </div>
+                    </div>
+                </div>
+                <div class="notif-actions">
+                    <a href="${item.link || '#'}" class="action-link">View</a>
+                    ${!item.is_read ? `<button class="read-btn" onclick="markSingleAsRead(${item.id})">Mark Read</button>` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+document.querySelectorAll('.filter-tab').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentFilter = e.target.getAttribute('data-filter');
+        renderNotifications();
+    });
+});
+
+document.getElementById('markAllBtn').addEventListener('click', async () => {
+    let userId = 1;
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.id) userId = user.id;
+    } catch(e) {}
+
+    
+    allNotifications.forEach(n => n.is_read = 1);
+    renderNotifications();
+
+    try {
+        await fetch(`http://localhost:5000/api/notifications/mark-read/${userId}`, { method: 'PUT' });
+
+document.getElementById('clearAllBtn').addEventListener('click', async () => {
+    let userId = 1;
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.id) userId = user.id;
+    } catch(e) {}
+    allNotifications = [];
+    renderNotifications();
+    try {
+        await fetch(`http://localhost:5000/api/notifications/clear/${userId}`, { method: 'DELETE' });
+    } catch(e) {}
+});
+    } catch(e) {}
+});
+
+async function markSingleAsRead(id) {
+    const item = allNotifications.find(n => n.id === id);
+    if (item) item.is_read = 1;
+    renderNotifications();
+
+    try {
+        await fetch(`http://localhost:5000/api/notifications/${id}/read`, { method: 'PUT' });
+    } catch(e) {}
+}
+
+window.addEventListener('DOMContentLoaded', loadNotifications);
+</script>
+</body>
+</html>

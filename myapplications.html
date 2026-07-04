@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Applications</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    display:flex;
+    height:100vh;
+    background:#f3f6fb;
+}
+
+/* Sidebar */
+.sidebar{
+    width:250px;
+    background:#0d1b5e;
+    color:white;
+    padding:30px 20px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:600;
+    margin-bottom:40px;
+}
+
+.nav-item{
+    display:block;
+    padding:15px;
+    margin-bottom:12px;
+    border-radius:10px;
+    color:white;
+    text-decoration:none;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.nav-item:hover,
+.nav-item.active{
+    background:#4d8dff;
+}
+
+.chat-btn{
+    margin-top:60px;
+    background:#4d8dff;
+    text-align:center;
+    padding:12px;
+    border-radius:12px;
+}
+/* Main */
+.main{
+    flex:1;
+    padding:30px;
+    overflow-y:auto;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.search-box{
+    display:flex;
+    align-items:center;
+    background:white;
+    padding:8px 12px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.search{
+    border:none;
+    outline:none;
+    width:300px;
+}
+
+.filter-btn{
+    background:#1e3a8a;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+/* Profile Box Upgrades */
+.profile-box{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.bell{
+    font-size:22px;
+    cursor:pointer;
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:#1e3a8a;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:600;
+}
+
+.profile{
+    font-weight:600;
+}
+
+/* Stats Cards Upgrades */
+.stats{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+    transition:0.25s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card h3{
+    color:#1e3a8a;
+    margin-top:8px;
+}
+
+.stat-icon{
+    font-size:24px;
+    margin-bottom:8px;
+}
+
+/* Table */
+.table-card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th, td{
+    text-align:left;
+    padding:16px;
+    border-bottom:1px solid #e2e8f0;
+}
+
+tr:hover{
+    background:#f8fafc;
+}
+
+.status{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:500;
+}
+
+.pending{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.shortlisted{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.rejected{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.accepted{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.view-btn{
+    background:#1e3a8a;
+    color:white;
+    border:none;
+    padding:8px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    transition: background 0.2s;
+}
+
+.view-btn:hover {
+    background: #4d8dff;
+}
+
+/* Bottom cards & Progress Bar */
+.bottom{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+    margin-top:25px;
+}
+
+.panel{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.progress-container{
+    width:100%;
+    height:10px;
+    background:#e2e8f0;
+    border-radius:20px;
+    margin:15px 0;
+}
+
+.progress-fill{
+    width:75%;
+    height:100%;
+    background:#4d8dff;
+    border-radius:20px;
+    transition: width 0.4s ease;
+}
+
+.task{
+    padding:15px;
+    margin-top:15px;
+    border:1px solid #dbeafe;
+    border-radius:10px;
+    transition:0.2s;
+}
+
+.task:hover{
+    transform:translateY(-3px);
+}
+/* NOTIFICATION SYSTEM HOVER STYLES */
+.profile-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.notif-item:hover {
+    background: #f0f4ff !important;
+}
+
+/* Subtle bounce effect on bell hover */
+.bell:hover {
+    transform: rotate(15deg);
+    transition: transform 0.15s ease-in-out;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div class="logo">InternConnect</div>
+
+    <a href="dashboard.html" class="nav-item">Dashboard</a>
+    <a href="myapplications.html" class="nav-item active">My Applications</a>
+    <a href="explore.html" class="nav-item">Explore Internships</a>
+    <a href="resources.html" class="nav-item">Resources</a>
+    <a href="analytics.html" class="nav-item">Analytics</a>
+    <a href="notifications.html" class="nav-item">🔔 Notifications</a>
+    <a href="settings.html" class="nav-item">Settings</a>
+    <a href="chat.html" class="nav-item">messages</a>
+    
+</div>
+
+<div class="main">
+
+    <div class="header">
+        <div class="search-box">
+            🔍
+            <input class="search" placeholder="Search applications...">
+            <button class="filter-btn">Filter</button>
+        </div>
+
+        <!-- UPDATE THE RIGHT SIDE OF YOUR HEADER TO THIS -->
+<div class="profile-box" style="position: relative;">
+    <!-- Interactive Notification Bell Container -->
+    <div class="bell-container" id="notificationBellGroup" style="position: relative; margin-right: 5px;">
+        <span class="bell" id="bellIcon" style="font-size:22px; cursor:pointer; position: relative;">
+            🔔
+            <!-- Red Unread Counter Dot Badge -->
+            <span id="bellBadge" style="position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #dc2626; border-radius: 50%; display: none;"></span>
+        </span>
+
+        <!-- Premium Expandable Dropdown Menu Drawer -->
+        <div class="notification-dropdown" id="notificationDropdown" style="position: absolute; top: 35px; right: 0; width: 320px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(13,27,94,0.15); border: 1px solid #e2e8f0; display: none; z-index: 9999; padding: 15px 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 18px 10px 18px; border-bottom: 1px solid #f1f5f9;">
+                <h4 style="font-size: 14px; color: #0d1b5e; font-weight: 600;">Notifications</h4>
+                <button id="clearNotificationsBtn" style="background: none; border: none; color: #4d8dff; font-size: 12px; font-weight: 500; cursor: pointer; outline: none;">Clear All</button>
+            </div>
+            
+            <!-- Notification Item Feed Rows -->
+            <div style="max-height: 280px; overflow-y: auto;" id="notificationListWrapper">
+                <div class="notif-item" style="padding: 12px 18px; border-bottom: 1px solid #f8fafc; font-size: 12px; color: #334155; cursor: pointer; transition: background 0.2s;">
+                    <div style="font-weight: 600; color: #0d1b5e; margin-bottom: 2px;">📅 Interview Scheduled</div>
+                    <div>Google HR Team sent an invite for your Technical loop round session.</div>
+                    <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">10:24 AM</div>
+                </div>
+                <div class="notif-item" style="padding: 12px 18px; border-bottom: 1px solid #f8fafc; font-size: 12px; color: #334155; cursor: pointer; transition: background 0.2s;">
+                    <div style="font-weight: 600; color: #15803d; margin-bottom: 2px;">✓ Application Reviewed</div>
+                    <div>NVIDIA updated your machine learning project screening task scorecard status.</div>
+                    <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Yesterday</div>
+                </div>
+                <div class="notif-item" style="padding: 12px 18px; font-size: 12px; color: #334155; cursor: pointer; transition: background 0.2s;">
+                    <div style="font-weight: 600; color: #4d8dff; margin-bottom: 2px;">💬 New Message Received</div>
+                    <div>Sneha Reddy (AI Group) pinged your internal project pipeline chat mailbox.</div>
+                    <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">2 hours ago</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Profile Avatar Indicator -->
+    <div class="avatar" onclick="window.location.href='student_profile.html'" style="width:40px; height:40px; border-radius:50%; background:#1e3a8a; color:white; display:flex; align-items:center; justify-content:center; font-weight:600; cursor:pointer;" title="View Student Profile">H</div>
+    <div class="profile" onclick="window.location.href='student_profile.html'" style="font-weight:600; color:#0d1b5e; cursor:pointer;" title="View Student Profile">Hari 👋</div>
+</div>
+    </div>
+
+    <div class="stats">
+        <div class="card">
+            <div class="stat-icon">📄</div>
+            <p>Total Applied</p>
+            <h3>12</h3>
+        </div>
+
+        <div class="card">
+            <div class="stat-icon">⏳</div>
+            <p>Pending</p>
+            <h3>5</h3>
+        </div>
+
+        <div class="card">
+            <div class="stat-icon">🎯</div>
+            <p>Shortlisted</p>
+            <h3>3</h3>
+        </div>
+
+        <div class="card">
+            <div class="stat-icon">❌</div>
+            <p>Rejected</p>
+            <h3>2</h3>
+        </div>
+
+        <div class="card">
+            <div class="stat-icon">✅</div>
+            <p>Accepted</p>
+            <h3>2</h3>
+        </div>
+    </div>
+
+    <div class="table-card">
+        <h2>Application History</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Role</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="application-rows">
+                <tr data-company="Google" data-role="AI/ML Intern" data-date="Sep 25" data-progress="75">
+                    <td>Google</td>
+                    <td>AI/ML Intern</td>
+                    <td>Sep 25</td>
+                    <td><span class="status shortlisted">Shortlisted</span></td>
+                    <td><button class="view-btn">View</button></td>
+                </tr>
+
+                <tr data-company="Microsoft" data-role="Data Analyst" data-date="Sep 20" data-progress="50">
+                    <td>Microsoft</td>
+                    <td>Data Analyst</td>
+                    <td>Sep 20</td>
+                    <td><span class="status pending">Pending</span></td>
+                    <td><button class="view-btn">View</button></td>
+                </tr>
+
+                <tr data-company="Amazon" data-role="SDE Intern" data-date="Sep 18" data-progress="100">
+                    <td>Amazon</td>
+                    <td>SDE Intern</td>
+                    <td>Sep 18</td>
+                    <td><span class="status rejected">Rejected</span></td>
+                    <td><button class="view-btn">View</button></td>
+                </tr>
+
+                <tr data-company="NVIDIA" data-role="ML Engineer Intern" data-date="Sep 14" data-progress="100">
+                    <td>NVIDIA</td>
+                    <td>ML Engineer Intern</td>
+                    <td>Sep 14</td>
+                    <td><span class="status accepted">Accepted</span></td>
+                    <td><button class="view-btn">View</button></td>
+                </tr>
+
+                <tr data-company="Adobe" data-role="Data Science Intern" data-date="Sep 12" data-progress="50">
+                    <td>Adobe</td>
+                    <td>Data Science Intern</td>
+                    <td>Sep 12</td>
+                    <td><span class="status pending">Pending</span></td>
+                    <td><button class="view-btn">View</button></td>
+                </tr>
+
+                <tr data-company="Meta" data-role="Backend Intern" data-date="Sep 10" data-progress="75">
+                    <td>Meta</td>
+                    <td>Backend Intern</td>
+                    <td>Sep 10</td>
+                    <td><span class="status shortlisted">Shortlisted</span></td>
+                    <td><button class="view-btn">View</button></td>
+                </tr>
+
+                <tr data-company="Tesla" data-role="AI Intern" data-date="Sep 8" data-progress="100">
+                    <td>Tesla</td>
+                    <td>AI Intern</td>
+                    <td>Sep 8</td>
+                    <td><span class="status rejected">Rejected</span></td>
+                    <td><button class="view-btn">View</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="bottom">
+        <div class="panel" id="detail-panel">
+            <h2>Application Details</h2>
+            <h3 id="panel-company-role" style="margin-top:15px;color:#1e3a8a;">Google — AI/ML Intern</h3>
+            <p id="panel-date" style="margin:10px 0;">Applied: Sep 25</p>
+            <p id="panel-interview">Interview: Oct 1, 2 PM</p>
+
+            <div class="progress-container">
+                <div class="progress-fill" id="panel-progress" style="width:75%;"></div>
+            </div>
+
+            <h3 style="margin-top:25px;">Timeline</h3>
+            <div id="timeline-container">
+                <div class="task">✓ Applied</div>
+                <div class="task">✓ Resume Screening Completed</div>
+                <div class="task">⏳ Interview Scheduled</div>
+                <div class="task">⌛ Offer Pending</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Upcoming Actions</h2>
+            <div class="task">Complete Google Assessment</div>
+            <div class="task">Upload Amazon Documents</div>
+            <div class="task">Attend Microsoft Interview</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// Mock data maps to handle the varied statuses cleanly inside JavaScript
+// INTERACTIVE NOTIFICATION DRAWER DROPDOWN LIFECYCLE
+const bellIcon = document.getElementById('bellIcon');
+const bellBadge = document.getElementById('bellBadge');
+const notificationDropdown = document.getElementById('notificationDropdown');
+const clearNotificationsBtn = document.getElementById('clearNotificationsBtn');
+const notificationListWrapper = document.getElementById('notificationListWrapper');
+
+// Toggle Dropdown Display Panel on Bell Click
+bellIcon.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevents outside-click event from immediately triggering close loop
+    
+    const isVisible = notificationDropdown.style.display === 'block';
+    notificationDropdown.style.display = isVisible ? 'none' : 'block';
+    
+    // Clear the unread red notification dot badge once looked at
+    if (!isVisible && bellBadge) {
+        bellBadge.style.display = 'none';
+    }
+});
+
+// Clear All Notifications Feed Event
+clearNotificationsBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    let uid = 1;
+    try { const u = JSON.parse(localStorage.getItem('currentUser')); if (u && u.id) uid = u.id; } catch(err){}
+    // localStorage.setItem...
+    // localStorage.setItem...
+    try { await fetch(`http://localhost:5000/api/notifications/clear/${uid}`, { method: 'DELETE' }); } catch(err){}
+
+    if (bellBadge) bellBadge.style.display = 'none';
+    notificationListWrapper.innerHTML = `
+        <div style="padding: 30px; text-align: center; color: #94a3b8; font-size: 13px;">
+            📭 No new notifications log traces.
+        </div>
+    `;
+});
+
+// Clean Dismissal: Close active dropdown window instantly if user clicks outside context bounds
+document.addEventListener('click', (e) => {
+    if (!notificationDropdown.contains(e.target) && e.target !== bellIcon) {
+        notificationDropdown.style.display = 'none';
+    }
+});
+const statusTimelines = {
+    "Shortlisted": [
+        "✓ Applied",
+        "✓ Resume Screening Completed",
+        "⏳ Interview Scheduled",
+        "⌛ Offer Pending"
+    ],
+    "Pending": [
+        "✓ Applied",
+        "⏳ Resume Screening under Review",
+        "⌛ Interview Pending",
+        "⌛ Offer Pending"
+    ],
+    "Accepted": [
+        "✓ Applied",
+        "✓ Resume Screening Completed",
+        "✓ Interviews Completed",
+        "🎉 Offer Accepted"
+    ],
+    "Rejected": [
+        "✓ Applied",
+        "❌ Application Discontinued",
+        "⌛ Feedback Pending",
+        "⌛ Closed"
+    ]
+};
+
+const interviewDetails = {
+    "Google": "Interview: Oct 1, 2 PM",
+    "Microsoft": "Interview: TBD",
+    "Amazon": "Status Closed",
+    "NVIDIA": "Offer Finalized!",
+    "Adobe": "Interview: TBD",
+    "Meta": "Interview: Oct 5, 11 AM",
+    "Tesla": "Status Closed"
+};
+
+document.getElementById('application-rows').addEventListener('click', function(e) {
+    const btn = e.target.closest('.view-btn');
+    if (!btn) return;
+
+    const row = btn.closest('tr');
+    const company = row.getAttribute('data-company');
+    const role = row.getAttribute('data-role');
+    const date = row.getAttribute('data-date');
+    const progress = row.getAttribute('data-progress');
+    const statusText = row.querySelector('.status').textContent.trim();
+
+    // Update Headings & Data Fields
+    document.getElementById('panel-company-role').textContent = `${company} — ${role}`;
+    document.getElementById('panel-date').textContent = `Applied: ${date}`;
+    document.getElementById('panel-interview').textContent = interviewDetails[company] || "Interview: TBD";
+    
+    // Update Progress Bar
+    document.getElementById('panel-progress').style.width = `${progress}%`;
+
+    // Rebuild Timeline dynamically
+    const timelineContainer = document.getElementById('timeline-container');
+    timelineContainer.innerHTML = '';
+    
+    const steps = statusTimelines[statusText] || statusTimelines["Pending"];
+    steps.forEach(step => {
+        const div = document.createElement('div');
+        div.className = 'task';
+        div.textContent = step;
+        timelineContainer.appendChild(div);
+    });
+});
+</script>
+
+<!-- SLEEK APPLICATION DETAIL MODAL -->
+<div id="appDetailModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(13,27,94,0.45); backdrop-filter:blur(4px); z-index:10000; display:none; align-items:center; justify-content:center;">
+    <div style="background:white; width:480px; max-height:85vh; border-radius:16px; box-shadow:0 20px 40px rgba(0,0,0,0.15); overflow:hidden; display:flex; flex-direction:column; animation:fadeIn 0.25s ease;">
+        <div style="background:#0d1b5e; padding:20px 25px; color:white; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <h3 id="modalAppTitle" style="font-size:18px; margin:0; color:white;">Backend Development Intern</h3>
+                <p id="modalAppCompany" style="font-size:13px; color:#cbd5e1; margin:3px 0 0 0;">Google Core Tech</p>
+            </div>
+            <button onclick="document.getElementById('appDetailModal').style.display='none'" style="background:none; border:none; color:white; font-size:22px; cursor:pointer;">&times;</button>
+        </div>
+        <div style="padding:24px; overflow-y:auto;">
+            <div style="margin-bottom:18px; display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:13px; color:#64748b;">Applied On: <strong id="modalAppDate" style="color:#0f172a;">Jun 15, 2026</strong></span>
+                <span id="modalAppBadge" style="background:#e0f2fe; color:#0369a1; padding:5px 12px; border-radius:12px; font-size:12px; font-weight:600;">Shortlisted</span>
+            </div>
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:16px; margin-bottom:20px;">
+                <h4 style="font-size:12px; color:#64748b; text-transform:uppercase; margin-bottom:8px;">Application Progress Track</h4>
+                <div style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
+                    <div style="display:flex; align-items:center; gap:10px;"><span style="color:#15803d; font-weight:bold;">✓</span> Application Submitted & Verified</div>
+                    <div style="display:flex; align-items:center; gap:10px;"><span id="stepReview" style="color:#0284c7; font-weight:bold;">⏳</span> HR & Mentor Review Status</div>
+                    <div style="display:flex; align-items:center; gap:10px;"><span id="stepOffer" style="color:#94a3b8; font-weight:bold;">○</span> Final Interview / Offer Evaluation</div>
+                </div>
+            </div>
+            <div style="text-align:right;">
+                <button onclick="document.getElementById('appDetailModal').style.display='none'" style="background:#0d1b5e; color:white; border:none; padding:10px 20px; border-radius:8px; font-weight:600; cursor:pointer;">Close Window</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openAppModal(title, company, date, status) {
+    document.getElementById('modalAppTitle').textContent = title;
+    document.getElementById('modalAppCompany').textContent = company;
+    document.getElementById('modalAppDate').textContent = date;
+    document.getElementById('modalAppBadge').textContent = status.toUpperCase();
+
+    const s = status.toLowerCase();
+    const rev = document.getElementById('stepReview');
+    const off = document.getElementById('stepOffer');
+    if (s === 'shortlisted' || s === 'interview' || s === 'offered') {
+        if(rev) { rev.textContent = '✓'; rev.style.color = '#15803d'; }
+    }
+    if (s === 'offered' || s === 'accepted') {
+        if(off) { off.textContent = '✓'; off.style.color = '#15803d'; }
+    }
+    document.getElementById('appDetailModal').style.display = 'flex';
+}
+
+async function loadLiveApplications() {
+    let userId = 1;
+    let userName = 'Rahul Sharma';
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user) {
+            if (user.id) userId = user.id;
+            if (user.name) userName = user.name;
+        }
+    } catch(e) {}
+
+    try {
+        const avatarEl = document.querySelector('.profile-box .avatar');
+        const profileEl = document.querySelector('.profile-box .profile');
+        if (avatarEl) avatarEl.textContent = userName.charAt(0).toUpperCase();
+        if (profileEl) profileEl.textContent = `${userName.split(' ')[0]} 👋`;
+
+        const res = await fetch(`http://localhost:5000/api/applications/student/${userId}`);
+        const data = await res.json();
+
+        loadLiveNotifications(userId);
+
+        if (data.success && data.applications && data.applications.length > 0) {
+            const tbody = document.getElementById('application-rows');
+            tbody.innerHTML = '';
+
+            let counts = { total: data.applications.length, pending: 0, shortlisted: 0, rejected: 0, accepted: 0 };
+
+            data.applications.forEach(app => {
+                const status = (app.status || 'Applied').toLowerCase();
+                let statusClass = 'pending';
+                let statusLabel = 'Pending';
+                let progress = 50;
+
+                if (status === 'shortlisted' || status === 'interview_scheduled' || status === 'interview') {
+                    statusClass = 'shortlisted';
+                    statusLabel = 'Shortlisted';
+                    counts.shortlisted++;
+                    progress = 75;
+                } else if (status === 'accepted' || status === 'offered') {
+                    statusClass = 'accepted';
+                    statusLabel = 'Offered';
+                    counts.accepted++;
+                    progress = 100;
+                } else if (status === 'rejected') {
+                    statusClass = 'rejected';
+                    statusLabel = 'Rejected';
+                    counts.rejected++;
+                    progress = 100;
+                } else {
+                    counts.pending++;
+                }
+
+                const dateStr = app.applied_at ? new Date(app.applied_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Recent';
+
+                const tr = document.createElement('tr');
+                tr.setAttribute('data-company', app.company_name || 'Enterprise');
+                tr.setAttribute('data-role', app.title || 'Internship');
+                tr.setAttribute('data-date', dateStr);
+                tr.setAttribute('data-progress', progress);
+
+                tr.innerHTML = `
+                    <td>${app.company_name || 'Enterprise'}</td>
+                    <td>${app.title || 'Internship'}</td>
+                    <td>${dateStr}</td>
+                    <td><span class="status ${statusClass}">${statusLabel}</span></td>
+                    <td><button class="view-btn" onclick="openAppModal('${(app.title||'').replace(/'/g,'')}', '${(app.company_name||'').replace(/'/g,'')}', '${dateStr}', '${statusLabel}')">View</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const statCards = document.querySelectorAll('.stats .card h3');
+            if (statCards[0]) statCards[0].textContent = counts.total;
+            if (statCards[1]) statCards[1].textContent = counts.pending;
+            if (statCards[2]) statCards[2].textContent = counts.shortlisted;
+            if (statCards[3]) statCards[3].textContent = counts.rejected;
+            if (statCards[4]) statCards[4].textContent = counts.accepted;
+        }
+    } catch(err) {
+        console.warn('Using static fallback application records.', err);
+        loadLiveNotifications(userId);
+    }
+
+    // Attach WebSocket Live Listener
+    if (typeof io !== 'undefined') {
+        setupStudentSocket(userId);
+    } else if (!window.socketScriptLoading) {
+        window.socketScriptLoading = true;
+        const script = document.createElement('script');
+        script.src = 'https://cdn.socket.io/4.7.2/socket.io.min.js';
+        script.onload = () => setupStudentSocket(userId);
+        document.head.appendChild(script);
+    }
+}
+
+async function loadLiveNotifications(userId) {
+    try {
+        const wrapper = document.getElementById('notificationListWrapper');
+        const badge = document.getElementById('bellBadge');
+
+        
+        const isAllReadLocal = false;
+        const notifRes = await fetch(`http://localhost:5000/api/notifications/${userId}`);
+        const notifData = await notifRes.json();
+        if (notifData.success && Array.isArray(notifData.notifications)) {
+            if (notifData.notifications.length === 0) {
+                if (badge) badge.style.display = 'none';
+                if (wrapper) {
+                    wrapper.innerHTML = `
+                        <div style="padding: 30px; text-align: center; color: #94a3b8; font-size: 13px;">
+                            📭 No new notifications log traces.
+                        </div>
+                    `;
+                }
+                return;
+            }
+            const unreadCount = isAllReadLocal ? 0 : notifData.notifications.filter(n => !n.is_read).length;
+            if (badge && unreadCount > 0) badge.style.display = 'inline-block';
+            else if (badge) badge.style.display = 'none';
+            if (wrapper) {
+                wrapper.innerHTML = notifData.notifications.slice(0, 4).map(n => {
+                    const isRead = isAllReadLocal ? 1 : n.is_read;
+                    return `
+                        <div class="notif-item" style="padding: 12px 18px; border-bottom: 1px solid #f8fafc; font-size: 12px; color: #334155; ${!isRead ? 'background:#f0f9ff;' : ''}">
+                            <div style="font-weight: 600; color: #1e3a8a; margin-bottom: 2px;">${n.title}</div>
+                            <div>${n.description || n.desc || ''}</div>
+                            <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Just now</div>
+                        </div>
+                    `;
+                }).join('') + `
+                    <div style="padding: 10px; text-align: center; background: #f8fafc; border-top: 1px solid #e2e8f0;">
+                        <a href="notifications.html" style="color: #2563eb; font-weight: 600; font-size: 12px; text-decoration: none;">View All Notifications →</a>
+                    </div>
+                `;
+            }
+        }
+    } catch(e) {
+        if (localStorage.getItem('all_notifications_read_' + userId) === 'true') {
+            const badge = document.getElementById('bellBadge');
+            if (badge) badge.style.display = 'none';
+        }
+    }
+}
+
+function setupStudentSocket(uid) {
+    if (window.studentSocketConnected) return;
+    try {
+        const socket = io('http://localhost:5000');
+        window.studentSocketConnected = true;
+        socket.on('connect', () => socket.emit('join_user', uid));
+        socket.on('new_notification', (notif) => {
+            // localStorage.removeItem...
+            const badge = document.getElementById('bellBadge');
+            const wrapper = document.getElementById('notificationListWrapper');
+            if (badge) badge.style.display = 'inline-block';
+            if (wrapper) {
+                const emptyEl = wrapper.querySelector('div');
+                if (emptyEl && emptyEl.textContent.includes('No new')) wrapper.innerHTML = '';
+                const itemHtml = `
+                    <div class="notif-item" style="padding: 12px 18px; border-bottom: 1px solid #f8fafc; font-size: 12px; color: #334155; background:#f0f9ff;">
+                        <div style="font-weight: 600; color: #1e3a8a; margin-bottom: 2px;">${notif.title}</div>
+                        <div>${notif.description || ''}</div>
+                        <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Live Just Now</div>
+                    </div>
+                `;
+                wrapper.insertAdjacentHTML('afterbegin', itemHtml);
+            }
+            if (notif.type === 'application') {
+                loadLiveApplications();
+            }
+        });
+    } catch(e) {}
+}
+
+document.addEventListener('DOMContentLoaded', loadLiveApplications);
+</script>
+</body>
+</html>

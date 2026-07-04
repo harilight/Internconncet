@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources - InternConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    display:flex;
+    height:100vh;
+    background:#f3f6fb;
+    overflow: hidden;
+}
+
+/* Sidebar - Fixed/Locked Layout */
+.sidebar{
+    width:250px;
+    background:#0d1b5e;
+    color:white;
+    padding:30px 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    flex-shrink: 0;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:600;
+    margin-bottom:40px;
+}
+
+.nav-item{
+    padding:15px;
+    margin-bottom:12px;
+    border-radius:10px;
+    cursor:pointer;
+    color: white;
+    text-decoration: none;
+    display: block;
+    transition: 0.2s;
+}
+
+.nav-item:hover,
+.active{
+    background:#4d8dff;
+}
+
+.chat-btn{
+    margin-top: auto;
+    background:#4d8dff;
+    text-align:center;
+    padding:12px;
+    border-radius:12px;
+    cursor: pointer;
+}
+
+/* Main Content Workspace */
+.main{
+    flex:1;
+    padding:25px;
+    display:flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Top Navigation Bar from image_246b9c.jpg */
+.top-nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title-section h2 {
+    font-size: 22px;
+    color: #0d1b5e;
+    font-weight: 600;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    width: 350px;
+}
+
+.search-container input {
+    border: none;
+    outline: none;
+    margin-left: 10px;
+    width: 100%;
+    font-size: 14px;
+}
+
+/* Profile Box & Interactive Notification Core Layout */
+.profile-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.bell {
+    font-size: 22px;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    transition: transform 0.15s ease-in-out;
+}
+
+.bell:hover {
+    transform: rotate(15deg);
+}
+
+.notif-item:hover {
+    background: #f0f4ff !important;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #1e3a8a;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+/* Base Content Panels Grid Scroll Window */
+.workspace-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Top Row Category Grid */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.category-card {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    border-top: 4px solid #1e3a8a;
+}
+
+.category-card h3 {
+    font-size: 14px;
+    color: #1e3a8a;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.item-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: #334155;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.item-link:hover {
+    color: #4d8dff;
+    text-decoration: underline;
+}
+
+.item-link:last-child {
+    margin-bottom: 0;
+}
+
+.item-icon {
+    font-size: 18px;
+}
+
+/* Bottom Split Layout Dashboard Components */
+.split-dashboard {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.panel-block {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    margin-bottom: 20px;
+}
+
+.panel-block h3 {
+    font-size: 16px;
+    color: #0d1b5e;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Resource Library Rows styling */
+.resource-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.resource-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.file-tag {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+}
+
+.tag-pdf { background: #dc2626; }
+.tag-doc { background: #2563eb; }
+.tag-xls { background: #16a34a; }
+
+.file-name {
+    font-size: 14px;
+    color: #334155;
+}
+
+.download-btn {
+    background: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+}
+
+.download-btn:hover {
+    background: #4d8dff;
+}
+
+.download-btn.done {
+    background: #16a34a;
+}
+
+/* Right Metrics Display items */
+.metric-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+
+.metric-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: #475569;
+}
+
+.metric-val {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0d1b5e;
+}
+
+/* Quick Links styling matching visual list */
+.bullet-links {
+    list-style: none;
+}
+
+.bullet-links li {
+    margin-bottom: 10px;
+}
+
+.bullet-links a {
+    font-size: 13px;
+    color: #1e3a8a;
+    text-decoration: none;
+}
+
+.bullet-links a:hover {
+    text-decoration: underline;
+}
+
+.flex-footer-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.footer-btn-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #334155;
+    cursor: pointer;
+}
+
+.footer-btn-item:hover {
+    background: #e2e8f0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div class="logo">InternConnect</div>
+    <a href="dashboard.html" class="nav-item">Dashboard</a>
+    <a href="myapplications.html" class="nav-item">My Applications</a>
+    <a href="explore.html" class="nav-item">Explore Internships</a>
+    <a href="resources.html" class="nav-item active">Resources</a>
+    <a href="analytics.html" class="nav-item">Analytics</a>
+    <a href="notifications.html" class="nav-item">🔔 Notifications</a>
+    <a href="settings.html" class="nav-item">Settings</a>
+    <a href="chat.html" class="nav-item">messages</a>
+</div>
+
+<div class="main">
+
+    <div class="top-nav-bar">
+        <div class="title-section">
+            <h2>Find the Perfect Internship</h2>
+        </div>
+        
+        <div class="search-container">
+            <span>🔍</span>
+            <input type="text" id="globalSearch" placeholder="Search anything...">
+        </div>
+
+        <div class="profile-box" style="position: relative;">
+            <div class="bell-container" id="notificationBellGroup" style="position: relative; margin-right: 5px;">
+                <span class="bell" id="bellIcon">
+                    🔔
+                    <span id="bellBadge" style="position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #dc2626; border-radius: 50%; display: none;"></span>
+                </span>
+
+                <div class="notification-dropdown" id="notificationDropdown" style="position: absolute; top: 35px; right: 0; width: 320px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(13,27,94,0.15); border: 1px solid #e2e8f0; display: none; z-index: 9999; padding: 15px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 18px 10px 18px; border-bottom: 1px solid #f1f5f9;">
+                        <h4 style="font-size: 14px; color: #0d1b5e; font-weight: 600;">Notifications</h4>
+                        <button id="clearNotificationsBtn" style="background: none; border: none; color: #4d8dff; font-size: 12px; font-weight: 500; cursor: pointer; outline: none;">Clear All</button>
+                    </div>
+                    
+                    <div style="max-height: 280px; overflow-y: auto;" id="notificationListWrapper">
+                        <div class="notif-item" style="padding: 12px 18px; border-bottom: 1px solid #f8fafc; font-size: 12px; color: #334155; cursor: pointer; transition: background 0.2s;">
+                            <div style="font-weight: 600; color: #0d1b5e; margin-bottom: 2px;">📅 Interview Scheduled</div>
+                            <div>Google HR Team sent an invite for your Technical loop round session.</div>
+                            <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">10:24 AM</div>
+                        </div>
+                        <div class="notif-item" style="padding: 12px 18px; border-bottom: 1px solid #f8fafc; font-size: 12px; color: #334155; cursor: pointer; transition: background 0.2s;">
+                            <div style="font-weight: 600; color: #15803d; margin-bottom: 2px;">✓ Application Reviewed</div>
+                            <div>NVIDIA updated your machine learning project screening task scorecard status.</div>
+                            <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Yesterday</div>
+                        </div>
+                        <div class="notif-item" style="padding: 12px 18px; font-size: 12px; color: #334155; cursor: pointer; transition: background 0.2s;">
+                            <div style="font-weight: 600; color: #4d8dff; margin-bottom: 2px;">💬 New Message Received</div>
+                            <div>Sneha Reddy (AI Group) pinged your internal project pipeline chat mailbox.</div>
+                            <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">2 hours ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="avatar" onclick="window.location.href='student_profile.html'" style="cursor:pointer;" title="View Student Profile">H</div>
+            <div class="profile" onclick="window.location.href='student_profile.html'" style="font-weight:600; color:#0d1b5e; cursor:pointer;" title="View Student Profile">Hari 👋</div>
+        </div>
+        
+    </div>
+
+    <div class="workspace-scroll">
+        
+        <div class="categories-grid">
+            <div class="category-card">
+                <h3>Guides & Templates</h3>
+                <div class="item-link" data-name="Resume Templates"><span class="item-icon">📋</span> Resume Templates</div>
+                <div class="item-link" data-name="Interview Prep Guide"><span class="item-icon">📖</span> Interview Prep Guide</div>
+                <div class="item-link" data-name="Offer Letter Samples"><span class="item-icon">🗂️</span> Offer Letter Samples</div>
+            </div>
+            <div class="category-card">
+                <h3>Training Materials</h3>
+                <div class="item-link" data-name="Intern Orientation"><span class="item-icon">🎓</span> Intern Orientation</div>
+                <div class="item-link" data-name="Career Workshops"><span class="item-icon">💻</span> Career Workshops</div>
+                <div class="item-link" data-name="Mentorship Guides"><span class="item-icon">📚</span> Mentorship Guides</div>
+            </div>
+            <div class="category-card">
+                <h3>Compliance & Policies</h3>
+                <div class="item-link" data-name="Internship Policies"><span class="item-icon">📜</span> Internship Policies</div>
+                <div class="item-link" data-name="Legal Guidelines"><span class="item-icon">⚖️</span> Legal Guidelines</div>
+                <div class="item-link" data-name="Safety Procedures"><span class="item-icon">🛡️</span> Safety Procedures</div>
+            </div>
+            <div class="category-card">
+                <h3>Event Management</h3>
+                <div class="item-link" data-name="Career Fairs"><span class="item-icon">🗓️</span> Career Fairs</div>
+                <div class="item-link" data-name="Info Sessions"><span class="item-icon">📢</span> Info Sessions</div>
+                <div class="item-link" data-name="Workshops & Seminars"><span class="item-icon">🏛️</span> Workshops & Seminars</div>
+            </div>
+        </div>
+
+        <div class="split-dashboard">
+            
+            <div class="left-split-panels">
+                
+                <div class="panel-block" id="libraryContainer">
+                    <h3>Resource Library</h3>
+                    
+                    <div class="resource-row">
+                        <div class="file-info">
+                            <span class="file-tag tag-pdf">PDF</span>
+                            <span class="file-name">DSA Cheatsheet for Coding Rounds</span>
+                        </div>
+                        <a href="materialspdfs/intern_connect_pdfs_dsa_cheatsheet_coding_rounds.pdf" target="_blank" download style="text-decoration:none;">
+                            <button class="download-btn">📥 Download</button>
+                        </a>
+                    </div>
+
+                    <div class="resource-row">
+                        <div class="file-info">
+                            <span class="file-tag tag-pdf">PDF</span>
+                            <span class="file-name">Resume Building & ATS Optimization</span>
+                        </div>
+                        <a href="materialspdfs/intern_connect_pdfs_resume_building_ats_optimization.pdf" target="_blank" download style="text-decoration:none;">
+                            <button class="download-btn">📥 Download</button>
+                        </a>
+                    </div>
+
+                    <div class="resource-row">
+                        <div class="file-info">
+                            <span class="file-tag tag-pdf">PDF</span>
+                            <span class="file-name">System Design Fundamentals</span>
+                        </div>
+                        <a href="materialspdfs/intern_connect_pdfs_system_design_fundamentals.pdf" target="_blank" download style="text-decoration:none;">
+                            <button class="download-btn">📥 Download</button>
+                        </a>
+                    </div>
+
+                    <div class="resource-row">
+                        <div class="file-info">
+                            <span class="file-tag tag-pdf">PDF</span>
+                            <span class="file-name">Tech Interview Preparation Guide 2026</span>
+                        </div>
+                        <a href="materialspdfs/intern_connect_pdfs_tech_interview_preparation_guide_2026.pdf" target="_blank" download style="text-decoration:none;">
+                            <button class="download-btn">📥 Download</button>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="panel-block">
+                    <h3>Announcements</h3>
+                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px; font-size:13px; color:#334155;">
+                        <span>📅</span> <strong>Career Fair on April 20th — Register Now!</strong>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px; font-size:13px; color:#334155;">
+                        <span>⭐</span> <strong>New Compliance Training Module Added</strong>
+                    </div>
+                </div>
+
+                <div class="flex-footer-row">
+                    <div class="panel-block" style="margin-bottom:0;">
+                        <h3>Need Help?</h3>
+                        <div class="footer-btn-item">📬 Contact Support</div>
+                    </div>
+                    <div class="panel-block" style="margin-bottom:0;">
+                        <h3>Quick Links</h3>
+                        <div style="display:flex; gap:10px;">
+                            <div class="footer-btn-item" style="flex:1;">⬆️ Resume Writing Tips</div>
+                            <div class="footer-btn-item" style="flex:1;">🔄 FAQ & Guides</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="right-split-panels">
+                
+                <div class="panel-block">
+                    <h3>Analytics Overview</h3>
+                    
+                    <div class="metric-row">
+                        <div class="metric-left">💼 Active Internships</div>
+                        <div class="metric-val">57</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-left">🔄 Placement Rate</div>
+                        <div class="metric-val">92%</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-left">⭐ Student Satisfaction</div>
+                        <div class="metric-val">4.7 / 5</div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-left">📅 Upcoming Events</div>
+                        <div class="metric-val">6</div>
+                    </div>
+                </div>
+
+                <div class="panel-block">
+                    <h3>Quick Links</h3>
+                    <ul class="bullet-links">
+                        <li><a href="#">• 🧩 Resume Writing Tips</a></li>
+                        <li><a href="#">• 📁 Interview Preparation</a></li>
+                        <li><a href="#">• ⚙️ Policy Documents</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+// Interactive Download Event Listeners
+document.getElementById('libraryContainer').addEventListener('click', function(e) {
+    const btn = e.target.closest('.download-btn');
+    if (!btn) return;
+
+    if (!btn.classList.contains('done')) {
+        btn.classList.add('done');
+        btn.innerHTML = '✓ Downloaded';
+    } else {
+        btn.classList.remove('done');
+        btn.innerHTML = '📥 Download';
+    }
+});
+
+// Category Item Clicking HUD Alert Update Interaction
+document.querySelectorAll('.item-link').forEach(item => {
+    item.addEventListener('click', function() {
+        const resourceName = this.getAttribute('data-name');
+        alert(`Opening workspace layout template for: ${resourceName}`);
+    });
+});
+
+// Real-time Text Filter Input Engine
+const globalSearch = document.getElementById('globalSearch');
+const textRows = document.querySelectorAll('.resource-row');
+const categoryCards = document.querySelectorAll('.category-card');
+
+globalSearch.addEventListener('input', function(e) {
+    const query = e.target.value.toLowerCase().trim();
+
+    // Filter main library table lists
+    textRows.forEach(row => {
+        const title = row.querySelector('.file-name').textContent.toLowerCase();
+        row.style.display = title.includes(query) ? 'flex' : 'none';
+    });
+});
+
+// INTERACTIVE NOTIFICATION DRAWER DROPDOWN LIFECYCLE
+const bellIcon = document.getElementById('bellIcon');
+const bellBadge = document.getElementById('bellBadge');
+const notificationDropdown = document.getElementById('notificationDropdown');
+const clearNotificationsBtn = document.getElementById('clearNotificationsBtn');
+const notificationListWrapper = document.getElementById('notificationListWrapper');
+
+// Toggle Dropdown Display Panel on Bell Click
+bellIcon.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevents outside-click event from immediately triggering close loop
+    
+    const isVisible = notificationDropdown.style.display === 'block';
+    notificationDropdown.style.display = isVisible ? 'none' : 'block';
+    
+    // Clear the unread red notification dot badge once looked at
+    if (!isVisible && bellBadge) {
+        bellBadge.style.display = 'none';
+    }
+});
+
+// Clear All Notifications Feed Event
+clearNotificationsBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    let uid = 1;
+    try { const u = JSON.parse(localStorage.getItem('currentUser')); if (u && u.id) uid = u.id; } catch(err){}
+    // localStorage.setItem...
+    // localStorage.setItem...
+    try { await fetch(`http://localhost:5000/api/notifications/clear/${uid}`, { method: 'DELETE' }); } catch(err){}
+
+    if (bellBadge) bellBadge.style.display = 'none';
+    notificationListWrapper.innerHTML = `
+        <div style="padding: 30px; text-align: center; color: #94a3b8; font-size: 13px;">
+            📭 No new notifications log traces.
+        </div>
+    `;
+});
+
+// Clean Dismissal: Close active dropdown window instantly if user clicks outside context bounds
+document.addEventListener('click', (e) => {
+    if (!notificationDropdown.contains(e.target) && e.target !== bellIcon) {
+        notificationDropdown.style.display = 'none';
+    }
+});
+
+// Live Resources Fetch Engine
+const fallbackPdfs = [
+    { title: 'DSA Cheatsheet for Coding Rounds', category: 'Cheatsheet', link: 'materialspdfs/intern_connect_pdfs_dsa_cheatsheet_coding_rounds.pdf' },
+    { title: 'Resume Building & ATS Optimization', category: 'Guideline', link: 'materialspdfs/intern_connect_pdfs_resume_building_ats_optimization.pdf' },
+    { title: 'System Design Fundamentals', category: 'Technical', link: 'materialspdfs/intern_connect_pdfs_system_design_fundamentals.pdf' },
+    { title: 'Tech Interview Preparation Guide 2026', category: 'Interview', link: 'materialspdfs/intern_connect_pdfs_tech_interview_preparation_guide_2026.pdf' },
+    { title: 'Backend Engineering & API Design Mastery', category: 'Technical', link: 'materialspdfs/intern_connect_pdfs_backend_engineering_api_design.pdf' },
+    { title: 'Frontend Engineering Interview Handbook', category: 'Technical', link: 'materialspdfs/intern_connect_pdfs_frontend_engineering_interview_handbook.pdf' },
+    { title: 'Full Stack Web Dev Roadmap 2026', category: 'Roadmap', link: 'materialspdfs/intern_connect_pdfs_full_stack_web_dev_roadmap.pdf' },
+    { title: 'DBMS & SQL Mastery Guide', category: 'Technical', link: 'materialspdfs/intern_connect_pdfs_dbms_sql_mastery_guide.pdf' },
+    { title: 'OS & Networking Interview Handbook', category: 'Technical', link: 'materialspdfs/intern_connect_pdfs_os_networking_interview_handbook.pdf' },
+    { title: 'OOP Deep Dive Handbook', category: 'Technical', link: 'materialspdfs/intern_connect_pdfs_oop_deep_dive_handbook.pdf' },
+    { title: 'Machine Learning Career Guide', category: 'Technical', link: 'materialspdfs/intern_connect_pdfs_machine_learning_career_guide.pdf' },
+    { title: 'Competitive Programming Strategies', category: 'Technical', link: 'materialspdfs/intern_connect_pdfs_competitive_programming_strategies.pdf' },
+    { title: 'Behavioral Interview Mastery Guide', category: 'Interview', link: 'materialspdfs/intern_connect_pdfs_behavioral_interview_mastery.pdf' },
+    { title: 'Git & GitHub Version Control Guide', category: 'Cheatsheet', link: 'materialspdfs/intern_connect_pdfs_git_github_version_control.pdf' }
+];
+
+let allResourcesData = [...fallbackPdfs];
+let showAllResources = false;
+
+function renderResourcesList() {
+    const container = document.getElementById('libraryContainer');
+    if (!container || !allResourcesData.length) return;
+
+    const itemsToShow = showAllResources ? allResourcesData : allResourcesData.slice(0, 5);
+    
+    container.innerHTML = `<h3>Resource Library</h3>` + itemsToShow.map(item => {
+        const fileLink = item.link || item.file_url || '#';
+        return `
+        <div class="resource-row">
+            <div class="file-info">
+                <span class="file-tag tag-pdf">PDF</span>
+                <span class="file-name">${item.title}</span>
+            </div>
+            <a href="${fileLink}" target="_blank" download style="text-decoration:none;">
+                <button class="download-btn" style="cursor:pointer;">📥 Download</button>
+            </a>
+        </div>
+    `}).join('');
+
+    if (!showAllResources && allResourcesData.length > 5) {
+        const moreBtn = document.createElement('button');
+        moreBtn.className = 'utility-btn';
+        moreBtn.style.cssText = 'margin-top:15px; width:100%; padding:12px; background:#f0f4ff; color:#1e3a8a; border:1px dashed #3b82f6; border-radius:10px; font-weight:600; cursor:pointer; transition:all 0.2s;';
+        moreBtn.innerHTML = `📚 View More Resources (${allResourcesData.length - 5} More Study PDFs Available) ↓`;
+        moreBtn.onclick = () => {
+            showAllResources = true;
+            renderResourcesList();
+        };
+        container.appendChild(moreBtn);
+    } else if (showAllResources && allResourcesData.length > 5) {
+        const lessBtn = document.createElement('button');
+        lessBtn.className = 'utility-btn';
+        lessBtn.style.cssText = 'margin-top:15px; width:100%; padding:12px; background:#f8fafc; color:#64748b; border:1px solid #cbd5e1; border-radius:10px; font-weight:600; cursor:pointer; transition:all 0.2s;';
+        lessBtn.innerHTML = `↑ Show Fewer Resources`;
+        lessBtn.onclick = () => {
+            showAllResources = false;
+            renderResourcesList();
+        };
+        container.appendChild(lessBtn);
+    }
+}
+
+async function loadLiveResources() {
+    let userId = 1;
+    let userName = 'Rahul Sharma';
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user) {
+            if (user.id) userId = user.id;
+            if (user.name) userName = user.name;
+        }
+    } catch(e) {}
+
+    try {
+        const avatarEl = document.querySelector('.profile-box .avatar');
+        const profileEl = document.querySelector('.profile-box .profile');
+        if (avatarEl) avatarEl.textContent = userName.charAt(0).toUpperCase();
+        if (profileEl) profileEl.textContent = `${userName.split(' ')[0]} 👋`;
+
+        loadLiveNotifications(userId);
+
+        renderResourcesList(); // Initial render with fallback 14 items
+
+        const res = await fetch('http://localhost:5000/api/resources');
+        const data = await res.json();
+        if (data.success && data.resources && data.resources.length >= 5) {
+            allResourcesData = data.resources;
+            renderResourcesList();
+        }
+    } catch(err) {
+        console.warn('Using fallback resources catalog.', err);
+        renderResourcesList();
+    }
+
+    // Attach WebSocket Live Listener
+    if (typeof io !== 'undefined') {
+        setupStudentSocket(userId);
+    } else if (!window.socketScriptLoading) {
+        window.socketScriptLoading = true;
+        const script = document.createElement('script');
+        script.src = 'https://cdn.socket.io/4.7.2/socket.io.min.js';
+        script.onload = () => setupStudentSocket(userId);
+        document.head.appendChild(script);
+    }
+}
+
+async function loadLiveNotifications(userId) {
+    try {
+        const wrapper = document.getElementById('notificationListWrapper');
+        const badge = document.getElementById('bellBadge');
+
+        
+        const isAllReadLocal = false;
+        const notifRes = await fetch(`http://localhost:5000/api/notifications/${userId}`);
+        const notifData = await notifRes.json();
+        if (notifData.success && Array.isArray(notifData.notifications)) {
+            if (notifData.notifications.length === 0) {
+                if (badge) badge.style.display = 'none';
+                if (wrapper) {
+                    wrapper.innerHTML = `
+                        <div style="padding: 30px; text-align: center; color: #94a3b8; font-size: 13px;">
+                            📭 No new notifications log traces.
+                        </div>
+                    `;
+                }
+                return;
+            }
+            const unreadCount = isAllReadLocal ? 0 : notifData.notifications.filter(n => !n.is_read).length;
+            if (badge && unreadCount > 0) badge.style.display = 'inline-block';
+            else if (badge) badge.style.display = 'none';
+            if (wrapper) {
+                wrapper.innerHTML = notifData.notifications.slice(0, 4).map(n => {
+                    const isRead = isAllReadLocal ? 1 : n.is_read;
+                    return `
+                        <div class="notif-item" style="padding: 12px 18px; border-bottom: 1px solid #f8fafc; font-size: 12px; color: #334155; ${!isRead ? 'background:#f0f9ff;' : ''}">
+                            <div style="font-weight: 600; color: #1e3a8a; margin-bottom: 2px;">${n.title}</div>
+                            <div>${n.description || n.desc || ''}</div>
+                            <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Just now</div>
+                        </div>
+                    `;
+                }).join('') + `
+                    <div style="padding: 10px; text-align: center; background: #f8fafc; border-top: 1px solid #e2e8f0;">
+                        <a href="notifications.html" style="color: #2563eb; font-weight: 600; font-size: 12px; text-decoration: none;">View All Notifications →</a>
+                    </div>
+                `;
+            }
+        }
+    } catch(e) {
+        if (localStorage.getItem('all_notifications_read_' + userId) === 'true') {
+            const badge = document.getElementById('bellBadge');
+            if (badge) badge.style.display = 'none';
+        }
+    }
+}
+
+function setupStudentSocket(uid) {
+    if (window.studentSocketConnected) return;
+    try {
+        const socket = io('http://localhost:5000');
+        window.studentSocketConnected = true;
+        socket.on('connect', () => socket.emit('join_user', uid));
+        socket.on('new_notification', (notif) => {
+            // localStorage.removeItem...
+            const badge = document.getElementById('bellBadge');
+            const wrapper = document.getElementById('notificationListWrapper');
+            if (badge) badge.style.display = 'inline-block';
+            if (wrapper) {
+                const emptyEl = wrapper.querySelector('div');
+                if (emptyEl && emptyEl.textContent.includes('No new')) wrapper.innerHTML = '';
+                const itemHtml = `
+                    <div class="notif-item" style="padding: 12px 18px; border-bottom: 1px solid #f8fafc; font-size: 12px; color: #334155; background:#f0f9ff;">
+                        <div style="font-weight: 600; color: #1e3a8a; margin-bottom: 2px;">${notif.title}</div>
+                        <div>${notif.description || ''}</div>
+                        <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Live Just Now</div>
+                    </div>
+                `;
+                wrapper.insertAdjacentHTML('afterbegin', itemHtml);
+            }
+        });
+    } catch(e) {}
+}
+
+document.addEventListener('DOMContentLoaded', loadLiveResources);
+
+// Resource Preview Modal Trigger
+function previewResource(title, category, url) {
+    alert(`📥 Downloading / Previewing Resource:\n\nTitle: ${title}\nCategory: ${category}\n\nFile preparation verified via secure CDN.`);
+}
+</script>
+</body>
+</html>

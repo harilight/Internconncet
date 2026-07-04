@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Cell Notifications Hub — InternConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style1.css">
+    <style>
+        .notif-container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+        .header-bar h1 {
+            font-size: 24px;
+            color: #0d1b5e;
+            font-weight: 600;
+        }
+        .header-bar p {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+        .mark-all-btn {
+            background: #eff6ff;
+            color: #1e3a8a;
+            border: 1px solid #bfdbfe;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .mark-all-btn:hover {
+            background: #1e3a8a;
+            color: white;
+        }
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tab-btn.active, .tab-btn:hover {
+            background: #0d1b5e;
+            color: #ffffff;
+            border-color: #0d1b5e;
+        }
+        .notif-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .notif-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px 24px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            transition: all 0.2s ease;
+        }
+        .notif-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(13,27,94,0.05);
+            border-color: #cbd5e1;
+        }
+        .notif-card.unread {
+            background: #f8fafc;
+            border-left: 4px solid #15803d;
+        }
+        .notif-left {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .notif-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: #dcfce7;
+            color: #15803d;
+            flex-shrink: 0;
+        }
+        .notif-content h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #0d1b5e;
+            margin-bottom: 4px;
+        }
+        .notif-content p {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.5;
+        }
+        .notif-meta {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 8px;
+            display: flex;
+            gap: 12px;
+        }
+        .notif-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .action-link {
+            text-decoration: none;
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .action-link:hover {
+            background: #dcfce7;
+        }
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+        }
+        .delete-btn:hover {
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">InternConnect</div>
+    <a href="college_dashboard.html" class="nav-item">Dashboard</a>
+    <a href="post_internship.html" class="nav-item">Post Internship</a>
+    <a href="manage_internships.html" class="nav-item">Manage Internships</a>
+    <a href="notifications.html" class="nav-item active">🔔 Notifications</a>
+    <a href="college_analytics.html" class="nav-item">Analytics</a>
+    <a href="college_settings.html" class="nav-item">Settings</a>
+    <a href="college_chat.html" class="nav-item">Messages</a>
+</div>
+
+<div class="main">
+    <div class="top-nav-bar">
+        <div class="title-section">
+            <h2>Placement Cell Command Station</h2>
+        </div>
+        <div class="search-container">
+            <span>🔍</span>
+            <input type="text" placeholder="Search institutional alerts or student records...">
+        </div>
+        <div class="profile-box" style="position: relative;">
+            <div class="bell-container" id="notificationBellGroup" style="position: relative; margin-right: 5px;">
+                <span class="bell" id="bellIcon">🔔<span id="bellBadge" style="display: none;"></span></span>
+                <div class="notification-dropdown" id="notificationDropdown" style="position: absolute; top: 35px; right: 0; width: 320px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(13,27,94,0.15); border: 1px solid #e2e8f0; display: none; z-index: 9999; padding: 15px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 18px 10px 18px; border-bottom: 1px solid #f1f5f9;">
+                        <h4 style="font-size: 14px; color: #0d1b5e; font-weight: 600;">TPO Alerts</h4>
+                        <button class="mark-all-btn" id="clearNotificationsBtn" style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer; margin-left:8px;">🗑️ Clear All</button>
+                    </div>
+                    <div style="max-height: 280px; overflow-y: auto;" id="notificationListWrapper"></div>
+                </div>
+            </div>
+            <div class="avatar" onclick="window.location.href='college_profile.html'" style="background:#0d1b5e; cursor:pointer;" title="View College Profile">TPO</div>
+            <div class="profile" onclick="window.location.href='college_profile.html'" style="cursor:pointer;" title="View College Profile">Placement Cell 👋</div>
+        </div>
+    </div>
+
+    <div class="workspace-scroll">
+        <div class="notif-container">
+            <div class="header-bar">
+                <div>
+                    <h1>Institutional Activity & TPO Alerts Hub</h1>
+                    <p>Track corporate drive requests, student resume verifications, and institutional placement statistics.</p>
+                </div>
+                <button class="mark-all-btn" id="markAllBtn">✓ Mark All as Read</button>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="tab-btn active" onclick="filterNotifs('all', this)">All Activity</button>
+                <button class="tab-btn" onclick="filterNotifs('drive', this)">Corporate Drives</button>
+                <button class="tab-btn" onclick="filterNotifs('student', this)">Student Verification</button>
+                <button class="tab-btn" onclick="filterNotifs('system', this)">System</button>
+            </div>
+
+            <div class="notif-list" id="notifListContainer">
+                <div style="padding: 40px; text-align: center; color: #64748b;">Loading institutional notifications...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="navigation-hud.js"></script>
+<script>
+let allNotifications = [];
+
+async function loadCollegeNotifications() {
+    let collegeId = 2;
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.id) collegeId = user.id;
+    } catch(e) {}
+
+    
+
+    const isAllReadLocal = false;
+
+    try {
+        const res = await fetch(`http://localhost:5000/api/notifications/${collegeId}`);
+        const data = await res.json();
+        if (data.success && data.notifications && data.notifications.length > 0) {
+            allNotifications = data.notifications.map(n => ({
+                ...n,
+                is_read: isAllReadLocal ? 1 : n.is_read
+            }));
+            renderNotifications(allNotifications);
+            return;
+        } else {
+            document.getElementById('notifListContainer').innerHTML = `<div style="padding: 50px; text-align: center; background:white; border-radius:12px; border:1px solid #e2e8f0; color:#64748b;">📭 No alerts available right now.</div>`;
+            return;
+        }
+    } catch(err) {
+        console.warn('Backend offline, using fallback college alerts.');
+    }
+
+    allNotifications = [
+        { id: 201, type: 'drive', title: '🏢 New Recruiter Placement Drive Request', description: 'Google Talent Acquisition submitted an institutional campus drive request for 15 Systems Engineering openings.', created_at: new Date().toISOString(), is_read: isAllReadLocal ? 1 : 0, link: 'manage_internships.html' },
+        { id: 202, type: 'student', title: '🎓 Star Candidate Resume Verified', description: 'Amy Rodriguez updated her primary portfolio and CGPA records for pre-placement approval.', created_at: new Date(Date.now()-3600000).toISOString(), is_read: 1, link: 'college_dashboard.html' },
+        { id: 203, type: 'drive', title: '💼 Microsoft Assessment Matrix Synced', description: 'Technical online screening link was dispatched to 42 Computer Science students.', created_at: new Date(Date.now()-14400000).toISOString(), is_read: 1, link: 'manage_internships.html' },
+        { id: 204, type: 'system', title: '📊 Mid-Semester Analytics Report Ready', description: 'Conversion rate metrics and department-wise recruitment shares are calculated.', created_at: new Date(Date.now()-86400000).toISOString(), is_read: 1, link: 'college_analytics.html' }
+    ];
+    renderNotifications(allNotifications);
+}
+
+function renderNotifications(list) {
+    const container = document.getElementById('notifListContainer');
+    if (list.length === 0) {
+        container.innerHTML = `<div style="padding: 50px; text-align: center; background:white; border-radius:12px; border:1px solid #e2e8f0; color:#64748b;">📭 No alerts found in this category.</div>`;
+        return;
+    }
+
+    container.innerHTML = list.map(item => `
+        <div class="notif-card ${!item.is_read ? 'unread' : ''}" id="notif-row-${item.id}">
+            <div class="notif-left">
+                <div class="notif-icon">${item.type === 'drive' ? '🏢' : item.type === 'student' ? '🎓' : '📊'}</div>
+                <div class="notif-content">
+                    <h4>${item.title}</h4>
+                    <p>${item.description}</p>
+                    <div class="notif-meta">
+                        <span>🕒 ${item.created_at ? new Date(item.created_at).toLocaleString() : 'Just Now'}</span>
+                        <span>•</span>
+                        <span style="font-weight: 500; color: ${item.is_read ? '#64748b' : '#15803d'};">${item.is_read ? 'Read' : 'Unread'}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="notif-actions">
+                ${item.link ? `<a href="${item.link}" class="action-link">Review</a>` : ''}
+                <button class="delete-btn" onclick="deleteNotification(${item.id})" title="Delete Alert">×</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterNotifs(type, btnNode) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    if(btnNode) btnNode.classList.add('active');
+
+    if (type === 'all') {
+        renderNotifications(allNotifications);
+    } else {
+        renderNotifications(allNotifications.filter(n => n.type === type));
+    }
+}
+
+document.getElementById('markAllBtn').addEventListener('click', async () => {
+    let collegeId = 2;
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.id) collegeId = user.id;
+    } catch(e) {}
+
+    
+    allNotifications.forEach(n => n.is_read = 1);
+    renderNotifications(allNotifications);
+
+    try {
+        await fetch(`http://localhost:5000/api/notifications/mark-read/${collegeId}`, { method: 'PUT' });
+    } catch(e) {}
+});
+
+async function deleteNotification(id) {
+    allNotifications = allNotifications.filter(n => n.id !== id);
+    const row = document.getElementById(`notif-row-${id}`);
+    if (row) row.remove();
+    try {
+        await fetch(`http://localhost:5000/api/notifications/${id}`, { method: 'DELETE' });
+    } catch(e) {}
+}
+
+document.addEventListener('DOMContentLoaded', loadCollegeNotifications);
+</script>
+<script>
+// INTERACTIVE NOTIFICATION DRAWER DROPDOWN LIFECYCLE
+const bellIcon = document.getElementById('bellIcon');
+const bellBadge = document.getElementById('bellBadge');
+const notificationDropdown = document.getElementById('notificationDropdown');
+const clearNotificationsBtn = document.getElementById('clearNotificationsBtn');
+const notificationListWrapper = document.getElementById('notificationListWrapper');
+
+if (bellIcon && notificationDropdown) {
+    bellIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isVisible = notificationDropdown.style.display === 'block';
+        notificationDropdown.style.display = isVisible ? 'none' : 'block';
+        if (!isVisible && bellBadge) bellBadge.style.display = 'none';
+    });
+}
+
+if (clearNotificationsBtn && notificationListWrapper) {
+    clearNotificationsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        localStorage.setItem('college_notifs_cleared', 'true');
+        if (bellBadge) bellBadge.style.display = 'none';
+        notificationListWrapper.innerHTML = `
+            <div style="padding: 30px; text-align: center; color: #94a3b8; font-size: 13px;">
+                📭 No new notifications log traces.
+            </div>
+        `;
+    });
+}
+
+document.addEventListener('click', (e) => {
+    if (notificationDropdown && bellIcon && !notificationDropdown.contains(e.target) && e.target !== bellIcon) {
+        notificationDropdown.style.display = 'none';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('college_notifs_cleared') === 'true' && notificationListWrapper) {
+        if (bellBadge) bellBadge.style.display = 'none';
+        notificationListWrapper.innerHTML = `
+            <div style="padding: 30px; text-align: center; color: #94a3b8; font-size: 13px;">
+                📭 No new notifications log traces.
+            </div>
+        `;
+    }
+});
+</script>
+</body>
+</html>

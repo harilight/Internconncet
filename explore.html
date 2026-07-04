@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explore Internships</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    display:flex;
+    height:100vh;
+    background:#f3f6fb;
+    overflow: hidden; /* Prevents whole body scrolling, delegates to panels */
+}
+
+/* Sidebar - Fixed/Locked Structure */
+.sidebar{
+    width:250px;
+    background:#0d1b5e;
+    color:white;
+    padding:30px 20px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:600;
+    margin-bottom:40px;
+}
+
+.nav-item{
+    display:block;
+    padding:15px;
+    margin-bottom:12px;
+    border-radius:10px;
+    color:white;
+    text-decoration:none;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.nav-item:hover,
+.nav-item.active{
+    background:#4d8dff;
+}
+
+.chat-btn{
+    margin-top:60px;
+    background:#4d8dff;
+    text-align:center;
+    padding:12px;
+    border-radius:12px;
+}
+
+/* Main Workspace */
+.main{
+    flex:1;
+    padding:30px;
+    display:flex;
+    gap:20px;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.left{
+    flex:3;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.scrollable-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.right{
+    width:300px;
+    height: 100%;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:25px;
+}
+
+.search{
+    flex:2;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    outline:none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.dropdown{
+    flex: 1;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:white;
+    cursor:pointer;
+    outline:none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.tabs{
+    display:flex;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.tab{
+    padding:10px 18px;
+    border-radius:20px;
+    background:white;
+    cursor:pointer;
+    transition: 0.2s;
+}
+
+.tab.active{
+    background:#1e3a8a;
+    color:white;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+    padding-bottom: 20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.company{
+    font-weight:600;
+    font-size:20px;
+    color:#1e3a8a;
+}
+
+.role{
+    margin:8px 0;
+    font-weight:500;
+}
+
+.meta{
+    color:gray;
+    font-size:14px;
+    margin-bottom:12px;
+}
+
+.skills{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:15px;
+}
+
+.skill{
+    background:#dbeafe;
+    color:#1e3a8a;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    padding:10px 16px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:500;
+}
+
+.view{
+    background:#e2e8f0;
+}
+
+.apply{
+    background:#1e3a8a;
+    color:white;
+    transition: background 0.2s;
+}
+
+.apply.applied-state {
+    background: #15803d;
+}
+
+.save{
+    background:#fef3c7;
+    transition: transform 0.1s;
+}
+
+.save.saved-state {
+    background: #f59e0b;
+    color: white;
+}
+
+/* Premium Filter Layout Panel */
+.filter-panel{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.filter-header-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.reset-link {
+    color: #4d8dff;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.reset-link:hover {
+    text-decoration: underline;
+}
+
+.filter-section{
+    margin-bottom:22px;
+    border-bottom: 1px dashed #e2e8f0;
+    padding-bottom: 15px;
+}
+
+.filter-section:last-child {
+    border: none;
+    padding-bottom: 0;
+}
+
+.filter-section h4{
+    margin-bottom:10px;
+    color: #1e3a8a;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.filter-section label{
+    display:block;
+    margin-bottom:8px;
+    font-size: 13px;
+    cursor:pointer;
+}
+
+.range-label-container {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: gray;
+    margin-top: 4px;
+}
+
+.range{
+    width:100%;
+    cursor:pointer;
+}
+
+.sidebar-search-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div class="logo">InternConnect</div>
+
+    <a href="dashboard.html" class="nav-item">Dashboard</a>
+    <a href="myapplications.html" class="nav-item">My Applications</a>
+    <a href="explore.html" class="nav-item active">Explore Internships</a>
+    <a href="resources.html" class="nav-item">Resources</a>
+    <a href="analytics.html" class="nav-item">Analytics</a>
+    <a href="notifications.html" class="nav-item">🔔 Notifications</a>
+    <a href="settings.html" class="nav-item">Settings</a>
+
+     <a href="chat.html" class="nav-item">messages</a>
+</div>
+
+<div class="main">
+
+    <div class="left">
+        <!-- Top Bar Dropdowns & Search Context -->
+        <div class="header">
+            <input class="search" id="searchBar" placeholder="🔍 Search internships by company or title...">
+            
+            <select class="dropdown" id="dropdownLocation">
+                <option value="All">All Locations</option>
+                <option value="Remote">Remote</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Hyderabad">Hyderabad</option>
+            </select>
+
+            <select class="dropdown" id="dropdownDomain">
+                <option value="All">All Domains</option>
+                <option value="AI/ML">AI/ML</option>
+                <option value="Web Dev">Web Dev</option>
+                <option value="Data Science">Data Science</option>
+                <option value="Cybersecurity">Cybersecurity</option>
+                <option value="Design">Design</option>
+            </select>
+
+            <select class="dropdown" id="dropdownSort">
+                <option value="default">Sort By: Default</option>
+                <option value="high-pay">Stipend: High to Low</option>
+                <option value="short-duration">Duration: Shortest First</option>
+            </select>
+        </div>
+
+        <div class="tabs" id="tabGroup">
+            <div class="tab active" data-tab="all">All</div>
+            <div class="tab" data-tab="recommended">Recommended</div>
+            <div class="tab" data-tab="applied">Applied</div>
+            <div class="tab" data-tab="saved">Saved</div>
+        </div>
+
+        <!-- Independent Scroll Container for Cards Grid -->
+        <div class="scrollable-content">
+            <div class="cards" id="internshipCardsContainer">
+                <!-- Card 1 -->
+                <div class="card" data-id="1" data-company="Google" data-role="AI/ML Intern" data-domain="AI/ML" data-location="Remote" data-type="Remote" data-duration="6" data-salary="25000" data-recommended="true" data-skills="python,tensorflow">
+                    <div class="company">Google</div>
+                    <div class="role">AI/ML Intern</div>
+                    <div class="meta">Remote • 6 Months • ₹25,000</div>
+                    <div class="skills">
+                        <div class="skill">Python</div>
+                        <div class="skill">TensorFlow</div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn view">View</button>
+                        <button class="btn apply">Apply</button>
+                        <button class="btn save">♡</button>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="card" data-id="2" data-company="Microsoft" data-role="Data Analyst Intern" data-domain="Data Science" data-location="Bangalore" data-type="Onsite" data-duration="4" data-salary="20000" data-recommended="true" data-skills="sql,power bi">
+                    <div class="company">Microsoft</div>
+                    <div class="role">Data Analyst Intern</div>
+                    <div class="meta">Bangalore • 4 Months • ₹20,000</div>
+                    <div class="skills">
+                        <div class="skill">SQL</div>
+                        <div class="skill">Power BI</div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn view">View</button>
+                        <button class="btn apply">Apply</button>
+                        <button class="btn save">♡</button>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="card" data-id="3" data-company="NVIDIA" data-role="ML Engineer Intern" data-domain="AI/ML" data-location="Remote" data-type="Remote" data-duration="5" data-salary="35000" data-recommended="false" data-skills="pytorch,cuda">
+                    <div class="company">NVIDIA</div>
+                    <div class="role">ML Engineer Intern</div>
+                    <div class="meta">Remote • 5 Months • ₹35,000</div>
+                    <div class="skills">
+                        <div class="skill">PyTorch</div>
+                        <div class="skill">CUDA</div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn view">View</button>
+                        <button class="btn apply">Apply</button>
+                        <button class="btn save">♡</button>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="card" data-id="4" data-company="Amazon" data-role="SDE Intern" data-domain="Web Dev" data-location="Chennai" data-type="Hybrid" data-duration="3" data-salary="18000" data-recommended="true" data-skills="java,dsa">
+                    <div class="company">Amazon</div>
+                    <div class="role">SDE Intern</div>
+                    <div class="meta">Chennai • 3 Months • ₹18,000</div>
+                    <div class="skills">
+                        <div class="skill">Java</div>
+                        <div class="skill">DSA</div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn view">View</button>
+                        <button class="btn apply">Apply</button>
+                        <button class="btn save">♡</button>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="card" data-id="5" data-company="Meta" data-role="Full Stack Intern" data-domain="Web Dev" data-location="Bangalore" data-type="Hybrid" data-duration="6" data-salary="40000" data-recommended="true" data-skills="react,node.js,graphql">
+                    <div class="company">Meta</div>
+                    <div class="role">Full Stack Intern</div>
+                    <div class="meta">Bangalore • 6 Months • ₹40,000</div>
+                    <div class="skills">
+                        <div class="skill">React</div>
+                        <div class="skill">Node.js</div>
+                        <div class="skill">GraphQL</div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn view">View</button>
+                        <button class="btn apply">Apply</button>
+                        <button class="btn save">♡</button>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="card" data-id="6" data-company="Netflix" data-role="UI/UX Design Intern" data-domain="Design" data-location="Mumbai" data-type="Onsite" data-duration="3" data-salary="30000" data-recommended="false" data-skills="figma,prototyping">
+                    <div class="company">Netflix</div>
+                    <div class="role">UI/UX Design Intern</div>
+                    <div class="meta">Mumbai • 3 Months • ₹30,000</div>
+                    <div class="skills">
+                        <div class="skill">Figma</div>
+                        <div class="skill">Prototyping</div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn view">View</button>
+                        <button class="btn apply">Apply</button>
+                        <button class="btn save">♡</button>
+                    </div>
+                </div>
+
+                <!-- Card 7 -->
+                <div class="card" data-id="7" data-company="Apple" data-role="Cybersecurity Intern" data-domain="Cybersecurity" data-location="Hyderabad" data-type="Onsite" data-duration="6" data-salary="45000" data-recommended="true" data-skills="pentesting,network security">
+                    <div class="company">Apple</div>
+                    <div class="role">Cybersecurity Intern</div>
+                    <div class="meta">Hyderabad • 6 Months • ₹45,000</div>
+                    <div class="skills">
+                        <div class="skill">PenTesting</div>
+                        <div class="skill">Network Security</div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn view">View</button>
+                        <button class="btn apply">Apply</button>
+                        <button class="btn save">♡</button>
+                    </div>
+                </div>
+
+                <!-- Card 8 -->
+                <div class="card" data-id="8" data-company="Adobe" data-role="Frontend Engineer Intern" data-domain="Web Dev" data-location="Remote" data-type="Remote" data-duration="4" data-salary="22000" data-recommended="false" data-skills="javascript,css grid">
+                    <div class="company">Adobe</div>
+                    <div class="role">Frontend Engineer Intern</div>
+                    <div class="meta">Remote • 4 Months • ₹22,000</div>
+                    <div class="skills">
+                        <div class="skill">JavaScript</div>
+                        <div class="skill">CSS Grid</div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn view">View</button>
+                        <button class="btn apply">Apply</button>
+                        <button class="btn save">♡</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side Advanced Filtering Column -->
+    <div class="right">
+        <div class="filter-panel">
+            <div class="filter-header-block">
+                <h3>Filters</h3>
+                <button type="button" class="reset-link" id="resetBtn">Reset All</button>
+            </div>
+
+            <!-- New Filter 1: Filter explicitly by tech skill keywords -->
+            <div class="filter-section">
+                <h4>Filter by Required Skill</h4>
+                <input type="text" class="sidebar-search-input" id="skillSearch" placeholder="e.g., Python, SQL, Figma...">
+            </div>
+
+            <!-- New Filter 2: Split Work Schedule Configuration Checks -->
+            <div class="filter-section">
+                <h4>Work Arrangement</h4>
+                <label><input type="checkbox" class="type-check" value="Remote"> Work from Home</label>
+                <label><input type="checkbox" class="type-check" value="Hybrid"> Hybrid Setups</label>
+                <label><input type="checkbox" class="type-check" value="Onsite"> Office Onsite</label>
+            </div>
+
+            <div class="filter-section">
+                <h4>Geographic Location</h4>
+                <label><input type="checkbox" class="loc-check" value="Remote"> Remote Location</label>
+                <label><input type="checkbox" class="loc-check" value="Bangalore"> Bangalore HQ</label>
+                <label><input type="checkbox" class="loc-check" value="Chennai"> Chennai Hub</label>
+                <label><input type="checkbox" class="loc-check" value="Mumbai"> Mumbai Branch</label>
+                <label><input type="checkbox" class="loc-check" value="Hyderabad"> Hyderabad Base</label>
+            </div>
+
+            <div class="filter-section">
+                <h4>Max Duration</h4>
+                <input class="range" id="durationSlider" type="range" min="1" max="6" value="6">
+                <div class="range-label-container">
+                    <span>1 Month</span>
+                    <span id="durationVal" style="font-weight:600;color:#1e3a8a;">6 Mo</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h4>Minimum Salary</h4>
+                <input class="range" id="salarySlider" type="range" min="15000" max="50000" step="5000" value="15000">
+                <div class="range-label-container">
+                    <span>₹15k</span>
+                    <span id="salaryVal" style="font-weight:600;color:#1e3a8a;">₹15,000</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const appliedInternships = new Set();
+const savedInternships = new Set();
+
+// Elements List
+const searchBar = document.getElementById('searchBar');
+const skillSearch = document.getElementById('skillSearch');
+const dropdownLocation = document.getElementById('dropdownLocation');
+const dropdownDomain = document.getElementById('dropdownDomain');
+const dropdownSort = document.getElementById('dropdownSort');
+const tabGroup = document.getElementById('tabGroup');
+const locationCheckboxes = document.querySelectorAll('.loc-check');
+const typeCheckboxes = document.querySelectorAll('.type-check');
+const durationSlider = document.getElementById('durationSlider');
+const durationVal = document.getElementById('durationVal');
+const salarySlider = document.getElementById('salarySlider');
+const salaryVal = document.getElementById('salaryVal');
+const resetBtn = document.getElementById('resetBtn');
+const cardsContainer = document.getElementById('internshipCardsContainer');
+let allCards = [];
+
+let currentTab = 'all';
+
+// Fetch live internships from MySQL API and sync applied states
+async function loadLiveInternships() {
+    try {
+        let studentId = 1;
+        try {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (user && user.id) studentId = user.id;
+        } catch(e) {}
+
+        // Pre-fetch student's existing applications from MySQL so buttons show ✓ Applied immediately
+        try {
+            const appsRes = await fetch(`http://localhost:5000/api/applications/student/${studentId}`);
+            const appsData = await appsRes.json();
+            if (appsData.success && appsData.applications) {
+                appsData.applications.forEach(a => appliedInternships.add((a.internship_id || '').toString()));
+            }
+        } catch(e) {}
+
+        const res = await fetch('http://localhost:5000/api/internships');
+        const data = await res.json();
+        
+        if (data.success && data.internships && data.internships.length > 0) {
+            cardsContainer.innerHTML = ''; // Clear hardcoded sample cards
+            
+            data.internships.forEach(item => {
+                const itemIdStr = (item.id || '').toString();
+                const isAlreadyApplied = appliedInternships.has(itemIdStr);
+
+                // Parse salary or extract numbers
+                const salaryNumber = parseInt((item.stipend || '').replace(/[^0-9]/g, '')) || 25000;
+                const durationNumber = parseInt((item.duration || '').replace(/[^0-9]/g, '')) || 6;
+                let skills = [];
+                try {
+                    skills = typeof item.skills_required === 'string' ? JSON.parse(item.skills_required) : item.skills_required;
+                } catch(e) { skills = ['JavaScript', 'MySQL']; }
+                if (!Array.isArray(skills)) skills = ['Communication', 'Teamwork'];
+
+                const cardHtml = document.createElement('div');
+                cardHtml.className = 'card';
+                cardHtml.setAttribute('data-id', itemIdStr);
+                cardHtml.setAttribute('data-company', item.company_name || 'Enterprise');
+                cardHtml.setAttribute('data-role', item.title);
+                cardHtml.setAttribute('data-domain', item.title.includes('AI') || item.title.includes('Data') ? 'AI/ML' : 'Web Dev');
+                cardHtml.setAttribute('data-location', item.location);
+                cardHtml.setAttribute('data-type', item.work_type || 'Remote');
+                cardHtml.setAttribute('data-duration', durationNumber);
+                cardHtml.setAttribute('data-salary', salaryNumber);
+                cardHtml.setAttribute('data-recommended', 'true');
+                cardHtml.setAttribute('data-skills', skills.join(',').toLowerCase());
+
+                cardHtml.innerHTML = `
+                    <div class="company">${item.company_name}</div>
+                    <div class="role">${item.title}</div>
+                    <div class="meta">${item.location} • ${item.duration} • ${item.stipend}</div>
+                    <div class="skills">
+                        ${skills.map(s => `<div class="skill">${s}</div>`).join('')}
+                    </div>
+                    <div class="actions">
+                        <button class="btn view">View</button>
+                        <button class="btn apply ${isAlreadyApplied ? 'applied-state' : ''}">${isAlreadyApplied ? '✓ Applied' : 'Apply'}</button>
+                        <button class="btn save">♡</button>
+                    </div>
+                `;
+                cardsContainer.appendChild(cardHtml);
+            });
+        }
+    } catch (err) {
+        console.warn('Backend server not reachable or offline. Displaying fallback cards.', err);
+    } finally {
+        allCards = Array.from(cardsContainer.getElementsByClassName('card'));
+        runFiltersAndSorting();
+    }
+
+    if (typeof io !== 'undefined') {
+        setupExploreSocket();
+    } else if (!window.exploreSocketLoading) {
+        window.exploreSocketLoading = true;
+        const script = document.createElement('script');
+        script.src = 'https://cdn.socket.io/4.7.2/socket.io.min.js';
+        script.onload = () => setupExploreSocket();
+        document.head.appendChild(script);
+    }
+}
+
+function setupExploreSocket() {
+    if (window.exploreSocketConnected) return;
+    try {
+        const socket = io('http://localhost:5000');
+        window.exploreSocketConnected = true;
+        socket.on('new_notification', (notif) => {
+            if (notif.type === 'system' || notif.type === 'drive') {
+                loadLiveInternships();
+            }
+        });
+    } catch(e) {}
+}
+
+// Main Interactive Pipeline Engine
+function runFiltersAndSorting() {
+    const searchText = searchBar.value.toLowerCase().trim();
+    const skillText = skillSearch.value.toLowerCase().trim();
+    const dLocation = dropdownLocation.value;
+    const dDomain = dropdownDomain.value;
+    const sortVal = dropdownSort.value;
+    
+    const checkedLocations = Array.from(locationCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+    const checkedTypes = Array.from(typeCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+    const maxDuration = parseInt(durationSlider.value, 10);
+    const minSalary = parseInt(salarySlider.value, 10);
+
+    allCards.forEach(card => {
+        const id = card.getAttribute('data-id');
+        const company = (card.getAttribute('data-company') || '').toLowerCase();
+        const role = (card.getAttribute('data-role') || '').toLowerCase();
+        const domain = card.getAttribute('data-domain');
+        const location = card.getAttribute('data-location');
+        const type = card.getAttribute('data-type');
+        const duration = parseInt(card.getAttribute('data-duration'), 10);
+        const salary = parseInt(card.getAttribute('data-salary'), 10);
+        const cardSkills = (card.getAttribute('data-skills') || '').toLowerCase();
+        const isRecommended = card.getAttribute('data-recommended') === 'true';
+
+        // Filters Evaluators
+        const matchesTab = (currentTab === 'all') ||
+                           (currentTab === 'recommended' && isRecommended) ||
+                           (currentTab === 'applied' && appliedInternships.has(id)) ||
+                           (currentTab === 'saved' && savedInternships.has(id));
+
+        const matchesSearch = company.includes(searchText) || role.includes(searchText);
+        const matchesSkills = skillText === "" || cardSkills.includes(skillText);
+        const matchesDropdownLoc = (dLocation === 'All' || location === dLocation);
+        const matchesDropdownDom = (dDomain === 'All' || domain === dDomain);
+        const matchesCheckboxLoc = (checkedLocations.length === 0 || checkedLocations.includes(location));
+        const matchesCheckboxType = (checkedTypes.length === 0 || checkedTypes.includes(type));
+        const matchesDuration = (duration <= maxDuration);
+        const matchesSalary = (salary >= minSalary);
+
+        if (matchesTab && matchesSearch && matchesSkills && matchesDropdownLoc && matchesDropdownDom && matchesCheckboxLoc && matchesCheckboxType && matchesDuration && matchesSalary) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    const visibleCount = allCards.filter(c => c.style.display === 'block').length;
+    let emptyMsg = document.getElementById('exploreEmptyMsg');
+    if (visibleCount === 0) {
+        if (!emptyMsg) {
+            cardsContainer.insertAdjacentHTML('beforeend', `
+                <div id="exploreEmptyMsg" style="padding: 60px 20px; text-align: center; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 16px; width: 100%; margin-top: 10px;">
+                    <div style="font-size: 36px; margin-bottom: 12px;">🔍</div>
+                    <h3 style="color: #0d1b5e; font-size: 18px; margin-bottom: 6px;">No Matching Opportunities Found</h3>
+                    <p style="color: #64748b; font-size: 13px; max-width: 400px; margin: 0 auto 16px auto;">Try adjusting your skill search keywords, duration slider, or location filters to discover more live internships.</p>
+                    <button onclick="document.getElementById('searchBar').value=''; document.getElementById('skillSearch').value=''; document.getElementById('dropdownLocation').value='All'; document.getElementById('dropdownDomain').value='All'; document.querySelectorAll('.loc-check, .type-check').forEach(cb=>cb.checked=false); runFiltersAndSorting();" style="background: #1e3a8a; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 13px;">Clear All Filters</button>
+                </div>
+            `);
+        } else {
+            emptyMsg.style.display = 'block';
+        }
+    } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+    }
+
+    // Handle sorting execution when triggered
+    if (sortVal === 'high-pay') {
+        allCards.sort((a, b) => parseInt(b.getAttribute('data-salary'), 10) - parseInt(a.getAttribute('data-salary'), 10));
+        allCards.forEach(card => cardsContainer.appendChild(card));
+    } else if (sortVal === 'short-duration') {
+        allCards.sort((a, b) => parseInt(a.getAttribute('data-duration'), 10) - parseInt(b.getAttribute('data-duration'), 10));
+        allCards.forEach(card => cardsContainer.appendChild(card));
+    }
+}
+
+// Reset Handler function
+resetBtn.addEventListener('click', () => {
+    searchBar.value = '';
+    skillSearch.value = '';
+    dropdownLocation.value = 'All';
+    dropdownDomain.value = 'All';
+    dropdownSort.value = 'default';
+    
+    locationCheckboxes.forEach(cb => cb.checked = false);
+    typeCheckboxes.forEach(cb => cb.checked = false);
+    
+    durationSlider.value = 6;
+    durationVal.textContent = '6 Mo';
+    
+    salarySlider.value = 15000;
+    salaryVal.textContent = '₹15,000';
+    
+    runFiltersAndSorting();
+});
+
+// Event Triggers Hookup
+searchBar.addEventListener('input', runFiltersAndSorting);
+skillSearch.addEventListener('input', runFiltersAndSorting);
+dropdownDomain.addEventListener('change', runFiltersAndSorting);
+dropdownSort.addEventListener('change', runFiltersAndSorting);
+
+dropdownLocation.addEventListener('change', (e) => {
+    const val = e.target.value;
+    locationCheckboxes.forEach(cb => cb.checked = (val !== 'All' && cb.value === val));
+    runFiltersAndSorting();
+});
+
+locationCheckboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+        const checked = Array.from(locationCheckboxes).filter(c => c.checked);
+        dropdownLocation.value = checked.length === 1 ? checked[0].value : 'All';
+        runFiltersAndSorting();
+    });
+});
+
+typeCheckboxes.forEach(cb => cb.addEventListener('change', runFiltersAndSorting));
+durationSlider.addEventListener('input', (e) => { durationVal.textContent = `${e.target.value} Mo`; runFiltersAndSorting(); });
+salarySlider.addEventListener('input', (e) => { salaryVal.textContent = `₹${parseInt(e.target.value, 10).toLocaleString('en-IN')}`; runFiltersAndSorting(); });
+
+tabGroup.addEventListener('click', (e) => {
+    const targetTab = e.target.closest('.tab');
+    if (!targetTab) return;
+    tabGroup.querySelector('.tab.active').classList.remove('active');
+    targetTab.classList.add('active');
+    currentTab = targetTab.getAttribute('data-tab');
+    runFiltersAndSorting();
+});
+
+// Runtime Applications state tracking + MySQL DB persistence
+cardsContainer.addEventListener('click', async (e) => {
+    const card = e.target.closest('.card');
+    if (!card) return;
+    const id = card.getAttribute('data-id');
+
+    if (e.target.classList.contains('apply')) {
+        if (!appliedInternships.has(id)) {
+            appliedInternships.add(id);
+            e.target.textContent = '⏳ Applying...';
+            
+            try {
+                let studentId = 1;
+                try {
+                    const user = JSON.parse(localStorage.getItem('currentUser'));
+                    if (user && user.id) studentId = user.id;
+                } catch(e) {}
+
+                // Submit application to MySQL DB for logged-in user
+                await fetch('http://localhost:5000/api/applications', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ student_id: studentId, internship_id: id, cover_letter: 'Applied via Explore UI' })
+                });
+            } catch(err) { console.error('Application post failed:', err); }
+
+            e.target.textContent = '✓ Applied';
+            e.target.classList.add('applied-state');
+        } else {
+            appliedInternships.delete(id);
+            e.target.textContent = 'Apply';
+            e.target.classList.remove('applied-state');
+            if (currentTab === 'applied') runFiltersAndSorting();
+        }
+    }
+
+    if (e.target.classList.contains('save')) {
+        if (!savedInternships.has(id)) {
+            savedInternships.add(id);
+            e.target.textContent = '♥';
+            e.target.classList.add('saved-state');
+        } else {
+            savedInternships.delete(id);
+            e.target.textContent = '♡';
+            e.target.classList.remove('saved-state');
+            if (currentTab === 'saved') runFiltersAndSorting();
+        }
+    }
+});
+
+// Initialize live feed on load
+document.addEventListener('DOMContentLoaded', loadLiveInternships);
+</script>
+</body>
+</html>
