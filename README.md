@@ -10,17 +10,17 @@
 
 ## 📸 Platform Previews & Interface Showcase
 
-| **🎓 Student Dashboard & Analytics** | **🔍 Live Internship Discovery** |
+| **🌟 Welcome Landing Page** | **🔐 Multi-Role Login Portal** |
 |:---:|:---:|
-| ![Student Dashboard](screenshots/student_dashboard.png) | ![Explore Internships](screenshots/explore_internships.png) |
+| ![Landing Page](screenshots/landing_page.png) | ![Login Portal](screenshots/login_portal.png) |
 
-| **💬 Real-Time Recruiter Messaging** | **🏢 Industry Employer Hub** |
+| **🎓 Student Dashboard & Notifications** | **📊 Comprehensive Analytics** |
 |:---:|:---:|
-| ![Real-Time Messaging](screenshots/realtime_messaging.png) | ![Industry Portal](screenshots/industry_portal.png) |
+| ![Student Dashboard](screenshots/student_dashboard.png) | ![Analytics Dashboard](screenshots/analytics_dashboard.png) |
 
-| **🔔 Interactive Notifications Center** |
+| **⚙️ Profile & Data Privacy Settings** |
 |:---:|
-| ![Notifications Center](screenshots/notifications_hub.png) |
+| ![Profile Settings](screenshots/profile_settings.png) |
 
 ---
 
