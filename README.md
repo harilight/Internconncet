@@ -8,6 +8,22 @@
 
 ---
 
+## 📸 Platform Previews & Interface Showcase
+
+| **🎓 Student Dashboard & Analytics** | **🔍 Live Internship Discovery** |
+|:---:|:---:|
+| ![Student Dashboard](screenshots/student_dashboard.png) | ![Explore Internships](screenshots/explore_internships.png) |
+
+| **💬 Real-Time Recruiter Messaging** | **🏢 Industry Employer Hub** |
+|:---:|:---:|
+| ![Real-Time Messaging](screenshots/realtime_messaging.png) | ![Industry Portal](screenshots/industry_portal.png) |
+
+| **🔔 Interactive Notifications Center** |
+|:---:|
+| ![Notifications Center](screenshots/notifications_hub.png) |
+
+---
+
 ## ✨ Key Highlights & Features
 
 ### 🎓 1. Student Portal
