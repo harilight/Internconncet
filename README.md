@@ -18,9 +18,17 @@
 |:---:|:---:|
 | ![Student Dashboard](screenshots/student_dashboard.png) | ![Analytics Dashboard](screenshots/analytics_dashboard.png) |
 
-| **⚙️ Profile & Data Privacy Settings** |
-|:---:|
-| ![Profile Settings](screenshots/profile_settings.png) |
+| **💬 Real-Time Messaging Hub** | **🏢 Industry Recruiter Command Station** |
+|:---:|:---:|
+| ![Student Messages](screenshots/student_messages.png) | ![Industry Dashboard](screenshots/industry_dashboard.png) |
+
+| **📝 Post New Internship Campaign** | **🏫 College Placement Cell Dashboard** |
+|:---:|:---:|
+| ![Post Internship](screenshots/post_internship.png) | ![College Dashboard](screenshots/college_dashboard.png) |
+
+| **⚙️ Profile & Data Privacy Settings** | **🔒 Interactive Security & Logout Modals** |
+|:---:|:---:|
+| ![Profile Settings](screenshots/profile_settings.png) | ![Settings Modal](screenshots/settings_modal.png) |
 
 ---
 
